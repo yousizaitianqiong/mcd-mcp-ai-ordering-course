@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.env
+.env.local
+data/app-state.json
+**/data/
+*.tsbuildinfo
+*.log
+.DS_Store
+**/__pycache__/
+*.py[cod]
+AI麦乐送助手_课程项目组名单与简要用户需求列表.docx
+scripts/build_teacher_brief.py
+scripts/build_discussion_doc.py

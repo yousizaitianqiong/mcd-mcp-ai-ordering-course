@@ -1,0 +1,14 @@
+{
+  "name": "mcd-mcp-ai-ordering-course",
+  "private": true,
+  "version": "0.1.0",
+  "description": "问题求解实战课程项目：AI 麦乐送助手",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @mcd/server --filter @mcd/web dev",
+    "dev:server": "pnpm --filter @mcd/server dev",
+    "dev:web": "pnpm --filter @mcd/web dev",
+    "build": "pnpm -r build",
+    "test": "pnpm --filter @mcd/server test",
+    "start": "pnpm --filter @mcd/server start"
+  }
+}
