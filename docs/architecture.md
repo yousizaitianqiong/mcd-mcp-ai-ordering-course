@@ -51,7 +51,7 @@ sequenceDiagram
     W->>H: POST /api/chat 或 POST /api/cart
     O->>P: calculatePrice
     P-->>O: PriceQuote
-    O->>S: 保存报价和 approvalId
+    O->>S: 保存报价、quoteHash 和 approvalId
     O-->>W: SSE quote + confirmation_required
     U->>W: 点击确认并创建待支付订单
     W->>H: POST /api/orders/confirm
@@ -78,6 +78,7 @@ FoodOrderProvider
   listAddresses() -> Address[]
   listDeliverableStores({ addressId, beType: 2 }) -> Store[]
   listMeals({ storeCode, beCode, orderType: 2, beType: 2 }) -> MenuItem[]
+    可选调用 list-nutrition-foods，将精确匹配的每份热量带入 MenuItem
   getMealDetail({ storeCode, beCode, code, orderType: 2, beType: 2 }) -> JsonObject
   listStoreCoupons({ storeCode, beCode, orderType: 2, beType: 2 }) -> Coupon[]
   calculatePrice({ context, items }) -> PriceQuote
@@ -94,10 +95,12 @@ ModelAdapter
 | --- | --- | --- |
 | Address | addressId、contactName、phone、fullAddress | 配送地址选择和核对 |
 | Store | storeCode、beCode、storeName、businessStatus | 门店上下文 |
-| MenuItem | productCode、name、price、tags | 菜单展示和加购 |
-| CartItem | 商品编码、名称、数量、单价、门店编码 | 服务端购物车和核价输入 |
-| PriceQuote | quoteId、context、items、金额字段、expiresAt | 人工确认依据 |
+| MenuItem | productCode、name、price、tags；可选 caloriesKcal | 菜单展示和加购；热量单位为千卡/份 |
+| CartItem | 商品编码、名称、数量、单价、门店编码；可选 caloriesKcal | 服务端购物车和核价输入；热量只来自服务端菜单匹配 |
+| PriceQuote | quoteId、context、items、金额字段、expiresAt、quoteHash | 人工确认依据和完整性校验 |
 | PendingOrder | orderId、orderStatus、totalAmount、可选支付链接 | 待支付订单展示 |
+
+`list-nutrition-foods` 不是模型工具，也不是下单前提。MCD Provider 只接受其固定表头中的 `energyKcal`，按规范化后的完整餐品名称精确匹配菜单；没有匹配或远端格式变化时省略 `caloriesKcal`，前端显示“热量数据暂无”，不做模糊估算。购物车中的热量按数量展示，只有所有商品都有数据时才汇总预计总热量。
 
 ## 4. Web API 契约
 
@@ -149,11 +152,11 @@ data: JSON 数据
 | stores | Store[] | 门店选择 |
 | menu | MenuItem[] | 菜单卡片 |
 | cart | CartItem[] | 购物车 |
-| quote | PriceQuote 加 approvalId | 核价卡片 |
+| quote | PriceQuote 加 approvalId、quoteHash | 核价卡片 |
 | confirmation_required | 与报价相同的确认数据 | 显示确认闸门 |
 | order | PendingOrder | 订单卡片 |
 | assistant | { text } | 聊天回复 |
-| error | { code, message, details? } | 错误提示 |
+| error | { code, message } | 错误提示；不返回下游原始详情 |
 | done | { sessionId } | 结束本轮处理 |
 
 空消息或无效 JSON 在 SSE 建立前返回 JSON 错误；处理过程中的异常通过 error 事件返回并以 done 结束。
@@ -246,16 +249,19 @@ POST /api/orders/confirm
 ~~~json
 {
   "sessionId": "会话 ID",
-  "approvalId": "报价确认 ID"
+  "approvalId": "报价确认 ID",
+  "quoteHash": "服务端报价哈希"
 }
 ~~~
 
 成功响应为包含 PendingOrder 对象的 JSON。服务端按以下顺序处理：
 
 1. 检查 approvalId 存在且属于 sessionId。
-2. 检查报价仍为 pending 且 expiresAt 未到期。
-3. 调用 Provider 的 createOrder；该调用不自动重试。
-4. 成功后标记确认、保存订单、记录脱敏审计事件并清空购物车。
+2. 重新计算报价快照并比对 quoteHash，检查 expiresAt 未到期。
+3. 将 approval 原子标记为 submitting；并发请求只能有一个继续。
+4. 调用 Provider 的 createOrder；该调用不自动重试。
+5. 成功标记 confirmed；明确失败标记 failed；超时或网络未知标记 unknown。
+6. 成功后保存脱敏订单摘要、记录审计事件并清空购物车。
 
 GET /api/orders/{orderId} 返回包含 PendingOrder 对象的 JSON。如果 JsonStore 已保存订单，优先返回保存内容；否则调用 Provider 查询状态。
 
@@ -282,7 +288,7 @@ McpHttpClient 负责：
 - initialize、notifications/initialized、tools/list 和 tools/call JSON-RPC；
 - Accept: application/json, text/event-stream、MCP-Protocol-Version 和 Bearer Token；
 - JSON 响应与 SSE data: 响应解析；
-- 401、429、HTTP 错误、超时、RPC 错误和网络错误转换。
+- 401、429、HTTP 错误、超时、RPC 错误、无效响应和网络错误转换；错误响应不携带原始详情。
 
 McDonaldsMcpProvider 负责把远程工具名称和响应字段转换成统一领域类型。前端不得依赖 MCP 原始字段。
 
@@ -294,14 +300,15 @@ McDonaldsMcpProvider 负责把远程工具名称和响应字段转换成统一�
 | --- | --- | --- |
 | 请求输入 | INVALID_JSON、MESSAGE_REQUIRED、INVALID_CART_ITEM | 返回 400 和中文提示 |
 | 业务前置条件 | CONTEXT_REQUIRED、EMPTY_CART、ITEM_NOT_IN_CART、ORDER_ID_REQUIRED | 不调用下游写操作 |
-| 确认状态 | APPROVAL_NOT_FOUND、APPROVAL_ALREADY_USED、QUOTE_EXPIRED | 不创建订单 |
-| MCP | MCP_UNAUTHORIZED、MCP_RATE_LIMIT、MCP_TIMEOUT、MCP_NETWORK_ERROR、MCP_RPC_ERROR | 展示可识别错误，不自动重试写操作 |
-| 模型 | MODEL_NETWORK_ERROR、MODEL_HTTP_ERROR | 保留会话，提示改用 Mock 或稍后重试 |
+| 确认状态 | APPROVAL_NOT_FOUND、APPROVAL_ALREADY_USED、APPROVAL_NOT_RETRYABLE、QUOTE_EXPIRED、QUOTE_HASH_MISMATCH | 不创建订单 |
+| 报价完整性 | QUOTE_INTEGRITY_ERROR | 停止写操作并重新核价 |
+| MCP | MCP_UNAUTHORIZED、MCP_RATE_LIMIT、MCP_TIMEOUT、MCP_NETWORK_ERROR、MCP_RPC_ERROR、MCP_SCHEMA_ERROR | 展示可识别错误，不自动重试写操作 |
+| 模型 | MODEL_UNAUTHORIZED、MODEL_RATE_LIMIT、MODEL_TIMEOUT、MODEL_NETWORK_ERROR、MODEL_HTTP_ERROR、MODEL_INVALID_RESPONSE | 保留会话，不暴露下游详情 |
 
 安全边界：
 
 - Token 和模型 Key 只从服务端环境变量读取。
-- 浏览器响应、源码、日志、JSONStore 和截图不包含 Authorization Header 或支付信息。
+- 浏览器响应、源码、日志和截图不包含 Authorization Header、模型请求体或 MCP 原始响应；JSONStore 对地址、手机号、消息中的常见凭据和支付链接做脱敏处理。
 - 真实下单前必须重新核对地址、商品、金额和报价有效期。
-- 当前课程版本没有登录鉴权和分布式幂等锁；sessionId 不是身份认证凭据，不适用于生产环境。
-- 并发点击、支付、退款和履约不属于本 Issue 的代码改造范围；真实联调采用两人复核和单次点击控制。
+- 当前课程版本没有登录鉴权和分布式数据库锁；sessionId 不是身份认证凭据，不适用于生产环境。单进程 JsonStore 提供 approval 占用，跨进程部署仍需外部幂等存储。
+- 支付、退款和履约不属于本 Issue 的代码改造范围；真实联调采用两人复核和单次点击控制。

@@ -22,6 +22,8 @@ export interface MenuItem {
   name: string;
   price: number;
   tags: string[];
+  /** 麦当劳营养工具返回的每份能量，单位为千卡；未匹配时省略。 */
+  caloriesKcal?: number;
   category?: string;
   description?: string;
 }
@@ -39,6 +41,8 @@ export interface CartItem {
   productName: string;
   quantity: number;
   unitPrice: number;
+  /** 每份能量，单位为千卡；未匹配时省略。 */
+  caloriesKcal?: number;
   storeCode: string;
   beCode: string;
 }
@@ -61,7 +65,7 @@ export interface PriceQuote {
   totalPrice: number;
   currency: "CNY";
   expiresAt: string;
-  raw?: unknown;
+  quoteHash: string;
 }
 
 export interface CreateOrderInput {
@@ -85,7 +89,6 @@ export interface PendingOrder {
   totalAmount: number;
   storeName?: string;
   deliveryAddress?: string;
-  raw?: unknown;
 }
 
 export interface FoodOrderProvider {
@@ -144,7 +147,7 @@ export interface ApprovalRecord {
   approvalId: string;
   sessionId: string;
   quote: PriceQuote;
-  status: "pending" | "confirmed" | "expired";
+  status: "pending" | "submitting" | "confirmed" | "failed" | "unknown" | "expired";
   expiresAt: string;
   createdAt: string;
 }

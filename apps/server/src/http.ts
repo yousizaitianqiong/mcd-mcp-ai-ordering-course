@@ -16,12 +16,24 @@ interface Dependencies {
   modelConfigured: boolean;
 }
 
+const MAX_BODY_BYTES = 128 * 1024;
+
 async function readJson(request: IncomingMessage): Promise<Record<string, unknown>> {
   const chunks: Buffer[] = [];
-  for await (const chunk of request) chunks.push(Buffer.from(chunk));
+  let total = 0;
+  for await (const chunk of request) {
+    const buffer = Buffer.from(chunk);
+    total += buffer.length;
+    if (total > MAX_BODY_BYTES) throw new AppError("REQUEST_TOO_LARGE", "请求体过大", 413);
+    chunks.push(buffer);
+  }
   if (!chunks.length) return {};
   try {
-    return JSON.parse(Buffer.concat(chunks).toString("utf8")) as Record<string, unknown>;
+    const parsed = JSON.parse(Buffer.concat(chunks).toString("utf8")) as unknown;
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      throw new Error("not-object");
+    }
+    return parsed as Record<string, unknown>;
   } catch {
     throw new AppError("INVALID_JSON", "请求体不是有效 JSON", 400);
   }
@@ -130,6 +142,7 @@ export function createHttpServer(deps: Dependencies) {
         const body = await readJson(request);
         const message = String(body.message || "").trim();
         if (!message) throw new AppError("MESSAGE_REQUIRED", "请输入想点的餐品或需求");
+        if (message.length > 4000) throw new AppError("MESSAGE_TOO_LONG", "消息长度不能超过 4000 个字符");
         response.statusCode = 200;
         response.setHeader("Content-Type", "text/event-stream; charset=utf-8");
         response.setHeader("Cache-Control", "no-cache, no-transform");
@@ -158,7 +171,9 @@ export function createHttpServer(deps: Dependencies) {
 
       if (url.pathname === "/api/cart" && request.method === "POST") {
         const body = await readJson(request);
-        const session = await deps.store.ensureSession(String(body.sessionId || ""));
+        const sessionId = String(body.sessionId || "");
+        if (!sessionId) throw new AppError("SESSION_REQUIRED", "缺少会话 ID");
+        const session = await deps.store.ensureSession(sessionId);
         if (body.action === "clear") {
           const updated = await deps.store.setCart(session.id, []);
           sendJson(response, 200, { sessionId: updated.id, cart: updated.cart });
@@ -169,15 +184,41 @@ export function createHttpServer(deps: Dependencies) {
           throw new AppError("INVALID_CART_ITEM", "购物车餐品信息不完整");
         }
         if (!session.context) throw new AppError("CONTEXT_REQUIRED", "请先通过聊天查询地址和门店");
-        const quantity = Math.max(1, Math.min(20, Number(item.quantity || 1)));
-        const existing = session.cart.find((candidate) => candidate.productCode === String(item.productCode));
+        const quantity = Number(item.quantity || 1);
+        if (!Number.isInteger(quantity) || quantity < 1 || quantity > 20) {
+          throw new AppError("INVALID_CART_ITEM", "餐品数量必须是 1 到 20 的整数");
+        }
+        const menu = await deps.provider.listMeals({
+          storeCode: session.context.storeCode,
+          beCode: session.context.beCode,
+          orderType: 2,
+          beType: 2,
+        });
+        const catalogItem = menu.find((candidate) => candidate.productCode === String(item.productCode));
+        if (!catalogItem) throw new AppError("ITEM_NOT_IN_MENU", "只能加入当前菜单中的餐品", 400);
+        const existing = session.cart.find((candidate) => candidate.productCode === catalogItem.productCode);
+        if (existing && existing.quantity + quantity > 20) {
+          throw new AppError("CART_QUANTITY_LIMIT", "同一餐品数量不能超过 20");
+        }
         const cart = existing
-          ? session.cart.map((candidate) => candidate.productCode === String(item.productCode) ? { ...candidate, quantity: candidate.quantity + quantity } : candidate)
+          ? session.cart.map((candidate) => {
+              if (candidate.productCode !== catalogItem.productCode) return candidate;
+              const updated = {
+                ...candidate,
+                productName: catalogItem.name,
+                quantity: candidate.quantity + quantity,
+                unitPrice: catalogItem.price,
+              };
+              if (catalogItem.caloriesKcal === undefined) delete updated.caloriesKcal;
+              else updated.caloriesKcal = catalogItem.caloriesKcal;
+              return updated;
+            })
           : [...session.cart, {
-              productCode: String(item.productCode),
-              productName: String(item.productName),
+              productCode: catalogItem.productCode,
+              productName: catalogItem.name,
               quantity,
-              unitPrice: Number(item.unitPrice),
+              unitPrice: catalogItem.price,
+              ...(catalogItem.caloriesKcal === undefined ? {} : { caloriesKcal: catalogItem.caloriesKcal }),
               storeCode: session.context.storeCode,
               beCode: session.context.beCode,
             }];
@@ -191,7 +232,11 @@ export function createHttpServer(deps: Dependencies) {
         const body = await readJson(request);
         const sessionId = String(body.sessionId || "");
         const approvalId = String(body.approvalId || "");
-        const order = await deps.orchestrator.confirmOrder(sessionId, approvalId);
+        const quoteHash = String(body.quoteHash || "");
+        if (!sessionId || !approvalId || !quoteHash) {
+          throw new AppError("CONFIRMATION_FIELDS_REQUIRED", "缺少会话、确认信息或报价哈希");
+        }
+        const order = await deps.orchestrator.confirmOrder(sessionId, approvalId, quoteHash);
         sendJson(response, 200, { order });
         return;
       }

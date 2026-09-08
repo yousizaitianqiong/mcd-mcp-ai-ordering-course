@@ -7,7 +7,7 @@
 - 独立 Web 应用：React + TypeScript + Vite 前端，Node.js + TypeScript 后端。
 - 统一业务接口：地址、门店、菜单、优惠券、核价、创建订单、查询订单。
 - 两种 Provider：`MockFoodOrderProvider` 和 `McDonaldsMcpProvider`。
-- 两种对话路径：配置 OpenAI 兼容模型时走 JSON Schema 工具调用；没有模型配置时走可重复演示的规则代理。
+- 两种对话路径：配置 OpenAI 兼容模型时走 JSON Schema 工具调用；没有模型配置时走可重复演示的规则代理。当前 DeepSeek 验收目标为 `deepseek-v4-flash` 的普通 Tool Calls 模式。
 - 安全边界：MCP Token 只在服务端环境变量中使用；模型没有 `create-order` 工具；写操作不自动重试；日志只记录脱敏审计信息。
 
 教师给出的参考文件是编号化用户需求列表的格式样例，不是本项目的功能约束；原始教师文件不提交到本公开仓库。
@@ -42,12 +42,14 @@ APP_MODE=mcd
 MCD_MCP_URL=https://mcp.mcd.cn
 MCD_MCP_TOKEN=
 MCD_MCP_PROTOCOL_VERSION=2025-06-18
-MODEL_BASE_URL=https://你的OpenAI兼容服务/v1
+MCD_MONEY_UNIT=yuan
+MODEL_BASE_URL=https://api.deepseek.com
 MODEL_API_KEY=
-MODEL_NAME=你的模型名称
+MODEL_NAME=deepseek-v4-flash
+MODEL_MAX_TURNS=8
 ```
 
-不要把 `.env` 提交到 Git，不要把 Token 写入前端代码、URL、数据库或日志。官方 MCP 的具体工具参数以其服务端实际返回的 `tools/list` 为准；本项目在 `apps/server/src/providers/mcd.ts` 中集中做参数和结构化结果适配。
+没有麦当劳 MCP Token 时可保持 `APP_MODE=mock`，单独验证 Mock Provider 和 DeepSeek 工具调用；只有进入真实 MCP 只读预检时才设置 `APP_MODE=mcd`。官方 DeepSeek 根地址不需要额外拼接 `/v1`，接口格式和 Tool Calls 以[官方 API 文档](https://api-docs.deepseek.com/)为准。不要把 `.env` 提交到 Git，不要把 Token 写入前端代码、URL、数据库或日志。官方 MCP 的具体工具参数以其服务端实际返回的 `tools/list` 为准；本项目在 `apps/server/src/providers/mcd.ts` 中集中做能力检查、参数和结构化结果适配。若远端提供可选的 `list-nutrition-foods`，菜单和购物车会展示精确匹配的 `energyKcal`（千卡/份）；未匹配餐品显示暂无数据，不做热量估算。
 
 ## 目录结构
 
@@ -58,6 +60,7 @@ apps/
     src/providers/mcd.ts           官方 MCP Provider
     src/providers/mock.ts          本地可演示 Provider
     src/model.ts                   OpenAI 兼容模型适配器
+    src/quote.ts                   报价规范化与 SHA-256 哈希
     src/orchestrator.ts            工具白名单、对话循环、确认闸门
     src/http.ts                    Web API、SSE、静态文件服务
   web/
@@ -80,12 +83,12 @@ docs/
 - `POST /api/chat`：请求 `{ sessionId?, message }`，响应为 Server-Sent Events，传递助手文本、工具进度、菜单、购物车、报价和确认请求。
 - `POST /api/context`：在用户选择地址/门店后更新当前会话上下文。
 - `POST /api/cart`：加入或清空购物车。
-- `POST /api/orders/confirm`：校验未过期报价和会话归属后，唯一允许调用 `create-order`。
+- `POST /api/orders/confirm`：校验未过期报价、会话归属和 `quoteHash` 后，唯一允许调用 `create-order`。
 - `GET /api/orders/{orderId}`：优先读取已保存订单，否则调用 Provider 查询状态。
 
 ## 真实服务联调边界
 
-Issue #1 的真实联调验收依次验证地址、门店、菜单、优惠券和核价；最后由两名成员复核后在页面明确点击一次确认，验证真实 `create-order` 返回待支付订单。真实下单可能产生外部服务订单，必须先确认测试账号、地址、支付和服务条款；不自动支付，失败或未知状态不重试。没有 Token、测试账号或网络时，记录为阻塞并使用页面明确标注的 Mock 模式，不伪造官方结果。
+Issue #1 的真实联调验收依次验证地址、门店、菜单、优惠券和核价；最后由两名成员复核后在页面明确点击一次确认，验证真实 `create-order` 返回待支付订单。真实下单可能产生外部服务订单，必须先确认测试账号、地址、支付和服务条款；不自动支付，失败或未知状态不重试。没有 Token、测试账号或网络时，记录为阻塞并使用页面明确标注的 Mock 模式，不伪造官方结果。报价确认使用服务端计算的 SHA-256 快照哈希，避免过期或被篡改的金额进入写操作。
 
 ## 课程交付材料
 

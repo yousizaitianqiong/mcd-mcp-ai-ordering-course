@@ -11,14 +11,14 @@ const store = new JsonStore(config.dataFile);
 await store.load();
 
 const provider = config.mode === "mcd" && config.mcdToken
-  ? new McDonaldsMcpProvider(config.mcdUrl, config.mcdToken, config.mcdProtocolVersion)
+  ? new McDonaldsMcpProvider(config.mcdUrl, config.mcdToken, config.mcdProtocolVersion, config.mcdMoneyUnit)
   : new MockFoodOrderProvider();
 
 const model = config.modelBaseUrl && config.modelApiKey && config.modelName
   ? new OpenAICompatibleAdapter(config.modelBaseUrl, config.modelApiKey, config.modelName)
   : undefined;
 
-const orchestrator = new OrderingOrchestrator(provider, store, model);
+const orchestrator = new OrderingOrchestrator(provider, store, model, config.modelMaxTurns);
 const server = createHttpServer({
   config,
   store,

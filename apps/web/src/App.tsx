@@ -28,6 +28,7 @@ type MenuItem = {
   name: string;
   price: number;
   tags: string[];
+  caloriesKcal?: number;
   category?: string;
   description?: string;
 };
@@ -37,11 +38,13 @@ type CartItem = {
   productName: string;
   quantity: number;
   unitPrice: number;
+  caloriesKcal?: number;
 };
 
 type Quote = {
   approvalId: string;
   quoteId: string;
+  quoteHash: string;
   context: {
     address: { fullAddress: string; contactName: string; phone: string };
     storeName: string;
@@ -126,6 +129,10 @@ export default function App() {
     () => cart.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0),
     [cart],
   );
+  const cartCalories = useMemo(() => {
+    if (cart.some((item) => typeof item.caloriesKcal !== "number")) return undefined;
+    return cart.reduce((sum, item) => sum + (item.caloriesKcal || 0) * item.quantity, 0);
+  }, [cart]);
   const selectedAddress = addresses.find((item) => item.addressId === selectedAddressId) || addresses[0];
   const selectedStore = stores.find((item) => `${item.storeCode}:${item.beCode}` === selectedStoreKey) || stores[0];
 
@@ -316,10 +323,15 @@ export default function App() {
       const response = await fetch("/api/orders/confirm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId, approvalId: quote.approvalId }),
+        body: JSON.stringify({ sessionId, approvalId: quote.approvalId, quoteHash: quote.quoteHash }),
       });
-      const body = (await response.json()) as { order?: Order; error?: { message?: string } };
-      if (!response.ok) throw new Error(body.error?.message || "创建待支付订单失败");
+      const body = (await response.json()) as { order?: Order; error?: { code?: string; message?: string } };
+      if (!response.ok) {
+        if (["APPROVAL_ALREADY_USED", "APPROVAL_NOT_RETRYABLE", "QUOTE_EXPIRED", "QUOTE_HASH_MISMATCH", "QUOTE_INTEGRITY_ERROR"].includes(body.error?.code || "")) {
+          setQuote(null);
+        }
+        throw new Error(body.error?.message || "创建待支付订单失败");
+      }
       setOrder(body.order || null);
       setCart([]);
       setQuote(null);
@@ -443,14 +455,14 @@ export default function App() {
             <section className="panel-card menu-panel">
               <div className="panel-heading compact"><div><span className="section-kicker">MENU</span><h2>今日菜单</h2></div><span className="count-label">{menu.length} 款</span></div>
               <div className="menu-list">
-                {menu.map((item) => <article className="menu-card" key={item.productCode}><div className="food-visual">{item.category === "小食" ? "🍟" : "🍔"}</div><div className="menu-info"><div className="tag-row">{item.tags.slice(0, 2).map((tag) => <span key={tag}>{tag}</span>)}</div><h3>{item.name}</h3><p>{item.description || "经典餐品，具体以服务端返回菜单为准。"}</p><div className="menu-bottom"><strong>{money(item.price)}</strong><button onClick={() => void addToCart(item)}>＋ 加入</button></div></div></article>)}
+                {menu.map((item) => <article className="menu-card" key={item.productCode}><div className="food-visual">{item.category === "小食" ? "🍟" : "🍔"}</div><div className="menu-info"><div className="tag-row">{item.tags.slice(0, 2).map((tag) => <span key={tag}>{tag}</span>)}</div><h3>{item.name}</h3><p>{item.description || "经典餐品，具体以服务端返回菜单为准。"}</p>{typeof item.caloriesKcal === "number" && <small className="nutrition-label">{item.caloriesKcal} 千卡/份</small>}<div className="menu-bottom"><strong>{money(item.price)}</strong><button onClick={() => void addToCart(item)}>＋ 加入</button></div></div></article>)}
               </div>
             </section>
           )}
 
           <section className="panel-card cart-panel">
             <div className="panel-heading compact"><div><span className="section-kicker">YOUR ORDER</span><h2>购物车</h2></div><span className="cart-count">{cartCount}</span></div>
-            {cart.length === 0 ? <div className="empty-state"><div className="empty-icon">🛒</div><p>还没有选择餐品</p><span>从菜单加入喜欢的食物吧</span></div> : <><div className="cart-list">{cart.map((item) => <div className="cart-row" key={item.productCode}><div><strong>{item.productName}</strong><span>数量 × {item.quantity}</span></div><b>{money(item.unitPrice * item.quantity)}</b></div>)}</div><div className="cart-total"><span>商品小计</span><strong>{money(cartSubtotal)}</strong></div><div className="cart-actions"><button className="text-button" onClick={() => void clearCart()}>清空</button><button className="primary-button" onClick={() => void sendMessage("请核价当前购物车")}>开始核价 <span>→</span></button></div></>}
+            {cart.length === 0 ? <div className="empty-state"><div className="empty-icon">🛒</div><p>还没有选择餐品</p><span>从菜单加入喜欢的食物吧</span></div> : <><div className="cart-list">{cart.map((item) => <div className="cart-row" key={item.productCode}><div><strong>{item.productName}</strong><span>数量 × {item.quantity} · {typeof item.caloriesKcal === "number" ? `${item.caloriesKcal * item.quantity} 千卡` : "热量数据暂无"}</span></div><b>{money(item.unitPrice * item.quantity)}</b></div>)}</div><div className="cart-total"><span>商品小计</span><strong>{money(cartSubtotal)}</strong></div><div className="cart-total nutrition-total"><span>预计总热量</span><strong>{typeof cartCalories === "number" ? `${cartCalories} 千卡` : "数据不全"}</strong></div><div className="cart-actions"><button className="text-button" onClick={() => void clearCart()}>清空</button><button className="primary-button" onClick={() => void sendMessage("请核价当前购物车")}>开始核价 <span>→</span></button></div></>}
           </section>
 
           {quote && (
