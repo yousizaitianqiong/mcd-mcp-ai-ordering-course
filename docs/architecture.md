@@ -78,6 +78,7 @@ FoodOrderProvider
   listAddresses() -> Address[]
   listDeliverableStores({ addressId, beType: 2 }) -> Store[]
   listMeals({ storeCode, beCode, orderType: 2, beType: 2 }) -> MenuItem[]
+    可选调用 list-nutrition-foods，将精确匹配的每份热量带入 MenuItem
   getMealDetail({ storeCode, beCode, code, orderType: 2, beType: 2 }) -> JsonObject
   listStoreCoupons({ storeCode, beCode, orderType: 2, beType: 2 }) -> Coupon[]
   calculatePrice({ context, items }) -> PriceQuote
@@ -94,10 +95,12 @@ ModelAdapter
 | --- | --- | --- |
 | Address | addressId、contactName、phone、fullAddress | 配送地址选择和核对 |
 | Store | storeCode、beCode、storeName、businessStatus | 门店上下文 |
-| MenuItem | productCode、name、price、tags | 菜单展示和加购 |
-| CartItem | 商品编码、名称、数量、单价、门店编码 | 服务端购物车和核价输入 |
+| MenuItem | productCode、name、price、tags；可选 caloriesKcal | 菜单展示和加购；热量单位为千卡/份 |
+| CartItem | 商品编码、名称、数量、单价、门店编码；可选 caloriesKcal | 服务端购物车和核价输入；热量只来自服务端菜单匹配 |
 | PriceQuote | quoteId、context、items、金额字段、expiresAt、quoteHash | 人工确认依据和完整性校验 |
 | PendingOrder | orderId、orderStatus、totalAmount、可选支付链接 | 待支付订单展示 |
+
+`list-nutrition-foods` 不是模型工具，也不是下单前提。MCD Provider 只接受其固定表头中的 `energyKcal`，按规范化后的完整餐品名称精确匹配菜单；没有匹配或远端格式变化时省略 `caloriesKcal`，前端显示“热量数据暂无”，不做模糊估算。购物车中的热量按数量展示，只有所有商品都有数据时才汇总预计总热量。
 
 ## 4. Web API 契约
 

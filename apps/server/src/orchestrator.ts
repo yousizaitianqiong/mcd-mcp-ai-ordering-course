@@ -411,6 +411,7 @@ export class OrderingOrchestrator {
         productName: catalogItem.name,
         quantity,
         unitPrice: catalogItem.price,
+        ...(catalogItem.caloriesKcal === undefined ? {} : { caloriesKcal: catalogItem.caloriesKcal }),
         storeCode: session.context.storeCode,
         beCode: session.context.beCode,
       };
@@ -418,9 +419,18 @@ export class OrderingOrchestrator {
       const cart = existing
         ? (() => {
             if (existing.quantity + item.quantity > 20) throw new AppError("CART_QUANTITY_LIMIT", "同一餐品数量不能超过 20");
-            return session.cart.map((value) => value.productCode === item.productCode
-              ? { ...value, quantity: value.quantity + item.quantity, unitPrice: item.unitPrice, productName: item.productName }
-              : value);
+            return session.cart.map((value) => {
+              if (value.productCode !== item.productCode) return value;
+              const updated = {
+                ...value,
+                quantity: value.quantity + item.quantity,
+                unitPrice: item.unitPrice,
+                productName: item.productName,
+              };
+              if (item.caloriesKcal === undefined) delete updated.caloriesKcal;
+              else updated.caloriesKcal = item.caloriesKcal;
+              return updated;
+            });
           })()
         : [...session.cart, item];
       await this.store.setCart(sessionId, cart);
@@ -496,6 +506,7 @@ export class OrderingOrchestrator {
         productName: requestedMeal.name,
         quantity: 1,
         unitPrice: requestedMeal.price,
+        ...(requestedMeal.caloriesKcal === undefined ? {} : { caloriesKcal: requestedMeal.caloriesKcal }),
         storeCode: context.storeCode,
         beCode: context.beCode,
       };

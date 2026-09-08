@@ -24,6 +24,19 @@ const requiredRemoteTools = [
   "create-order",
 ] as const;
 
+const nutritionToolName = "list-nutrition-foods";
+const nutritionColumns = [
+  "productName",
+  "nutritionDescription",
+  "energyKj",
+  "energyKcal",
+  "protein",
+  "fat",
+  "carbohydrate",
+  "sodium",
+  "calcium",
+] as const;
+
 function asObject(value: unknown, label: string): JsonObject {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     throw new AppError("MCP_SCHEMA_ERROR", `麦当劳 MCP 返回的${label}格式无效`, 502);
@@ -80,6 +93,84 @@ function firstValue(record: JsonObject, keys: string[], label: string): unknown 
   throw new AppError("MCP_SCHEMA_ERROR", `麦当劳 MCP 返回的${label}缺失`, 502);
 }
 
+function normalizeFoodName(value: string): string {
+  return value.replace(/[™®]/g, "").normalize("NFKC").replace(/\s+/g, "").trim();
+}
+
+function splitCsvLine(line: string): string[] {
+  const fields: string[] = [];
+  let field = "";
+  let quoted = false;
+  for (let index = 0; index < line.length; index += 1) {
+    const character = line[index];
+    if (character === '"') {
+      if (quoted && line[index + 1] === '"') {
+        field += '"';
+        index += 1;
+      } else {
+        quoted = !quoted;
+      }
+      continue;
+    }
+    if (character === "," && !quoted) {
+      fields.push(field.trim());
+      field = "";
+      continue;
+    }
+    field += character;
+  }
+  if (quoted) throw new AppError("MCP_SCHEMA_ERROR", "麦当劳营养工具返回了未闭合字段", 502);
+  fields.push(field.trim());
+  return fields;
+}
+
+/**
+ * 解析 list-nutrition-foods 的文本表格，只接受已知列和明确的 energyKcal。
+ * 营养数据是可选展示信息，调用方会在解析失败时放弃填充而不会猜测数值。
+ */
+export function parseNutritionFoods(value: unknown): Map<string, number> {
+  const text = typeof value === "string"
+    ? value
+    : value && typeof value === "object" && !Array.isArray(value) && typeof (value as JsonObject).rawText === "string"
+      ? String((value as JsonObject).rawText)
+      : undefined;
+  if (text === undefined) {
+    throw new AppError("MCP_SCHEMA_ERROR", "麦当劳营养工具返回格式无效", 502);
+  }
+  const lines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+  const header = lines.shift();
+  const match = header?.match(/^\[\d+\]\{(.+)\}:$/);
+  if (!match) throw new AppError("MCP_SCHEMA_ERROR", "麦当劳营养工具缺少有效表头", 502);
+  const columns = splitCsvLine(match[1]);
+  if (columns.length !== nutritionColumns.length || columns.some((column, index) => column !== nutritionColumns[index])) {
+    throw new AppError("MCP_SCHEMA_ERROR", "麦当劳营养工具字段不兼容", 502);
+  }
+
+  const result = new Map<string, number>();
+  const ambiguous = new Set<string>();
+  for (const line of lines) {
+    const fields = splitCsvLine(line);
+    if (fields.length !== nutritionColumns.length) {
+      throw new AppError("MCP_SCHEMA_ERROR", "麦当劳营养工具数据列数无效", 502);
+    }
+    const productName = fields[0];
+    const calories = Number(fields[3]);
+    if (!productName || !Number.isFinite(calories) || calories < 0) {
+      throw new AppError("MCP_SCHEMA_ERROR", "麦当劳营养工具热量字段无效", 502);
+    }
+    const key = normalizeFoodName(productName);
+    if (!key || ambiguous.has(key)) continue;
+    const previous = result.get(key);
+    if (previous !== undefined && previous !== calories) {
+      result.delete(key);
+      ambiguous.add(key);
+      continue;
+    }
+    result.set(key, calories);
+  }
+  return result;
+}
+
 function deliveryAddress(value: unknown): string | undefined {
   if (typeof value === "string") return value;
   if (value && typeof value === "object") {
@@ -127,6 +218,7 @@ export class McDonaldsMcpProvider implements FoodOrderProvider {
   readonly name = "mcd";
   private readonly client: McpHttpClient;
   private verifiedTools?: Map<string, RemoteToolDefinition>;
+  private nutritionIndex?: Promise<Map<string, number>>;
 
   constructor(
     url: string,
@@ -160,6 +252,23 @@ export class McDonaldsMcpProvider implements FoodOrderProvider {
     if (!definition) throw new AppError("MCP_TOOL_NOT_ALLOWED", `远端工具 ${name} 未通过能力检查`, 502);
     validateArguments(definition, args);
     return unwrapMcpData(await this.client.callTool(name, args));
+  }
+
+  private async getNutritionIndex(tools: Map<string, RemoteToolDefinition>): Promise<Map<string, number>> {
+    if (!this.nutritionIndex) {
+      this.nutritionIndex = (async () => {
+        const definition = tools.get(nutritionToolName);
+        if (!definition) return new Map<string, number>();
+        try {
+          validateArguments(definition, {});
+          return parseNutritionFoods(await this.call(nutritionToolName, {}));
+        } catch {
+          // 营养信息不是核价或下单前提；远端未提供或格式变化时安全地不展示。
+          return new Map<string, number>();
+        }
+      })();
+    }
+    return this.nutritionIndex;
   }
 
   async listAddresses(): Promise<Address[]> {
@@ -201,6 +310,7 @@ export class McDonaldsMcpProvider implements FoodOrderProvider {
     orderType: 2;
     beType: 2;
   }): Promise<MenuItem[]> {
+    const tools = await this.ensureTools();
     const data = asObject(await this.call("query-meals", input), "菜单结果");
     const meals = data.meals;
     if (!meals || typeof meals !== "object" || Array.isArray(meals)) {
@@ -219,12 +329,16 @@ export class McDonaldsMcpProvider implements FoodOrderProvider {
         }
       }
     }
+    const nutritionIndex = await this.getNutritionIndex(tools);
     return Object.entries(meals as Record<string, unknown>).map(([code, item]) => {
       const value = asObject(item, "菜单餐品");
+      const name = requiredString(value.name, `餐品 ${code} 名称`);
+      const caloriesKcal = nutritionIndex.get(normalizeFoodName(name));
       return {
         productCode: code,
-        name: requiredString(value.name, `餐品 ${code} 名称`),
+        name,
         price: money(firstValue(value, ["currentPrice", "price"], `餐品 ${code}价格`), this.moneyUnit, `餐品 ${code}`),
+        ...(caloriesKcal === undefined ? {} : { caloriesKcal }),
         tags: tagsByCode.get(code) || [],
         category: optionalString(value.category),
         description: optionalString(value.description),

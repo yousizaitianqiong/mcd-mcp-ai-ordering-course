@@ -188,17 +188,37 @@ export function createHttpServer(deps: Dependencies) {
         if (!Number.isInteger(quantity) || quantity < 1 || quantity > 20) {
           throw new AppError("INVALID_CART_ITEM", "餐品数量必须是 1 到 20 的整数");
         }
-        const existing = session.cart.find((candidate) => candidate.productCode === String(item.productCode));
+        const menu = await deps.provider.listMeals({
+          storeCode: session.context.storeCode,
+          beCode: session.context.beCode,
+          orderType: 2,
+          beType: 2,
+        });
+        const catalogItem = menu.find((candidate) => candidate.productCode === String(item.productCode));
+        if (!catalogItem) throw new AppError("ITEM_NOT_IN_MENU", "只能加入当前菜单中的餐品", 400);
+        const existing = session.cart.find((candidate) => candidate.productCode === catalogItem.productCode);
         if (existing && existing.quantity + quantity > 20) {
           throw new AppError("CART_QUANTITY_LIMIT", "同一餐品数量不能超过 20");
         }
         const cart = existing
-          ? session.cart.map((candidate) => candidate.productCode === String(item.productCode) ? { ...candidate, quantity: candidate.quantity + quantity } : candidate)
+          ? session.cart.map((candidate) => {
+              if (candidate.productCode !== catalogItem.productCode) return candidate;
+              const updated = {
+                ...candidate,
+                productName: catalogItem.name,
+                quantity: candidate.quantity + quantity,
+                unitPrice: catalogItem.price,
+              };
+              if (catalogItem.caloriesKcal === undefined) delete updated.caloriesKcal;
+              else updated.caloriesKcal = catalogItem.caloriesKcal;
+              return updated;
+            })
           : [...session.cart, {
-              productCode: String(item.productCode),
-              productName: String(item.productName),
+              productCode: catalogItem.productCode,
+              productName: catalogItem.name,
               quantity,
-              unitPrice: Number(item.unitPrice),
+              unitPrice: catalogItem.price,
+              ...(catalogItem.caloriesKcal === undefined ? {} : { caloriesKcal: catalogItem.caloriesKcal }),
               storeCode: session.context.storeCode,
               beCode: session.context.beCode,
             }];

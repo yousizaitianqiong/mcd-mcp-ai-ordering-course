@@ -26,7 +26,7 @@ pnpm build
 | 命令 | 结果 | 测试数量/构建摘要 | 证据 | 状态 |
 | --- | --- | --- | --- | --- |
 | pnpm install | 待交付前复核 | Lockfile 和依赖安装结果 | 终端输出 | 待填写 |
-| pnpm test | 通过 | 11 tests、11 pass、0 fail | 终端输出、文件清单 | 已验证（本地） |
+| pnpm test | 通过 | 13 tests、13 pass、0 fail | 终端输出、文件清单 | 已验证（本地） |
 | pnpm build | 通过 | server tsc、web tsc 和 Vite build | 终端输出 | 已验证（本地） |
 
 ## 3. Mock 自动/手工场景
@@ -58,6 +58,8 @@ pnpm build
 | M-015 | 远程字段适配 | 地址、门店、菜单、优惠券、报价和订单转换为统一领域类型 |
 | M-019 | 工具能力检查 | tools/list 缺少必要工具或 inputSchema | 返回 MCP_REQUIRED_TOOL_MISSING/MCP_INVALID_TOOLS，停止真实路径 |
 | M-020 | 金额单位 | 使用显式 yuan/fen 配置和结构化单位字段 | 金额转换准确，不按数值大小猜测单位 |
+| M-021 | 营养字段 | 假 MCP 返回 list-nutrition-foods 文本表格并加载菜单 | 只按固定表头和精确餐品名映射 energyKcal；缺失或格式异常时不猜测、不阻断购物车价格流程 |
+| M-022 | 购物车热量 | 将带有和缺失 caloriesKcal 的餐品加入购物车并改变数量 | 每份热量按数量展示；仅在数据完整时汇总总热量，缺失时显示数据不全 |
 
 上述场景由 Node 内置 `node:test`、本地假模型服务和本地假 MCP 服务覆盖；执行结果仍必须在交付记录中逐项填写。
 

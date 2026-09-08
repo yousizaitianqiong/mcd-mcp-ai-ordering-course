@@ -49,7 +49,7 @@ MODEL_NAME=deepseek-v4-flash
 MODEL_MAX_TURNS=8
 ```
 
-没有麦当劳 MCP Token 时可保持 `APP_MODE=mock`，单独验证 Mock Provider 和 DeepSeek 工具调用；只有进入真实 MCP 只读预检时才设置 `APP_MODE=mcd`。官方 DeepSeek 根地址不需要额外拼接 `/v1`，接口格式和 Tool Calls 以[官方 API 文档](https://api-docs.deepseek.com/)为准。不要把 `.env` 提交到 Git，不要把 Token 写入前端代码、URL、数据库或日志。官方 MCP 的具体工具参数以其服务端实际返回的 `tools/list` 为准；本项目在 `apps/server/src/providers/mcd.ts` 中集中做能力检查、参数和结构化结果适配。
+没有麦当劳 MCP Token 时可保持 `APP_MODE=mock`，单独验证 Mock Provider 和 DeepSeek 工具调用；只有进入真实 MCP 只读预检时才设置 `APP_MODE=mcd`。官方 DeepSeek 根地址不需要额外拼接 `/v1`，接口格式和 Tool Calls 以[官方 API 文档](https://api-docs.deepseek.com/)为准。不要把 `.env` 提交到 Git，不要把 Token 写入前端代码、URL、数据库或日志。官方 MCP 的具体工具参数以其服务端实际返回的 `tools/list` 为准；本项目在 `apps/server/src/providers/mcd.ts` 中集中做能力检查、参数和结构化结果适配。若远端提供可选的 `list-nutrition-foods`，菜单和购物车会展示精确匹配的 `energyKcal`（千卡/份）；未匹配餐品显示暂无数据，不做热量估算。
 
 ## 目录结构
 
