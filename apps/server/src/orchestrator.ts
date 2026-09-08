@@ -15,6 +15,7 @@ import type {
   SessionState,
   Store,
 } from "./types.js";
+import { toCouponViews, toMealDetailView, toPendingOrderView, toPriceQuoteView } from "./views.js";
 
 const systemPrompt = `你是“AI 麦乐送助手”课程项目中的点餐助手。
 你只能基于工具返回的真实菜单、价格和订单状态回答，不得猜测商品编码、门店编码、地址或价格。
@@ -371,24 +372,27 @@ export class OrderingOrchestrator {
       const storeCode = String(args.storeCode || session.context?.storeCode || "");
       const beCode = String(args.beCode || session.context?.beCode || "");
       if (!code || !storeCode || !beCode) throw new AppError("PRODUCT_CODE_REQUIRED", "请提供门店和餐品编码");
-      return this.provider.getMealDetail({
+      const detail = toMealDetailView(await this.provider.getMealDetail({
         storeCode,
         beCode,
         code,
         orderType: 2,
         beType: 2,
-      });
+      }));
+      emit({ type: "meal_detail", data: detail });
+      return detail;
     }
     if (name === "list_store_coupons") {
       const storeCode = String(args.storeCode || session.context?.storeCode || "");
       const beCode = String(args.beCode || session.context?.beCode || "");
       if (!storeCode || !beCode) throw new AppError("STORE_REQUIRED", "请先选择可配送门店");
-      const coupons = await this.provider.listStoreCoupons({
+      const coupons = toCouponViews(await this.provider.listStoreCoupons({
         storeCode,
         beCode,
         orderType: 2,
         beType: 2,
-      });
+      }));
+      emit({ type: "coupons", data: coupons });
       return { coupons };
     }
     if (name === "add_to_cart") {
@@ -461,7 +465,7 @@ export class OrderingOrchestrator {
       if (!cart.length) throw new AppError("EMPTY_CART", "购物车还是空的");
       const quote = finalizeQuote(this.provider.name, await this.provider.calculatePrice({ context: session.context, items: cart }));
       const approval = await this.store.createApproval(sessionId, quote);
-      const data = { ...quote, approvalId: approval.approvalId };
+      const data = { ...toPriceQuoteView(quote), approvalId: approval.approvalId };
       emit({ type: "quote", data });
       emit({ type: "confirmation_required", data });
       return data;
@@ -471,8 +475,9 @@ export class OrderingOrchestrator {
       if (!orderId) throw new AppError("ORDER_ID_REQUIRED", "请提供订单号");
       const order = await this.provider.getOrderStatus(orderId);
       await this.store.saveOrder(sessionId, order);
-      emit({ type: "order", data: order });
-      return order;
+      const view = toPendingOrderView(order);
+      emit({ type: "order", data: view });
+      return view;
     }
     throw new AppError("TOOL_NOT_ALLOWED", `工具 ${name} 未被允许调用`, 403);
   }
@@ -484,7 +489,7 @@ export class OrderingOrchestrator {
       if (latestOrder) {
         const order = await this.provider.getOrderStatus(latestOrder.order.orderId);
         await this.store.saveOrder(sessionId, order);
-        emit({ type: "order", data: order });
+        emit({ type: "order", data: toPendingOrderView(order) });
         const text = `订单 ${order.orderId} 当前状态：${order.orderStatus}。`;
         await this.appendAssistant(sessionId, text);
         emit({ type: "assistant", data: { text } });
@@ -499,6 +504,32 @@ export class OrderingOrchestrator {
     const context = await this.ensureMockContext(sessionId, emit);
     const menu = await this.provider.listMeals({ storeCode: context.storeCode, beCode: context.beCode, orderType: 2, beType: 2 });
     const requestedMeal = this.findRequestedMeal(normalized, menu);
+    const wantsDetail = normalized.includes("详情") || normalized.includes("规格") || normalized.includes("组成") || normalized.includes("配料");
+    const wantsCoupons = normalized.includes("优惠") || normalized.includes("优惠券") || normalized.includes("折扣");
+
+    if (wantsDetail && requestedMeal) {
+      await this.executeTool(sessionId, "get_meal_detail", {
+        storeCode: context.storeCode,
+        beCode: context.beCode,
+        code: requestedMeal.productCode,
+      }, emit);
+      const text = `已展示${requestedMeal.name}的套餐组成和可选规格，请查看右侧详情卡片。`;
+      await this.appendAssistant(sessionId, text);
+      emit({ type: "assistant", data: { text } });
+      return sessionId;
+    }
+
+    if (wantsCoupons) {
+      await this.executeTool(sessionId, "list_store_coupons", {
+        storeCode: context.storeCode,
+        beCode: context.beCode,
+      }, emit);
+      const text = "已查询当前门店可用优惠，请查看右侧优惠卡片；优惠以当前门店和核价结果为准。";
+      await this.appendAssistant(sessionId, text);
+      emit({ type: "assistant", data: { text } });
+      return sessionId;
+    }
+
     let current = await this.store.getSession(sessionId);
     if (requestedMeal && !current.cart.some((item) => item.productCode === requestedMeal.productCode)) {
       const cartItem: CartItem = {
