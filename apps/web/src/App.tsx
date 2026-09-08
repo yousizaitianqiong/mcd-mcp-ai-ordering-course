@@ -42,6 +42,7 @@ type CartItem = {
 type Quote = {
   approvalId: string;
   quoteId: string;
+  quoteHash: string;
   context: {
     address: { fullAddress: string; contactName: string; phone: string };
     storeName: string;
@@ -316,10 +317,15 @@ export default function App() {
       const response = await fetch("/api/orders/confirm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId, approvalId: quote.approvalId }),
+        body: JSON.stringify({ sessionId, approvalId: quote.approvalId, quoteHash: quote.quoteHash }),
       });
-      const body = (await response.json()) as { order?: Order; error?: { message?: string } };
-      if (!response.ok) throw new Error(body.error?.message || "创建待支付订单失败");
+      const body = (await response.json()) as { order?: Order; error?: { code?: string; message?: string } };
+      if (!response.ok) {
+        if (["APPROVAL_ALREADY_USED", "APPROVAL_NOT_RETRYABLE", "QUOTE_EXPIRED", "QUOTE_HASH_MISMATCH", "QUOTE_INTEGRITY_ERROR"].includes(body.error?.code || "")) {
+          setQuote(null);
+        }
+        throw new Error(body.error?.message || "创建待支付订单失败");
+      }
       setOrder(body.order || null);
       setCart([]);
       setQuote(null);

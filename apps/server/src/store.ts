@@ -1,6 +1,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
+import { AppError } from "./errors.js";
+import { sameQuoteHash } from "./quote.js";
 import type {
   AppState,
   ApprovalRecord,
@@ -22,6 +24,38 @@ const emptyState = (): AppState => ({
   audit: [],
 });
 
+function safeAddress(address: OrderContext["address"]): OrderContext["address"] {
+  return {
+    addressId: address.addressId,
+    contactName: "已脱敏联系人",
+    phone: "已脱敏手机号",
+    fullAddress: "已脱敏配送地址",
+  };
+}
+
+function redactText(value: string): string {
+  return value
+    .replace(/bearer\s+[A-Za-z0-9._~+/=-]+/gi, "Bearer [REDACTED]")
+    .replace(/((?:api[_-]?key|token|authorization))\s*[:=]\s*[^\s,;]+/gi, "$1=[REDACTED]")
+    .replace(/\b1\d{10}\b/g, "[REDACTED_PHONE]");
+}
+
+function safeState(state: AppState): AppState {
+  const snapshot = structuredClone(state);
+  for (const session of Object.values(snapshot.sessions)) {
+    if (session.context) session.context = { ...session.context, address: safeAddress(session.context.address) };
+    session.messages = session.messages.map((message) => ({ ...message, content: redactText(message.content) }));
+  }
+  for (const approval of Object.values(snapshot.approvals)) {
+    approval.quote.context = { ...approval.quote.context, address: safeAddress(approval.quote.context.address) };
+  }
+  for (const stored of Object.values(snapshot.orders)) {
+    if (stored.order.deliveryAddress) stored.order.deliveryAddress = "已脱敏配送地址";
+    stored.order.payH5Url = undefined;
+  }
+  return snapshot;
+}
+
 export class JsonStore {
   private state: AppState = emptyState();
   private writeChain: Promise<void> = Promise.resolve();
@@ -39,7 +73,7 @@ export class JsonStore {
   }
 
   private async persist(): Promise<void> {
-    const snapshot = JSON.stringify(this.state, null, 2);
+    const snapshot = JSON.stringify(safeState(this.state), null, 2);
     this.writeChain = this.writeChain.then(async () => {
       await fs.mkdir(path.dirname(this.file), { recursive: true });
       await fs.writeFile(this.file, snapshot, "utf8");
@@ -115,6 +149,31 @@ export class JsonStore {
       createdAt: new Date().toISOString(),
     };
     this.state.approvals[approval.approvalId] = approval;
+    await this.persist();
+    return structuredClone(approval);
+  }
+
+  async claimApproval(sessionId: string, approvalId: string, quoteHash: string): Promise<ApprovalRecord> {
+    const approval = this.state.approvals[approvalId];
+    if (!approval || approval.sessionId !== sessionId) {
+      throw new AppError("APPROVAL_NOT_FOUND", "确认信息不存在或不属于当前会话", 404);
+    }
+    if (approval.status === "confirmed") {
+      throw new AppError("APPROVAL_ALREADY_USED", "这份订单确认已经使用过", 409);
+    }
+    if (approval.status !== "pending") {
+      throw new AppError("APPROVAL_NOT_RETRYABLE", "这份订单确认已经进入终态，不能再次提交", 409);
+    }
+    if (Date.parse(approval.expiresAt) < Date.now()) {
+      approval.status = "expired";
+      await this.persist();
+      throw new AppError("QUOTE_EXPIRED", "报价已过期，请重新核价", 409);
+    }
+    if (!sameQuoteHash(approval.quote.quoteHash, quoteHash)) {
+      throw new AppError("QUOTE_HASH_MISMATCH", "报价内容已变化，请重新核价", 409);
+    }
+    // 在第一次 await 前占用 approval，保证同一进程内的并发确认只有一个进入 Provider。
+    approval.status = "submitting";
     await this.persist();
     return structuredClone(approval);
   }

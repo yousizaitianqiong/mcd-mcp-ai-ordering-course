@@ -1,8 +1,20 @@
 import fs from "node:fs";
 import path from "node:path";
 
+function findWorkspaceRoot(startDirectory: string): string | undefined {
+  let current = path.resolve(startDirectory);
+  while (true) {
+    if (fs.existsSync(path.join(current, "pnpm-workspace.yaml"))) return current;
+    const parent = path.dirname(current);
+    if (parent === current) return undefined;
+    current = parent;
+  }
+}
+
 function loadDotEnv(): void {
-  const file = path.resolve(process.cwd(), ".env");
+  const workspaceRoot = findWorkspaceRoot(process.cwd());
+  if (!workspaceRoot) return;
+  const file = path.join(workspaceRoot, ".env");
   if (!fs.existsSync(file)) return;
   const text = fs.readFileSync(file, "utf8");
   for (const line of text.split(/\r?\n/)) {
@@ -26,6 +38,7 @@ export interface AppConfig {
   mcdUrl: string;
   mcdToken?: string;
   mcdProtocolVersion: string;
+  mcdMoneyUnit: "yuan" | "fen";
   modelBaseUrl?: string;
   modelApiKey?: string;
   modelName?: string;
@@ -36,6 +49,11 @@ export function getConfig(): AppConfig {
   const requestedMode = process.env.APP_MODE === "mcd" ? "mcd" : "mock";
   const token = process.env.MCD_MCP_TOKEN?.trim() || undefined;
   const mode = requestedMode === "mcd" && token ? "mcd" : "mock";
+  const configuredMoneyUnit = process.env.MCD_MONEY_UNIT === "fen" ? "fen" : "yuan";
+  const configuredMaxTurns = Number(process.env.MODEL_MAX_TURNS || 8);
+  const modelMaxTurns = Number.isInteger(configuredMaxTurns) && configuredMaxTurns > 0
+    ? Math.min(configuredMaxTurns, 20)
+    : 8;
   return {
     port: Number(process.env.PORT || 8787),
     origin: process.env.APP_ORIGIN || "http://localhost:5173",
@@ -44,9 +62,10 @@ export function getConfig(): AppConfig {
     mcdUrl: process.env.MCD_MCP_URL || "https://mcp.mcd.cn",
     mcdToken: token,
     mcdProtocolVersion: process.env.MCD_MCP_PROTOCOL_VERSION || "2025-06-18",
-    modelBaseUrl: process.env.MODEL_BASE_URL?.trim() || undefined,
+    mcdMoneyUnit: configuredMoneyUnit,
+    modelBaseUrl: process.env.MODEL_BASE_URL?.trim() || "https://api.deepseek.com",
     modelApiKey: process.env.MODEL_API_KEY?.trim() || undefined,
     modelName: process.env.MODEL_NAME?.trim() || undefined,
-    modelMaxTurns: Number(process.env.MODEL_MAX_TURNS || 8),
+    modelMaxTurns,
   };
 }

@@ -61,7 +61,7 @@ export interface PriceQuote {
   totalPrice: number;
   currency: "CNY";
   expiresAt: string;
-  raw?: unknown;
+  quoteHash: string;
 }
 
 export interface CreateOrderInput {
@@ -85,7 +85,6 @@ export interface PendingOrder {
   totalAmount: number;
   storeName?: string;
   deliveryAddress?: string;
-  raw?: unknown;
 }
 
 export interface FoodOrderProvider {
@@ -144,7 +143,7 @@ export interface ApprovalRecord {
   approvalId: string;
   sessionId: string;
   quote: PriceQuote;
-  status: "pending" | "confirmed" | "expired";
+  status: "pending" | "submitting" | "confirmed" | "failed" | "unknown" | "expired";
   expiresAt: string;
   createdAt: string;
 }

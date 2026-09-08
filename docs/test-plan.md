@@ -1,13 +1,13 @@
 # 测试计划与验收记录
 
-> 本文定义验证方法和证据格式。当前仓库没有自动化测试文件；pnpm test 的成功退出码只表示测试运行器没有失败，不能表述为已有测试全部通过。
+> 本文定义验证方法和证据格式。自动化测试必须记录实际测试数量；Mock、DeepSeek 和真实 MCP 证据始终分开。
 
 ## 1. 验证层级
 
 | 层级 | 目标 | 必须证据 | 当前口径 |
 | --- | --- | --- | --- |
 | 静态/构建 | 确认 TypeScript 和前端生产构建可完成 | pnpm build 输出 | 当前基线已验证，交付前复核 |
-| 自动化 | 验证后端业务和错误分支 | pnpm test 输出及测试文件清单 | 当前为 0 个测试，不能虚报覆盖率 |
+| 自动化 | 验证后端业务和错误分支 | pnpm test 输出及测试文件清单 | Issue #2 实现后必须为非零测试 |
 | Mock 手工端到端 | 复现课堂完整闭环 | 页面截图/录屏、SSE、请求摘要 | 每次提交必测 |
 | 真实 MCP 联调 | 验证真实查询、核价和一次待支付下单 | 脱敏响应、页面证据、订单状态 | 依赖外部凭据和测试账号 |
 
@@ -26,8 +26,8 @@ pnpm build
 | 命令 | 结果 | 测试数量/构建摘要 | 证据 | 状态 |
 | --- | --- | --- | --- | --- |
 | pnpm install | 待交付前复核 | Lockfile 和依赖安装结果 | 终端输出 | 待填写 |
-| pnpm test | 当前运行器返回成功，但发现 0 个测试 | 0 tests、0 suites | 终端输出、文件清单 | 部分完成 |
-| pnpm build | 当前基线通过 | server tsc、web tsc 和 Vite build | 终端输出 | 已验证/待复核 |
+| pnpm test | 通过 | 11 tests、11 pass、0 fail | 终端输出、文件清单 | 已验证（本地） |
+| pnpm build | 通过 | server tsc、web tsc 和 Vite build | 终端输出 | 已验证（本地） |
 
 ## 3. Mock 自动/手工场景
 
@@ -41,8 +41,11 @@ pnpm build
 | M-006 | 模拟下单 | 点击确认并创建待支付订单 | 生成模拟订单号、待支付状态和模拟支付链接 | 订单卡片、响应 |
 | M-007 | 状态查询 | 点击刷新或发送“查询订单状态” | 返回当前订单状态，不重复创建 | 请求记录 |
 | M-008 | 空购物车 | 空购物车时请求核价 | 返回 EMPTY_CART 和中文提示 | 错误响应 |
-| M-009 | 报价生命周期 | 使用过期或已确认 approvalId | 分别返回 QUOTE_EXPIRED 或 APPROVAL_ALREADY_USED，不创建订单 | 错误响应、审计 |
+| M-009 | 报价生命周期 | 使用过期、已确认或终态 approvalId | 分别返回 QUOTE_EXPIRED、APPROVAL_ALREADY_USED 或 APPROVAL_NOT_RETRYABLE，不创建订单 | 错误响应、审计 |
 | M-010 | 输入和商品错误 | 发送空消息、无效 JSON、无效餐品或不存在订单号 | 返回稳定错误码，不调用下游写操作 | HTTP 响应 |
+| M-016 | 报价哈希 | 篡改报价金额、地址字段或 quoteHash 后确认 | 返回 QUOTE_HASH_MISMATCH/QUOTE_INTEGRITY_ERROR，不创建订单 | quote 事件、错误响应 |
+| M-017 | 并发确认 | 同一 approval 同时发送两次确认 | 最多一次 Provider createOrder，另一请求进入不可重试状态 | 测试输出、审计 |
+| M-018 | 敏感数据 | 在消息或下游错误中放入 Token/手机号/原始响应 | HTTP、SSE、审计和 JSONStore 不出现未脱敏值 | 脱敏扫描 |
 
 ## 4. MCP 客户端和 Provider 场景
 
@@ -53,8 +56,10 @@ pnpm build
 | M-013 | MCP 401/429 | 转换为 MCP_UNAUTHORIZED/MCP_RATE_LIMIT，不泄露 Authorization |
 | M-014 | MCP 超时/网络错误 | 转换为 MCP_TIMEOUT/MCP_NETWORK_ERROR，不自动重试 create-order |
 | M-015 | 远程字段适配 | 地址、门店、菜单、优惠券、报价和订单转换为统一领域类型 |
+| M-019 | 工具能力检查 | tools/list 缺少必要工具或 inputSchema | 返回 MCP_REQUIRED_TOOL_MISSING/MCP_INVALID_TOOLS，停止真实路径 |
+| M-020 | 金额单位 | 使用显式 yuan/fen 配置和结构化单位字段 | 金额转换准确，不按数值大小猜测单位 |
 
-当前没有对应自动化测试文件；上述场景是验收清单，执行结果必须在交付记录中逐项填写。
+上述场景由 Node 内置 `node:test`、本地假模型服务和本地假 MCP 服务覆盖；执行结果仍必须在交付记录中逐项填写。
 
 ## 5. 真实 MCP 联调清单
 

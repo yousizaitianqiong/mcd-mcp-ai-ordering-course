@@ -16,13 +16,17 @@
 | --- | --- | --- |
 | 运行模式 | APP_MODE=mock | APP_MODE=mcd |
 | 服务 | Node 服务和 Vite 页面已启动 | Node 服务、Vite 页面、MCP 服务可访问 |
-| 模型 | 可使用规则演示代理 | MODEL_BASE_URL、MODEL_API_KEY、MODEL_NAME 均由服务端配置 |
+| 模型 | 可使用规则演示代理 | DeepSeek `deepseek-v4-flash`、普通 Tool Calls；变量均由服务端配置 |
 | 凭据 | 不需要 | Token 只写入本地服务端 .env |
 | 账号和地址 | 使用显式脱敏的 Mock 数据 | 使用小组批准的测试账号和配送地址 |
 | 外部副作用 | 只生成模拟订单 | 允许一次真实待支付下单，不自动支付 |
 | 复核人 | 演示者自检 | 一名操作成员 + 一名复核成员 |
 
 建议预先执行 pnpm build，并访问 /api/health。演示前清理浏览器旧会话，避免上一轮报价或订单干扰本轮证据。
+
+## 3.1 DeepSeek + Mock Provider 演示
+
+这是无麦当劳 MCP Token 时的模型验收路径：保持 `APP_MODE=mock`，只在服务端 `.env` 配置 `MODEL_BASE_URL=https://api.deepseek.com`、`MODEL_API_KEY` 和 `MODEL_NAME=deepseek-v4-flash`。页面仍必须显示 Mock Provider；模型可以调用地址、门店、菜单、购物车和核价工具，但 `create-order` 只允许页面确认接口触发。记录 `/api/health` 的 `modelConfigured=true`、工具轨迹和报价哈希，不记录 Key 或 Authorization Header。
 
 ## 3. Mock 完整演示（6–10 分钟）
 

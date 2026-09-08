@@ -125,7 +125,7 @@ export class MockFoodOrderProvider implements FoodOrderProvider {
       totalPrice: productPrice + deliveryPrice - discount,
       currency: "CNY",
       expiresAt,
-      raw: { provider: "mock", coupons },
+      quoteHash: "",
     };
   }
 
@@ -139,7 +139,6 @@ export class MockFoodOrderProvider implements FoodOrderProvider {
       totalAmount: quote.totalPrice,
       storeName: input.context.storeName,
       deliveryAddress: input.context.address.fullAddress,
-      raw: { provider: "mock", createdAt: new Date().toISOString() },
     };
     this.orders.set(orderId, order);
     return order;

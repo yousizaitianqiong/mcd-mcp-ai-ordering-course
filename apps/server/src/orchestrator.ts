@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { AppError, toErrorPayload } from "./errors.js";
 import type { LlmMessage, LlmTool, ModelAdapter } from "./model.js";
+import { calculateQuoteHash, finalizeQuote, sameQuoteHash } from "./quote.js";
 import type { JsonStore } from "./store.js";
 import type {
   AgentEvent,
@@ -90,13 +91,11 @@ const tools: LlmTool[] = [
       parameters: {
         type: "object",
         additionalProperties: false,
-        properties: {
-          productCode: { type: "string" },
-          productName: { type: "string" },
-          unitPrice: { type: "number" },
-          quantity: { type: "integer", minimum: 1, maximum: 20 },
-        },
-        required: ["productCode", "productName", "unitPrice", "quantity"],
+          properties: {
+            productCode: { type: "string" },
+            quantity: { type: "integer", minimum: 1, maximum: 20 },
+          },
+        required: ["productCode", "quantity"],
       },
     },
   },
@@ -155,7 +154,7 @@ function int(value: unknown, fallback = 1): number {
 
 function safeJson(value: unknown): string {
   try {
-    return JSON.stringify(value);
+    return JSON.stringify(value) ?? "{}";
   } catch {
     return "{}";
   }
@@ -166,6 +165,7 @@ export class OrderingOrchestrator {
     private readonly provider: FoodOrderProvider,
     private readonly store: JsonStore,
     private readonly model?: ModelAdapter,
+    private readonly modelMaxTurns = 8,
   ) {}
 
   async chat(
@@ -194,31 +194,52 @@ export class OrderingOrchestrator {
     }
   }
 
-  async confirmOrder(sessionId: string, approvalId: string): Promise<PendingOrder> {
-    const approval = await this.store.getApproval(approvalId);
-    if (!approval || approval.sessionId !== sessionId) {
+  async confirmOrder(sessionId: string, approvalId: string, quoteHash: string): Promise<PendingOrder> {
+    const candidate = await this.store.getApproval(approvalId);
+    if (!candidate || candidate.sessionId !== sessionId) {
       throw new AppError("APPROVAL_NOT_FOUND", "确认信息不存在或不属于当前会话", 404);
     }
-    if (approval.status !== "pending") {
-      throw new AppError("APPROVAL_ALREADY_USED", "这份订单确认已经使用过", 409);
+    const recalculatedHash = calculateQuoteHash(this.provider.name, candidate.quote);
+    if (!sameQuoteHash(recalculatedHash, candidate.quote.quoteHash)) {
+      throw new AppError("QUOTE_INTEGRITY_ERROR", "服务端报价完整性校验失败，请重新核价", 409);
     }
-    if (Date.parse(approval.expiresAt) < Date.now()) {
-      await this.store.markApproval(approvalId, "expired");
-      throw new AppError("QUOTE_EXPIRED", "报价已过期，请重新核价", 409);
-    }
+    const approval = await this.store.claimApproval(sessionId, approvalId, quoteHash);
 
-    // 这是唯一允许触发真实写操作的位置；失败时不自动重试，避免重复下单。
-    await this.store.addAudit(sessionId, "create_order_attempt", { approvalId }, "create-order");
-    const order = await this.provider.createOrder({
-      context: approval.quote.context,
-      items: approval.quote.items,
-    });
+    // 这是唯一允许触发真实写操作的位置；失败或未知状态均不自动重试。
+    await this.store.addAudit(sessionId, "create_order_attempt", { approvalId, quoteHash }, "create-order");
+    const createStartedAt = Date.now();
+    let order: PendingOrder;
+    try {
+      order = await this.provider.createOrder({
+        context: approval.quote.context,
+        items: approval.quote.items,
+      });
+    } catch (error) {
+      const uncertain = error instanceof AppError && [
+        "MCP_TIMEOUT",
+        "MCP_NETWORK_ERROR",
+        "MCP_RATE_LIMIT",
+        "MCP_HTTP_ERROR",
+      ].includes(error.code);
+      await this.store.markApproval(approvalId, uncertain ? "unknown" : "failed");
+      await this.store.addAudit(
+        sessionId,
+        uncertain ? "create_order_unknown" : "create_order_failed",
+        {
+          approvalId,
+          errorCode: error instanceof AppError ? error.code : "UNKNOWN_ERROR",
+          durationMs: Date.now() - createStartedAt,
+        },
+        "create-order",
+      );
+      throw error;
+    }
     await this.store.markApproval(approvalId, "confirmed");
     await this.store.saveOrder(sessionId, order);
     await this.store.addAudit(
       sessionId,
       "create_order_success",
-      { orderId: order.orderId, totalAmount: order.totalAmount },
+      { orderId: order.orderId, totalAmount: order.totalAmount, durationMs: Date.now() - createStartedAt },
       "create-order",
     );
     await this.store.setCart(sessionId, []);
@@ -229,6 +250,9 @@ export class OrderingOrchestrator {
     sessionId: string,
     input: { addressId: string; storeCode: string; beCode: string },
   ): Promise<OrderContext> {
+    if (!sessionId || !input.addressId || !input.storeCode || !input.beCode) {
+      throw new AppError("CONTEXT_REQUIRED", "会话、配送地址和门店信息不能为空");
+    }
     const [addresses, stores] = await Promise.all([
       this.provider.listAddresses(),
       this.provider.listDeliverableStores({ addressId: input.addressId, beType: 2 }),
@@ -255,7 +279,7 @@ export class OrderingOrchestrator {
       ...session.messages.map((item) => ({ role: item.role, content: item.content }) as LlmMessage),
     ];
     let finalText = "";
-    const maxTurns = 8;
+    const maxTurns = this.modelMaxTurns;
     for (let turn = 0; turn < maxTurns; turn += 1) {
       const response = await this.model!.chat(messages, tools);
       messages.push(response.message);
@@ -265,7 +289,17 @@ export class OrderingOrchestrator {
         break;
       }
       for (const call of calls) {
-        const args = JSON.parse(call.function.arguments || "{}");
+        let args: Record<string, unknown>;
+        try {
+          const parsed = JSON.parse(call.function.arguments || "{}");
+          if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) throw new Error("not-object");
+          args = parsed as Record<string, unknown>;
+        } catch {
+          const payload = { code: "MODEL_TOOL_ARGUMENTS_INVALID", message: "模型返回的工具参数不是有效 JSON 对象" };
+          messages.push({ role: "tool", tool_call_id: call.id, content: safeJson({ error: payload }) });
+          emit({ type: "tool", data: { name: call.function.name, status: "failed", error: payload } });
+          continue;
+        }
         emit({ type: "tool", data: { name: call.function.name, status: "running", arguments: args } });
         try {
           const result = await this.executeTool(sessionId, call.function.name, args, emit);
@@ -298,6 +332,7 @@ export class OrderingOrchestrator {
     }
     if (name === "list_deliverable_stores") {
       const addressId = String(args.addressId || session.context?.addressId || "");
+      if (!addressId) throw new AppError("ADDRESS_REQUIRED", "请先提供配送地址");
       const stores = await this.provider.listDeliverableStores({ addressId, beType: 2 });
       emit({ type: "stores", data: stores });
       // 模型工具链没有把“选中的门店”暴露成写操作；查询到门店后先建立一个
@@ -305,15 +340,14 @@ export class OrderingOrchestrator {
       if (addressId && stores[0] && (!session.context || session.context.addressId !== addressId)) {
         const addresses = await this.provider.listAddresses();
         const address = addresses.find((item) => item.addressId === addressId);
-        if (address) {
-          await this.store.setContext(sessionId, {
-            addressId,
-            address,
-            storeCode: stores[0].storeCode,
-            beCode: stores[0].beCode,
-            storeName: stores[0].storeName,
-          });
-        }
+        if (!address) throw new AppError("ADDRESS_NOT_FOUND", "没有找到所选配送地址", 404);
+        await this.store.setContext(sessionId, {
+          addressId,
+          address,
+          storeCode: stores[0].storeCode,
+          beCode: stores[0].beCode,
+          storeName: stores[0].storeName,
+        });
       }
       return { stores };
     }
@@ -321,30 +355,37 @@ export class OrderingOrchestrator {
       const context = session.context;
       const storeCode = String(args.storeCode || context?.storeCode || "");
       const beCode = String(args.beCode || context?.beCode || "");
+      if (!storeCode || !beCode) throw new AppError("STORE_REQUIRED", "请先选择可配送门店");
       if (context && (context.storeCode !== storeCode || context.beCode !== beCode)) {
         const stores = await this.provider.listDeliverableStores({ addressId: context.addressId, beType: 2 });
         const store = stores.find((item) => item.storeCode === storeCode && item.beCode === beCode);
-        if (store) {
-          await this.store.setContext(sessionId, { ...context, storeCode, beCode, storeName: store.storeName });
-        }
+        if (!store) throw new AppError("STORE_NOT_FOUND", "没有找到所选可配送门店", 404);
+        await this.store.setContext(sessionId, { ...context, storeCode, beCode, storeName: store.storeName });
       }
       const menu = await this.provider.listMeals({ storeCode, beCode, orderType: 2, beType: 2 });
       emit({ type: "menu", data: menu });
       return { menu };
     }
     if (name === "get_meal_detail") {
+      const code = String(args.code || "");
+      const storeCode = String(args.storeCode || session.context?.storeCode || "");
+      const beCode = String(args.beCode || session.context?.beCode || "");
+      if (!code || !storeCode || !beCode) throw new AppError("PRODUCT_CODE_REQUIRED", "请提供门店和餐品编码");
       return this.provider.getMealDetail({
-        storeCode: String(args.storeCode || session.context?.storeCode || ""),
-        beCode: String(args.beCode || session.context?.beCode || ""),
-        code: String(args.code || ""),
+        storeCode,
+        beCode,
+        code,
         orderType: 2,
         beType: 2,
       });
     }
     if (name === "list_store_coupons") {
+      const storeCode = String(args.storeCode || session.context?.storeCode || "");
+      const beCode = String(args.beCode || session.context?.beCode || "");
+      if (!storeCode || !beCode) throw new AppError("STORE_REQUIRED", "请先选择可配送门店");
       const coupons = await this.provider.listStoreCoupons({
-        storeCode: String(args.storeCode || session.context?.storeCode || ""),
-        beCode: String(args.beCode || session.context?.beCode || ""),
+        storeCode,
+        beCode,
         orderType: 2,
         beType: 2,
       });
@@ -352,18 +393,35 @@ export class OrderingOrchestrator {
     }
     if (name === "add_to_cart") {
       if (!session.context) throw new AppError("CONTEXT_REQUIRED", "请先选择配送地址和门店");
+      const productCode = String(args.productCode || "");
+      const quantity = int(args.quantity, 0);
+      if (!productCode || quantity < 1 || quantity > 20) {
+        throw new AppError("INVALID_CART_ITEM", "餐品编码或数量无效");
+      }
+      const menu = await this.provider.listMeals({
+        storeCode: session.context.storeCode,
+        beCode: session.context.beCode,
+        orderType: 2,
+        beType: 2,
+      });
+      const catalogItem = menu.find((item) => item.productCode === productCode);
+      if (!catalogItem) throw new AppError("ITEM_NOT_IN_MENU", "只能加入当前菜单中的餐品");
       const item: CartItem = {
-        productCode: String(args.productCode || ""),
-        productName: String(args.productName || "未命名餐品"),
-        quantity: int(args.quantity),
-        unitPrice: Number(args.unitPrice || 0),
+        productCode,
+        productName: catalogItem.name,
+        quantity,
+        unitPrice: catalogItem.price,
         storeCode: session.context.storeCode,
         beCode: session.context.beCode,
       };
-      if (!item.productCode || !Number.isFinite(item.unitPrice)) throw new AppError("INVALID_CART_ITEM", "餐品参数不完整");
       const existing = session.cart.find((value) => value.productCode === item.productCode);
       const cart = existing
-        ? session.cart.map((value) => value.productCode === item.productCode ? { ...value, quantity: value.quantity + item.quantity } : value)
+        ? (() => {
+            if (existing.quantity + item.quantity > 20) throw new AppError("CART_QUANTITY_LIMIT", "同一餐品数量不能超过 20");
+            return session.cart.map((value) => value.productCode === item.productCode
+              ? { ...value, quantity: value.quantity + item.quantity, unitPrice: item.unitPrice, productName: item.productName }
+              : value);
+          })()
         : [...session.cart, item];
       await this.store.setCart(sessionId, cart);
       emit({ type: "cart", data: cart });
@@ -382,11 +440,16 @@ export class OrderingOrchestrator {
           const item = asRecord(value);
           const previous = session.cart.find((candidate) => candidate.productCode === String(item.productCode));
           if (!previous) throw new AppError("ITEM_NOT_IN_CART", `餐品 ${String(item.productCode)} 不在购物车中`);
-          return { ...previous, quantity: int(item.quantity) };
+          const quantity = Number(item.quantity);
+          if (!Number.isInteger(quantity) || quantity < 1 || quantity > 20) {
+            throw new AppError("INVALID_QUANTITY", "核价数量必须是 1 到 20 的整数");
+          }
+          return { ...previous, quantity };
         });
         await this.store.setCart(sessionId, cart);
       }
-      const quote = await this.provider.calculatePrice({ context: session.context, items: cart });
+      if (!cart.length) throw new AppError("EMPTY_CART", "购物车还是空的");
+      const quote = finalizeQuote(this.provider.name, await this.provider.calculatePrice({ context: session.context, items: cart }));
       const approval = await this.store.createApproval(sessionId, quote);
       const data = { ...quote, approvalId: approval.approvalId };
       emit({ type: "quote", data });
@@ -471,9 +534,11 @@ export class OrderingOrchestrator {
     const addresses = await this.provider.listAddresses();
     emit({ type: "addresses", data: addresses });
     const address = addresses[0];
+    if (!address) throw new AppError("ADDRESS_NOT_FOUND", "当前没有可用配送地址", 404);
     const stores = await this.provider.listDeliverableStores({ addressId: address.addressId, beType: 2 });
     emit({ type: "stores", data: stores });
     const store = stores[0];
+    if (!store) throw new AppError("STORE_NOT_FOUND", "当前地址没有可配送门店", 404);
     const context: OrderContext = {
       addressId: address.addressId,
       address,
