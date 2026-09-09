@@ -14,6 +14,7 @@ async function withServer(
   try {
     await run(`http://127.0.0.1:${address.port}`);
   } finally {
+    server.closeAllConnections();
     await new Promise<void>((resolve, reject) => server.close((error) => error ? reject(error) : resolve()));
   }
 }
@@ -75,6 +76,35 @@ test("模型适配器拒绝空 choices 和鉴权错误且不带下游详情", as
     await assert.rejects(
       () => adapter.chat([{ role: "user", content: "你好" }], []),
       (error: unknown) => error instanceof Error && "code" in error && (error as { code: string }).code === "MODEL_UNAUTHORIZED",
+    );
+  });
+});
+
+test("模型适配器映射 429 和超时且不暴露 API Key", async () => {
+  await withServer((_request, response) => {
+    response.statusCode = 429;
+    response.setHeader("Content-Type", "application/json");
+    response.end(JSON.stringify({ error: { message: "api key must not escape" } }));
+  }, async (baseUrl) => {
+    const adapter = new OpenAICompatibleAdapter(baseUrl, "rate-limit-key-placeholder", "deepseek-v4-flash");
+    await assert.rejects(
+      () => adapter.chat([{ role: "user", content: "你好" }], []),
+      (error: unknown) => error instanceof Error && "code" in error
+        && (error as { code: string }).code === "MODEL_RATE_LIMIT"
+        && !error.message.includes("rate-limit-key-placeholder"),
+    );
+  });
+
+  await withServer((request) => {
+    request.resume();
+    // 故意不返回响应，让客户端的 AbortController 触发超时。
+  }, async (baseUrl) => {
+    const adapter = new OpenAICompatibleAdapter(baseUrl, "timeout-key-placeholder", "deepseek-v4-flash", 25);
+    await assert.rejects(
+      () => adapter.chat([{ role: "user", content: "你好" }], []),
+      (error: unknown) => error instanceof Error && "code" in error
+        && (error as { code: string }).code === "MODEL_TIMEOUT"
+        && !error.message.includes("timeout-key-placeholder"),
     );
   });
 });

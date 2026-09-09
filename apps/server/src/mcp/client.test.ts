@@ -75,3 +75,25 @@ test("MCP HTTP 401/429 映射为稳定错误码", async () => {
     }
   }
 });
+
+test("MCP 请求超时映射为稳定错误码且不暴露 Token", async () => {
+  const server = http.createServer((request) => {
+    request.resume();
+    // 故意不返回响应，让客户端的 AbortController 触发超时。
+  });
+  await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+  const address = server.address();
+  if (!address || typeof address === "string") throw new Error("server address unavailable");
+  try {
+    const client = new McpHttpClient(`http://127.0.0.1:${address.port}`, "timeout-token-placeholder", "2025-06-18", 25);
+    await assert.rejects(
+      () => client.listTools(),
+      (error: unknown) => error instanceof Error && "code" in error
+        && (error as { code: string }).code === "MCP_TIMEOUT"
+        && !error.message.includes("timeout-token-placeholder"),
+    );
+  } finally {
+    server.closeAllConnections();
+    await new Promise<void>((resolve, reject) => server.close((error) => error ? reject(error) : resolve()));
+  }
+});

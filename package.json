@@ -9,6 +9,7 @@
     "dev:web": "pnpm --filter @mcd/web dev",
     "build": "pnpm -r build",
     "test": "pnpm --filter @mcd/server test",
+    "test:mock": "pnpm --filter @mcd/server exec tsx --test src/http.e2e.test.ts",
     "start": "pnpm --filter @mcd/server start"
   }
 }

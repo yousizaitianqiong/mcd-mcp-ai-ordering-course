@@ -48,6 +48,7 @@ export interface AppConfig {
 export function getConfig(): AppConfig {
   const requestedMode = process.env.APP_MODE === "mcd" ? "mcd" : "mock";
   const token = process.env.MCD_MCP_TOKEN?.trim() || undefined;
+  // 缺少 Token 时在启动配置阶段明确回退为 Mock；真实请求运行中的失败不自动重试或切换，避免掩盖外部副作用。
   const mode = requestedMode === "mcd" && token ? "mcd" : "mock";
   const configuredMoneyUnit = process.env.MCD_MONEY_UNIT === "fen" ? "fen" : "yuan";
   const configuredMaxTurns = Number(process.env.MODEL_MAX_TURNS || 8);
