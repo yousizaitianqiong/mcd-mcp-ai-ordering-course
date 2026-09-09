@@ -20,7 +20,9 @@
 | I2 | 待实际填写 | 完成 Mock 课堂闭环 | D、C | 执行地址、门店、菜单、购物车、核价、确认、模拟订单和状态查询 | 脱敏页面录屏、SSE 事件、错误场景记录 | 计划中 | 每次提交前复现并保存证据 |
 | I3 | 待实际填写 | 完成真实 MCP 查询和核价 | B、D | 使用受控环境验证地址、门店、菜单、优惠券、在线模型和核价 | 脱敏请求/响应、health、页面录屏 | 阻塞 | 待真实 MCP Token、模型配置、测试账号和网络 |
 | I4 | 待实际填写 | 创建一次真实待支付订单并完成报告 | A、B、D | 两人复核后点击一次 create-order；记录脱敏订单标识、状态和数据清理结果 | 订单记录、审计摘要、最终报告 | 阻塞 | 待 I3 完成；不自动支付；未知状态不重试 |
-| I5 | 2026-09-08 | 完成 Issue #2 后端安全链路与无凭据验收 | B、D | 接入 DeepSeek 普通 Tool Calls 配置、MCP 能力/字段校验、报价 SHA-256 哈希、approval 并发占用、错误脱敏和 Node 自动化测试 | `pnpm test`（11 tests）、`pnpm build`、`git diff --check`；真实 DeepSeek/MCP 尚未联调 | 已验证（本地） | 真实服务仍待模型 Key、MCP Token、测试账号和网络；不把本地假服务结果写成真实联调 |
+| I5 | 2026-09-08 | 完成 Issue #2 后端安全链路与无凭据验收 | B、D | 接入 DeepSeek 普通 Tool Calls 配置、MCP 能力/字段校验、报价 SHA-256 哈希、approval 并发占用、错误脱敏和 Node 自动化测试 | 基线 `pnpm test`（13 tests）、`pnpm build`、`git diff --check`；真实 DeepSeek/MCP 尚未联调 | 已验证（本地） | 真实服务仍待模型 Key、MCP Token、测试账号和网络；不把本地假服务结果写成真实联调 |
+| I6 | 2026-09-08 | 完成 Issue #4 Mock、异常测试和部署说明 | D、C | 补充 Mock 地址/门店/菜单/报价/模拟订单校验，增加配置回退、空地址、无门店、失效餐品、报价过期、重复确认、401/429/超时和 HTTP/SSE 端到端测试；新增部署联调说明 | `pnpm install --frozen-lockfile`、`pnpm test`（22 tests）、`pnpm test:mock`（1 test）、`pnpm build`、`git diff --check`；敏感文件扫描；真实 MCP/模型/支付未执行 | 已验证（本地） | 真实路径仍待 Token、模型 Key、测试账号、配送地址和网络；运行中错误不自动切换或重试，人工重启 Mock |
+| I7 | 2026-09-09 | 合并 Issue #3 前端交互与 Issue #4 集成验证 | C、D | 合并 PR #7 的详情/优惠页面、事件白名单和确认闸门，与 PR #8 的 Mock、异常测试和部署文档；保留真实路径阻塞边界 | `pnpm install --frozen-lockfile`、`pnpm test`（26 tests）、`pnpm test:mock`（1 test）、`pnpm build`、`git diff --check`；链接和敏感信息扫描；真实 MCP/模型/支付未执行 | 已验证（本地） | 真实路径仍待 Token、模型 Key、测试账号、配送地址和网络；不自动支付，不重试未知写操作 |
 
 ## 3. 单次迭代记录模板
 

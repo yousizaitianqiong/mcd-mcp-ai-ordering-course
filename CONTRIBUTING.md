@@ -26,6 +26,7 @@
 - 迭代状态统一使用“计划中、进行中、已验证、阻塞”。
 - 真实联调缺少 Token、在线模型、测试账号、配送地址或网络时，标记为阻塞/待凭据，并写明解除条件。
 - 合并前至少运行 pnpm test 和 pnpm build；必须记录 pnpm test 实际发现的测试数量。测试命令通过只能代表已发现的测试通过，不能替代 Mock、模型和真实 MCP 证据。
+- Issue #4 的 Mock 全链路可用 `pnpm test:mock` 单独复现；测试记录应区分自动化 HTTP/SSE 结果、课堂手工结果和真实 MCP 结果。
 
 ## 真实下单规则
 
@@ -50,6 +51,7 @@
 - docs/research-matrix.md：GitHub 调研、融合边界和许可证核查记录
 - docs/demo-script.md：Mock 主流程和真实 MCP 受控演示
 - docs/test-plan.md：命令、Mock、MCP 和安全测试计划
+- docs/deployment.md：本地启动、环境变量、部署和课堂联调说明
 - docs/team-roles.md：A-D 分工、排期和真实下单复核规则
 - docs/final-report.md：最终报告结构和状态填写规则
 - docs/iteration-log.md：迭代目标、证据、状态和风险

@@ -25,6 +25,8 @@ pnpm dev
 
 打开 <http://localhost:5173>。默认 `APP_MODE=mock`，不需要 Token 或外部模型即可完成菜单、购物车、核价、人工确认、生成模拟待支付订单和状态刷新。
 
+交付前可用 `pnpm test:mock` 复现无外部服务的 HTTP/SSE Mock 全链路；完整安装、环境变量、单机部署和课堂联调步骤见[部署与联调说明](docs/deployment.md)。
+
 如果本机没有全局 pnpm，可以使用 Node.js Corepack 或安装 pnpm：
 
 ```powershell
@@ -49,7 +51,7 @@ MODEL_NAME=deepseek-v4-flash
 MODEL_MAX_TURNS=8
 ```
 
-没有麦当劳 MCP Token 时可保持 `APP_MODE=mock`，单独验证 Mock Provider 和 DeepSeek 工具调用；只有进入真实 MCP 只读预检时才设置 `APP_MODE=mcd`。官方 DeepSeek 根地址不需要额外拼接 `/v1`，接口格式和 Tool Calls 以[官方 API 文档](https://api-docs.deepseek.com/)为准。不要把 `.env` 提交到 Git，不要把 Token 写入前端代码、URL、数据库或日志。官方 MCP 的具体工具参数以其服务端实际返回的 `tools/list` 为准；本项目在 `apps/server/src/providers/mcd.ts` 中集中做能力检查、参数和结构化结果适配。若远端提供可选的 `list-nutrition-foods`，菜单和购物车会展示精确匹配的 `energyKcal`（千卡/份）；未匹配餐品显示暂无数据，不做热量估算。
+没有麦当劳 MCP Token 时可保持 `APP_MODE=mock`，单独验证 Mock Provider 和 DeepSeek 工具调用；只有进入真实 MCP 只读预检时才设置 `APP_MODE=mcd`。若请求了 `mcd` 但没有 Token，服务启动配置会明确回退为 `mock`，以 `/api/health` 的 `mode` 和 `provider` 为准；真实运行中遇到 401、429、超时或未知写入结果时必须停止并人工切换回 Mock，不自动重试或静默改写结果。官方 DeepSeek 根地址不需要额外拼接 `/v1`，接口格式和 Tool Calls 以[官方 API 文档](https://api-docs.deepseek.com/)为准。不要把 `.env` 提交到 Git，不要把 Token 写入前端代码、URL、数据库或日志。官方 MCP 的具体工具参数以其服务端实际返回的 `tools/list` 为准；本项目在 `apps/server/src/providers/mcd.ts` 中集中做能力检查、参数和结构化结果适配。若远端提供可选的 `list-nutrition-foods`，菜单和购物车会展示精确匹配的 `energyKcal`（千卡/份）；未匹配餐品显示暂无数据，不做热量估算。
 
 ## 目录结构
 
@@ -73,6 +75,7 @@ docs/
   team-roles.md                   四人分工与两周到四周计划
   demo-script.md                  课堂演示脚本
   test-plan.md                    测试计划和证据记录
+  deployment.md                   本地启动、部署和课堂联调
   final-report.md                 最终报告结构模板
   iteration-log.md                迭代记录和证据状态
 ```
@@ -98,6 +101,7 @@ Issue #1 的真实联调验收依次验证地址、门店、菜单、优惠券�
 - [四人分工](docs/team-roles.md)
 - [课堂演示脚本](docs/demo-script.md)
 - [测试计划与验收记录](docs/test-plan.md)
+- [本地部署与课堂联调](docs/deployment.md)
 - [最终报告结构](docs/final-report.md)
 - [迭代记录](docs/iteration-log.md)
 

@@ -8,7 +8,7 @@ import type { LlmMessage, LlmTool, ModelAdapter } from "./model.js";
 import { OrderingOrchestrator } from "./orchestrator.js";
 import { MockFoodOrderProvider } from "./providers/mock.js";
 import { JsonStore } from "./store.js";
-import type { CartItem, OrderContext, PendingOrder } from "./types.js";
+import type { CartItem, OrderContext, PendingOrder, PriceQuote } from "./types.js";
 
 class CountingProvider extends MockFoodOrderProvider {
   createOrderCalls = 0;
@@ -18,6 +18,13 @@ class CountingProvider extends MockFoodOrderProvider {
     this.createOrderCalls += 1;
     if (this.failureCode) throw new AppError(this.failureCode, "模拟下游错误", 504);
     return super.createOrder(input);
+  }
+}
+
+class ExpiredQuoteProvider extends CountingProvider {
+  override async calculatePrice(input: { context: OrderContext; items: CartItem[] }): Promise<PriceQuote> {
+    const quote = await super.calculatePrice(input);
+    return { ...quote, expiresAt: new Date(Date.now() - 1_000).toISOString() };
   }
 }
 
@@ -101,6 +108,22 @@ test("超时或网络不确定状态进入终态且禁止重试", async () => {
       (error: unknown) => error instanceof AppError && error.code === "APPROVAL_NOT_RETRYABLE",
     );
     assert.equal(provider.createOrderCalls, 1);
+  } finally {
+    await fs.rm(fixture.directory, { recursive: true, force: true });
+  }
+});
+
+test("报价过期时拒绝确认且不进入 create-order", async () => {
+  const provider = new ExpiredQuoteProvider();
+  const fixture = await createFixture(provider);
+  try {
+    const approval = await getApproval(fixture.orchestrator);
+    await assert.rejects(
+      () => fixture.orchestrator.confirmOrder(approval.sessionId, approval.approvalId, approval.quoteHash),
+      (error: unknown) => error instanceof AppError && error.code === "QUOTE_EXPIRED",
+    );
+    assert.equal(provider.createOrderCalls, 0);
+    assert.equal((await fixture.store.getApproval(approval.approvalId))?.status, "expired");
   } finally {
     await fs.rm(fixture.directory, { recursive: true, force: true });
   }

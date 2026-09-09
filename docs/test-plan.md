@@ -1,6 +1,6 @@
 # 测试计划与验收记录
 
-> 本文定义验证方法和证据格式。自动化测试必须记录实际测试数量；Mock、DeepSeek 和真实 MCP 证据始终分开。Issue #3 额外覆盖详情/优惠白名单、结构异常和前端确认闸门，不代表真实 MCP 联调完成。
+> 本文定义验证方法和证据格式。自动化测试必须记录实际测试数量；Mock、DeepSeek 和真实 MCP 证据始终分开。Issue #3 额外覆盖详情/优惠白名单、结构异常和前端确认闸门；Issue #4 补充 Mock、异常和 HTTP/SSE 集成证据；这些结果都不代表真实 MCP 联调完成。页面截图/录屏仍需由课堂演示者另行保存。
 
 ## 1. 验证层级
 
@@ -16,8 +16,9 @@
 在仓库根目录执行：
 
 ~~~powershell
-pnpm install
+pnpm install --frozen-lockfile
 pnpm test
+pnpm test:mock
 pnpm build
 ~~~
 
@@ -25,9 +26,15 @@ pnpm build
 
 | 命令 | 结果 | 测试数量/构建摘要 | 证据 | 状态 |
 | --- | --- | --- | --- | --- |
-| pnpm install | 待交付前复核 | Lockfile 和依赖安装结果 | 终端输出 | 待填写 |
-| pnpm test | 通过 | 17 tests、17 pass、0 fail | 终端输出、文件清单 | 已验证（本地） |
+| pnpm install --frozen-lockfile | 通过 | Lockfile up to date；依赖安装完成 | 终端输出 | 已验证（本地） |
+| pnpm test | 通过 | 26 tests、26 pass、0 fail | 终端输出、测试文件清单 | 已验证（本地） |
+| pnpm test:mock | 通过 | HTTP/SSE Mock 端到端 1 test、1 pass | `apps/server/src/http.e2e.test.ts`、终端输出 | 已验证（本地） |
 | pnpm build | 通过 | server tsc、web tsc 和 Vite build | 终端输出 | 已验证（本地） |
+| git diff --check | 通过 | 无空白错误 | 终端输出 | 已验证（本地） |
+| Markdown 相对链接检查 | 通过 | 仓库内相对链接均可解析 | 扫描输出 | 已验证（本地） |
+| 敏感信息扫描 | 通过 | 未发现凭据、个人数据或不应公开的绝对路径 | 扫描输出 | 已验证（本地） |
+
+合并 PR #7 后，本次 `pnpm test` 发现的测试文件为 `config.test.ts`、`http.e2e.test.ts`、`issue-3.test.ts`、`mcp/client.test.ts`、`model.test.ts`、`orchestrator.test.ts`、`providers/mcd.test.ts`、`providers/mock.test.ts` 和 `quote.test.ts`，共 26 个测试且全部通过。其中没有真实 MCP、在线模型或支付请求。
 
 ## 3. Mock 自动/手工场景
 
@@ -48,6 +55,32 @@ pnpm build
 | M-013 | 并发确认 | 同一 approval 同时发送两次确认 | 最多一次 Provider createOrder，另一请求进入不可重试状态 | 测试输出、审计 |
 | M-014 | 敏感数据 | 在消息或下游错误中放入 Token/手机号/原始响应 | HTTP、SSE、审计和 JSONStore 不出现未脱敏值 | 脱敏扫描 |
 
+### 3.1 Issue #4 Mock 自动化证据
+
+2026-09-08 在当前 Issue #4 分支执行 `pnpm test:mock`，结果为 1 test、1 pass、0 fail。该测试使用本地 `MockFoodOrderProvider` 和临时状态文件，覆盖：
+
+- `/api/health` 明确返回 `mode=mock`、`provider=mock`，且响应不含 Token；
+- SSE 查询地址、门店和菜单；
+- `/api/cart` 加入餐品和失效餐品拒绝；
+- SSE 核价、报价哈希和有效期；
+- 未确认前没有订单；
+- 页面确认接口生成 `MOCK-ORDER-*`、`待支付（模拟）` 和 `.invalid` 模拟链接；
+- 重复确认返回 `APPROVAL_ALREADY_USED` 且 Provider `createOrder` 只调用一次；
+- GET 订单状态和持久化脱敏检查。
+
+这份自动化 HTTP/SSE 证据不能替代课堂页面截图，也不能替代真实 MCP 联调证据。
+
+### 3.2 Issue #4 集成补充自动化证据
+
+| 编号 | 场景 | 覆盖内容 | 证据 |
+| --- | --- | --- | --- |
+| I4-A01 | 配置回退 | 请求真实模式但缺少 MCP Token 时明确回退为 Mock；具备 Token 时只选择真实 Provider 配置，读取阶段不发起网络请求 | `apps/server/src/config.test.ts` |
+| I4-A02 | Mock provider | 提供完整菜单、报价、模拟订单和状态查询；未知地址、门店、失效餐品、空地址和无门店均 fail closed | `apps/server/src/providers/mock.test.ts` |
+| I4-A03 | HTTP/SSE E2E | 覆盖健康检查、菜单、购物车、核价、确认、订单状态和重复确认保护 | `apps/server/src/http.e2e.test.ts` |
+| I4-A04 | MCP 客户端异常 | 覆盖初始化、会话头、SSE tools/call、401、429、超时和 Token 脱敏 | `apps/server/src/mcp/client.test.ts` |
+| I4-A05 | 模型适配器异常 | 覆盖 OpenAI-compatible 普通工具调用、空 choices、鉴权错误、429 和超时，且不暴露 API Key | `apps/server/src/model.test.ts` |
+| I4-A06 | 报价与确认异常 | 覆盖报价哈希、并发确认、终态失败、报价过期和模型最大回合数限制 | `apps/server/src/orchestrator.test.ts`、`apps/server/src/quote.test.ts` |
+
 ## 4. MCP 客户端和 Provider 场景
 
 | 编号 | 场景 | 预期 |
@@ -62,7 +95,7 @@ pnpm build
 | M-022 | 营养字段 | 假 MCP 返回 list-nutrition-foods 文本表格并加载菜单 | 只按固定表头和精确餐品名映射 energyKcal；缺失或格式异常时不猜测、不阻断购物车价格流程 |
 | M-023 | 购物车热量 | 将带有和缺失 caloriesKcal 的餐品加入购物车并改变数量 | 每份热量按数量展示；仅在数据完整时汇总总热量，缺失时显示数据不全 |
 
-上述场景由 Node 内置 `node:test`、本地假模型服务和本地假 MCP 服务覆盖；`apps/server/src/issue-3.test.ts` 额外覆盖详情/优惠事件白名单、异常结构安全处理、Mock 主流程、未确认下单闸门和模型工具白名单；执行结果仍必须在交付记录中逐项填写。
+上述场景由 Node 内置 `node:test`、本地假模型服务、本地假 MCP 服务和 Mock HTTP 端到端测试覆盖；`apps/server/src/issue-3.test.ts` 额外覆盖详情/优惠事件白名单、异常结构安全处理、Mock 主流程、未确认下单闸门和模型工具白名单；合并复核共执行 26 个测试且全部通过。页面录屏、人工双人复核和真实 MCP 结果仍需单独记录。
 
 ## 5. 真实 MCP 联调清单
 
