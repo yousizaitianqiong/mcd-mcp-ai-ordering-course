@@ -1,13 +1,13 @@
 # 测试计划与验收记录
 
-> 本文定义验证方法和证据格式。自动化测试必须记录实际测试数量；Mock、DeepSeek 和真实 MCP 证据始终分开。
+> 本文定义验证方法和证据格式。自动化测试必须记录实际测试数量；Mock、DeepSeek 和真实 MCP 证据始终分开。Issue #3 额外覆盖详情/优惠白名单、结构异常和前端确认闸门，不代表真实 MCP 联调完成。
 
 ## 1. 验证层级
 
 | 层级 | 目标 | 必须证据 | 当前口径 |
 | --- | --- | --- | --- |
 | 静态/构建 | 确认 TypeScript 和前端生产构建可完成 | pnpm build 输出 | 当前基线已验证，交付前复核 |
-| 自动化 | 验证后端业务和错误分支 | pnpm test 输出及测试文件清单 | Issue #2 实现后必须为非零测试 |
+| 自动化 | 验证后端业务和错误分支、详情/优惠事件、结构异常和确认闸门 | pnpm test 输出及测试文件清单 | 交付时记录实际测试数量；不替代真实 MCP |
 | Mock 手工端到端 | 复现课堂完整闭环 | 页面截图/录屏、SSE、请求摘要 | 每次提交必测 |
 | 真实 MCP 联调 | 验证真实查询、核价和一次待支付下单 | 脱敏响应、页面证据、订单状态 | 依赖外部凭据和测试账号 |
 
@@ -26,7 +26,7 @@ pnpm build
 | 命令 | 结果 | 测试数量/构建摘要 | 证据 | 状态 |
 | --- | --- | --- | --- | --- |
 | pnpm install | 待交付前复核 | Lockfile 和依赖安装结果 | 终端输出 | 待填写 |
-| pnpm test | 通过 | 13 tests、13 pass、0 fail | 终端输出、文件清单 | 已验证（本地） |
+| pnpm test | 通过 | 17 tests、17 pass、0 fail | 终端输出、文件清单 | 已验证（本地） |
 | pnpm build | 通过 | server tsc、web tsc 和 Vite build | 终端输出 | 已验证（本地） |
 
 ## 3. Mock 自动/手工场景
@@ -35,33 +35,34 @@ pnpm build
 | --- | --- | --- | --- | --- |
 | M-001 | 健康检查 | APP_MODE=mock 启动并访问 /api/health | mode=mock，页面显示 Mock 演示模式 | 响应、截图 |
 | M-002 | 自然语言点餐 | 输入“我想吃麦香鸡套餐，先帮我看看当前菜单和门店” | 出现助手回复、地址、门店、菜单和工具轨迹 | SSE、录屏 |
-| M-003 | 购物车 | 菜单加入同一餐品两次，再清空 | 数量合并；清空后 cart 为空 | 请求响应、截图 |
-| M-004 | 核价 | 点击开始核价或发送“请核价当前购物车” | 展示商品价、配送费、优惠、总价、地址、门店和有效期 | quote 事件、截图 |
-| M-005 | 未确认保护 | 不点击确认按钮，刷新或继续聊天 | 不产生订单、不调用 create-order | 审计摘要、订单记录 |
-| M-006 | 模拟下单 | 点击确认并创建待支付订单 | 生成模拟订单号、待支付状态和模拟支付链接 | 订单卡片、响应 |
-| M-007 | 状态查询 | 点击刷新或发送“查询订单状态” | 返回当前订单状态，不重复创建 | 请求记录 |
-| M-008 | 空购物车 | 空购物车时请求核价 | 返回 EMPTY_CART 和中文提示 | 错误响应 |
-| M-009 | 报价生命周期 | 使用过期、已确认或终态 approvalId | 分别返回 QUOTE_EXPIRED、APPROVAL_ALREADY_USED 或 APPROVAL_NOT_RETRYABLE，不创建订单 | 错误响应、审计 |
-| M-010 | 输入和商品错误 | 发送空消息、无效 JSON、无效餐品或不存在订单号 | 返回稳定错误码，不调用下游写操作 | HTTP 响应 |
-| M-016 | 报价哈希 | 篡改报价金额、地址字段或 quoteHash 后确认 | 返回 QUOTE_HASH_MISMATCH/QUOTE_INTEGRITY_ERROR，不创建订单 | quote 事件、错误响应 |
-| M-017 | 并发确认 | 同一 approval 同时发送两次确认 | 最多一次 Provider createOrder，另一请求进入不可重试状态 | 测试输出、审计 |
-| M-018 | 敏感数据 | 在消息或下游错误中放入 Token/手机号/原始响应 | HTTP、SSE、审计和 JSONStore 不出现未脱敏值 | 脱敏扫描 |
+| M-003 | 详情与优惠 | 点击菜单“详情”，再点击“查询优惠” | 出现 `meal_detail` 和 `coupons` 卡片；只显示白名单字段 | SSE、截图 |
+| M-004 | 购物车 | 菜单加入同一餐品两次，再清空 | 数量合并；清空后 cart 为空；营养字段只显示明确匹配结果 | 请求响应、截图 |
+| M-005 | 核价 | 点击开始核价或发送“请核价当前购物车” | 展示商品价、配送费、优惠、总价、地址、门店、有效期和 quoteHash | quote 事件、截图 |
+| M-006 | 未确认保护 | 不点击确认按钮，刷新或继续聊天 | 不产生订单、不调用 create-order | 自动化测试、审计摘要 |
+| M-007 | 模拟下单 | 点击确认并创建待支付订单 | 生成模拟订单号、待支付状态和模拟支付链接 | 订单卡片、响应 |
+| M-008 | 状态查询 | 点击刷新或发送“查询订单状态” | 返回当前订单状态，不重复创建 | 请求记录 |
+| M-009 | 空购物车 | 空购物车时请求核价 | 返回 EMPTY_CART 和中文提示 | 错误响应 |
+| M-010 | 报价生命周期 | 使用过期、已确认或终态 approvalId | 分别返回 QUOTE_EXPIRED、APPROVAL_ALREADY_USED 或 APPROVAL_NOT_RETRYABLE，不创建订单 | 错误响应、审计 |
+| M-011 | 输入和商品错误 | 发送空消息、无效 JSON、无效餐品或不存在订单号 | 返回稳定错误码，不调用下游写操作 | HTTP 响应 |
+| M-012 | 报价哈希 | 篡改报价金额、地址字段或 quoteHash 后确认 | 返回 QUOTE_HASH_MISMATCH/QUOTE_INTEGRITY_ERROR，不创建订单 | quote 事件、错误响应 |
+| M-013 | 并发确认 | 同一 approval 同时发送两次确认 | 最多一次 Provider createOrder，另一请求进入不可重试状态 | 测试输出、审计 |
+| M-014 | 敏感数据 | 在消息或下游错误中放入 Token/手机号/原始响应 | HTTP、SSE、审计和 JSONStore 不出现未脱敏值 | 脱敏扫描 |
 
 ## 4. MCP 客户端和 Provider 场景
 
 | 编号 | 场景 | 预期 |
 | --- | --- | --- |
-| M-011 | MCP JSON-RPC | 正确发送 initialize、notifications/initialized、tools/list、tools/call |
-| M-012 | MCP SSE | 正确提取 data: 中的 JSON 结果 |
-| M-013 | MCP 401/429 | 转换为 MCP_UNAUTHORIZED/MCP_RATE_LIMIT，不泄露 Authorization |
-| M-014 | MCP 超时/网络错误 | 转换为 MCP_TIMEOUT/MCP_NETWORK_ERROR，不自动重试 create-order |
-| M-015 | 远程字段适配 | 地址、门店、菜单、优惠券、报价和订单转换为统一领域类型 |
-| M-019 | 工具能力检查 | tools/list 缺少必要工具或 inputSchema | 返回 MCP_REQUIRED_TOOL_MISSING/MCP_INVALID_TOOLS，停止真实路径 |
-| M-020 | 金额单位 | 使用显式 yuan/fen 配置和结构化单位字段 | 金额转换准确，不按数值大小猜测单位 |
-| M-021 | 营养字段 | 假 MCP 返回 list-nutrition-foods 文本表格并加载菜单 | 只按固定表头和精确餐品名映射 energyKcal；缺失或格式异常时不猜测、不阻断购物车价格流程 |
-| M-022 | 购物车热量 | 将带有和缺失 caloriesKcal 的餐品加入购物车并改变数量 | 每份热量按数量展示；仅在数据完整时汇总总热量，缺失时显示数据不全 |
+| M-015 | MCP JSON-RPC | 正确发送 initialize、notifications/initialized、tools/list、tools/call |
+| M-016 | MCP SSE | 正确提取 data: 中的 JSON 结果 |
+| M-017 | MCP 401/429 | 转换为 MCP_UNAUTHORIZED/MCP_RATE_LIMIT，不泄露 Authorization |
+| M-018 | MCP 超时/网络错误 | 转换为 MCP_TIMEOUT/MCP_NETWORK_ERROR，不自动重试 create-order |
+| M-019 | 远程字段适配 | 地址、门店、菜单、详情、优惠券、报价和订单转换为统一领域类型 |
+| M-020 | 工具能力检查 | tools/list 缺少必要工具或 inputSchema | 返回 MCP_REQUIRED_TOOL_MISSING/MCP_INVALID_TOOLS，停止真实路径 |
+| M-021 | 金额单位 | 使用显式 yuan/fen 配置和结构化单位字段 | 金额转换准确，不按数值大小猜测单位 |
+| M-022 | 营养字段 | 假 MCP 返回 list-nutrition-foods 文本表格并加载菜单 | 只按固定表头和精确餐品名映射 energyKcal；缺失或格式异常时不猜测、不阻断购物车价格流程 |
+| M-023 | 购物车热量 | 将带有和缺失 caloriesKcal 的餐品加入购物车并改变数量 | 每份热量按数量展示；仅在数据完整时汇总总热量，缺失时显示数据不全 |
 
-上述场景由 Node 内置 `node:test`、本地假模型服务和本地假 MCP 服务覆盖；执行结果仍必须在交付记录中逐项填写。
+上述场景由 Node 内置 `node:test`、本地假模型服务和本地假 MCP 服务覆盖；`apps/server/src/issue-3.test.ts` 额外覆盖详情/优惠事件白名单、异常结构安全处理、Mock 主流程、未确认下单闸门和模型工具白名单；执行结果仍必须在交付记录中逐项填写。
 
 ## 5. 真实 MCP 联调清单
 
