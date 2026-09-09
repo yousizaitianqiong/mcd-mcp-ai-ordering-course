@@ -7,6 +7,7 @@ import type { AppConfig } from "./config.js";
 import { OrderingOrchestrator } from "./orchestrator.js";
 import type { JsonStore } from "./store.js";
 import type { FoodOrderProvider } from "./types.js";
+import { toPendingOrderView } from "./views.js";
 
 interface Dependencies {
   config: AppConfig;
@@ -237,7 +238,7 @@ export function createHttpServer(deps: Dependencies) {
           throw new AppError("CONFIRMATION_FIELDS_REQUIRED", "缺少会话、确认信息或报价哈希");
         }
         const order = await deps.orchestrator.confirmOrder(sessionId, approvalId, quoteHash);
-        sendJson(response, 200, { order });
+        sendJson(response, 200, { order: toPendingOrderView(order) });
         return;
       }
 
@@ -246,11 +247,11 @@ export function createHttpServer(deps: Dependencies) {
         const orderId = decodeURIComponent(orderMatch[1]);
         const stored = await deps.store.getOrder(orderId);
         if (stored) {
-          sendJson(response, 200, { order: stored.order });
+          sendJson(response, 200, { order: toPendingOrderView(stored.order) });
           return;
         }
         const order = await deps.provider.getOrderStatus(orderId);
-        sendJson(response, 200, { order });
+        sendJson(response, 200, { order: toPendingOrderView(order) });
         return;
       }
 

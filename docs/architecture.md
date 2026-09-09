@@ -1,12 +1,12 @@
 # 系统架构与接口说明
 
-> 本文是实现和联调的接口基线。字段语义以当前 TypeScript 源码为准；本 Issue 只补充说明，不新增 API、SSE 事件、Provider 接口或数据格式。
+> 本文是实现和联调的接口基线。字段语义以当前 TypeScript 源码为准；本 Issue 复用现有 API 和 Provider，并新增详情/优惠 SSE 展示事件。
 
 ## 1. 分层结构
 
 ~~~text
 React/Vite Web
-  ├─ POST /api/chat       ← SSE：助手文本、工具进度、菜单、购物车、报价、订单
+  ├─ POST /api/chat       ← SSE：助手文本、工具进度、菜单、详情、优惠、购物车、报价、订单
   ├─ POST /api/context    ← 选择地址和门店
   ├─ POST /api/cart       ← 加入或清空购物车
   └─ POST/GET /api/orders ← 人工确认、订单查询
@@ -46,7 +46,7 @@ sequenceDiagram
     M-->>O: 查询工具调用
     O->>P: 地址、门店、菜单、优惠券查询
     P-->>O: 统一领域数据
-    O-->>W: SSE tool / addresses / stores / menu
+    O-->>W: SSE tool / addresses / stores / menu / meal_detail / coupons
     U->>W: 加入购物车并请求核价
     W->>H: POST /api/chat 或 POST /api/cart
     O->>P: calculatePrice
@@ -96,8 +96,10 @@ ModelAdapter
 | Address | addressId、contactName、phone、fullAddress | 配送地址选择和核对 |
 | Store | storeCode、beCode、storeName、businessStatus | 门店上下文 |
 | MenuItem | productCode、name、price、tags；可选 caloriesKcal | 菜单展示和加购；热量单位为千卡/份 |
+| MealDetail | code、name；可选说明、图片、规格摘要 | 套餐详情卡片；仅发送白名单字段 |
+| CouponDisplay | couponId、couponCode、title；可选有效期、适用餐品 | 优惠卡片；仅发送白名单字段 |
 | CartItem | 商品编码、名称、数量、单价、门店编码；可选 caloriesKcal | 服务端购物车和核价输入；热量只来自服务端菜单匹配 |
-| PriceQuote | quoteId、context、items、金额字段、expiresAt、quoteHash | 人工确认依据和完整性校验 |
+| PriceQuote | quoteId、context、items、金额字段、expiresAt、quoteHash | 人工确认依据和完整性校验；对外响应不含 Provider raw |
 | PendingOrder | orderId、orderStatus、totalAmount、可选支付链接 | 待支付订单展示 |
 
 `list-nutrition-foods` 不是模型工具，也不是下单前提。MCD Provider 只接受其固定表头中的 `energyKcal`，按规范化后的完整餐品名称精确匹配菜单；没有匹配或远端格式变化时省略 `caloriesKcal`，前端显示“热量数据暂无”，不做模糊估算。购物车中的热量按数量展示，只有所有商品都有数据时才汇总预计总热量。
@@ -151,13 +153,17 @@ data: JSON 数据
 | addresses | Address[] | 地址卡片 |
 | stores | Store[] | 门店选择 |
 | menu | MenuItem[] | 菜单卡片 |
+| meal_detail | MealDetail 白名单对象 | 套餐详情卡片 |
+| coupons | CouponDisplay[] 白名单数组 | 优惠券卡片 |
 | cart | CartItem[] | 购物车 |
-| quote | PriceQuote 加 approvalId、quoteHash | 核价卡片 |
+| quote | 去除 Provider raw 的 PriceQuote 加 approvalId、quoteHash | 核价卡片 |
 | confirmation_required | 与报价相同的确认数据 | 显示确认闸门 |
-| order | PendingOrder | 订单卡片 |
+| order | 去除 raw 的 PendingOrder | 订单卡片 |
 | assistant | { text } | 聊天回复 |
 | error | { code, message } | 错误提示；不返回下游原始详情 |
 | done | { sessionId } | 结束本轮处理 |
+
+`meal_detail` 只允许 `code`、`name`、可选 `description`、安全图片 URL、`supportModify` 和 `rounds[].choices[]` 摘要；`coupons` 只允许优惠券白名单字段。Provider 返回的远端 `raw`、Authorization、私密地址或其他未列出的字段不会进入 SSE。字段缺失时服务端丢弃不可验证项，详情必填字段异常则失败关闭。
 
 空消息或无效 JSON 在 SSE 建立前返回 JSON 错误；处理过程中的异常通过 error 事件返回并以 done 结束。
 

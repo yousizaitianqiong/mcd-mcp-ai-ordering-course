@@ -33,6 +33,26 @@ type MenuItem = {
   description?: string;
 };
 
+type MealDetail = {
+  code: string;
+  name: string;
+  description?: string;
+  image?: string;
+  supportModify?: boolean;
+  rounds?: Array<{
+    name?: string;
+    choices: Array<{ name: string; code?: string; quantity?: number }>;
+  }>;
+};
+
+type Coupon = {
+  couponId: string;
+  couponCode: string;
+  title: string;
+  validPeriod?: string;
+  products?: Array<{ productCode: string; productName: string }>;
+};
+
 type CartItem = {
   productCode: string;
   productName: string;
@@ -86,6 +106,85 @@ const initialMessage: ChatMessage = {
 
 const money = (value: number) => `¥${Number(value || 0).toFixed(2)}`;
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function textValue(value: unknown, maxLength = 500): string | undefined {
+  if (typeof value !== "string") return undefined;
+  const normalized = value.trim();
+  return normalized && normalized.length <= maxLength ? normalized : undefined;
+}
+
+function imageValue(value: unknown): string | undefined {
+  const candidate = textValue(value, 2_000);
+  return candidate && (/^https?:\/\//i.test(candidate) || (candidate.startsWith("/") && !candidate.startsWith("//")))
+    ? candidate
+    : undefined;
+}
+
+function parseMealDetail(value: unknown): MealDetail | null {
+  if (!isRecord(value)) return null;
+  const code = textValue(value.code, 120);
+  const name = textValue(value.name, 200);
+  if (!code || !name) return null;
+  const detail: MealDetail = { code, name };
+  const description = textValue(value.description);
+  const image = imageValue(value.image);
+  if (description) detail.description = description;
+  if (image) detail.image = image;
+  if (typeof value.supportModify === "boolean") detail.supportModify = value.supportModify;
+  if (Array.isArray(value.rounds)) {
+    const rounds = value.rounds.flatMap((round): MealDetail["rounds"] => {
+      if (!isRecord(round) || !Array.isArray(round.choices)) return [];
+      const choices = round.choices.flatMap((choice) => {
+        if (!isRecord(choice)) return [];
+        const choiceName = textValue(choice.name, 200);
+        if (!choiceName) return [];
+        const safeChoice: { name: string; code?: string; quantity?: number } = { name: choiceName };
+        const choiceCode = textValue(choice.code, 120);
+        const quantity = typeof choice.quantity === "number" && Number.isInteger(choice.quantity) && choice.quantity > 0 && choice.quantity <= 20
+          ? choice.quantity
+          : undefined;
+        if (choiceCode) safeChoice.code = choiceCode;
+        if (quantity) safeChoice.quantity = quantity;
+        return [safeChoice];
+      });
+      if (!choices.length) return [];
+      const safeRound: NonNullable<MealDetail["rounds"]>[number] = { choices };
+      const roundName = textValue(round.name, 200);
+      if (roundName) safeRound.name = roundName;
+      return [safeRound];
+    }).filter((round): round is NonNullable<MealDetail["rounds"]>[number] => Boolean(round));
+    if (rounds.length) detail.rounds = rounds;
+  }
+  return detail;
+}
+
+function parseCoupons(value: unknown): Coupon[] {
+  if (!Array.isArray(value)) return [];
+  return value.flatMap((coupon): Coupon[] => {
+    if (!isRecord(coupon)) return [];
+    const couponId = textValue(coupon.couponId, 120);
+    const couponCode = textValue(coupon.couponCode, 120);
+    const title = textValue(coupon.title, 300);
+    if (!couponId || !couponCode || !title) return [];
+    const safeCoupon: Coupon = { couponId, couponCode, title };
+    const validPeriod = textValue(coupon.validPeriod, 300);
+    if (validPeriod) safeCoupon.validPeriod = validPeriod;
+    if (Array.isArray(coupon.products)) {
+      const products = coupon.products.flatMap((product) => {
+        if (!isRecord(product)) return [];
+        const productCode = textValue(product.productCode, 120);
+        const productName = textValue(product.productName, 200);
+        return productCode && productName ? [{ productCode, productName }] : [];
+      });
+      if (products.length) safeCoupon.products = products;
+    }
+    return [safeCoupon];
+  });
+}
+
 function readableToolName(name: string): string {
   const names: Record<string, string> = {
     list_delivery_addresses: "查询配送地址",
@@ -115,6 +214,8 @@ export default function App() {
   const [selectedAddressId, setSelectedAddressId] = useState("");
   const [selectedStoreKey, setSelectedStoreKey] = useState("");
   const [menu, setMenu] = useState<MenuItem[]>([]);
+  const [mealDetail, setMealDetail] = useState<MealDetail | null>(null);
+  const [coupons, setCoupons] = useState<Coupon[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [quote, setQuote] = useState<Quote | null>(null);
   const [order, setOrder] = useState<Order | null>(null);
@@ -154,6 +255,11 @@ export default function App() {
     setMessages((current) => [...current, { id: createId(), role: "assistant", text }]);
   }
 
+  function clearStoreScopedResults(): void {
+    setMealDetail(null);
+    setCoupons([]);
+  }
+
   function handleEvent(eventName: string, data: unknown): void {
     const value = (data && typeof data === "object" ? data : {}) as Record<string, unknown>;
     if (eventName === "session") {
@@ -173,14 +279,18 @@ export default function App() {
     }
     if (eventName === "addresses") {
       const next = Array.isArray(data) ? (data as Address[]) : [];
+      const nextAddressId = next[0]?.addressId || "";
+      if (selectedAddressId && nextAddressId && selectedAddressId !== nextAddressId) clearStoreScopedResults();
       setAddresses(next);
-      setSelectedAddressId((current) => current || next[0]?.addressId || "");
+      setSelectedAddressId((current) => current || nextAddressId);
       return;
     }
     if (eventName === "stores") {
       const next = Array.isArray(data) ? (data as Store[]) : [];
+      const nextStoreKey = next[0] ? `${next[0].storeCode}:${next[0].beCode}` : "";
+      if (selectedStoreKey && nextStoreKey && selectedStoreKey !== nextStoreKey) clearStoreScopedResults();
       setStores(next);
-      setSelectedStoreKey((current) => current || (next[0] ? `${next[0].storeCode}:${next[0].beCode}` : ""));
+      setSelectedStoreKey((current) => current || nextStoreKey);
       return;
     }
     if (eventName === "menu") {
@@ -189,6 +299,24 @@ export default function App() {
     }
     if (eventName === "cart") {
       setCart(Array.isArray(data) ? (data as CartItem[]) : []);
+      return;
+    }
+    if (eventName === "meal_detail") {
+      const next = parseMealDetail(data);
+      if (!next) {
+        setError("餐品详情数据格式异常，已安全忽略本次结果");
+        return;
+      }
+      setMealDetail(next);
+      return;
+    }
+    if (eventName === "coupons") {
+      if (!Array.isArray(data)) {
+        setCoupons([]);
+        setError("优惠券数据格式异常，已安全忽略本次结果");
+        return;
+      }
+      setCoupons(parseCoupons(data));
       return;
     }
     if (eventName === "quote" || eventName === "confirmation_required") {
@@ -273,11 +401,20 @@ export default function App() {
       if (!response.ok) throw new Error(body.error?.message || "切换配送门店失败");
       setSelectedAddressId(addressId);
       setSelectedStoreKey(`${store.storeCode}:${store.beCode}`);
+      clearStoreScopedResults();
       setQuote(null);
       addAssistant(`已切换到 ${store.storeName}，接下来会按这个门店核价。`);
     } catch (reason: unknown) {
       setError(reason instanceof Error ? reason.message : "切换配送门店失败");
     }
+  }
+
+  function viewMealDetail(item: MenuItem): void {
+    void sendMessage(`请查看${item.name}的套餐详情和可选规格`);
+  }
+
+  function queryCoupons(): void {
+    void sendMessage("查询当前门店优惠券");
   }
 
   async function addToCart(item: MenuItem): Promise<void> {
@@ -443,24 +580,43 @@ export default function App() {
         </section>
 
         <aside className="side-column">
-          {(addresses.length > 0 || stores.length > 0) && (
-            <section className="panel-card context-panel">
-              <div className="panel-heading compact"><div><span className="section-kicker">DELIVERY</span><h2>配送信息</h2></div><span className="live-label">● 可配送</span></div>
-              {selectedAddress && <div className="address-summary"><span className="pin-icon">⌖</span><div><strong>{selectedAddress.contactName} · {selectedAddress.phone}</strong><p>{selectedAddress.fullAddress}</p></div></div>}
-              {stores.length > 0 && <div className="store-selector"><span className="sub-label">配送门店</span>{stores.map((store) => <button className={`store-option ${selectedStore?.storeCode === store.storeCode ? "selected" : ""}`} key={`${store.storeCode}:${store.beCode}`} onClick={() => void chooseContext(selectedAddress?.addressId || "", store)}><span>{store.businessStatus ? "营业中" : "暂停售卖"}</span>{store.storeName}<b>{selectedStore?.storeCode === store.storeCode ? "✓" : ""}</b></button>)}</div>}
-            </section>
-          )}
+           {(addresses.length > 0 || stores.length > 0) && (
+             <section className="panel-card context-panel">
+               <div className="panel-heading compact"><div><span className="section-kicker">DELIVERY</span><h2>配送信息</h2></div><div className="context-actions"><span className="live-label">● 可配送</span><button className="outline-button" onClick={queryCoupons} disabled={loading || !selectedStore}>查询优惠</button></div></div>
+               {selectedAddress && <div className="address-summary"><span className="pin-icon">⌖</span><div><strong>{selectedAddress.contactName} · {selectedAddress.phone}</strong><p>{selectedAddress.fullAddress}</p></div></div>}
+               {stores.length > 0 && <div className="store-selector"><span className="sub-label">配送门店</span>{stores.map((store) => <button className={`store-option ${selectedStore?.storeCode === store.storeCode ? "selected" : ""}`} key={`${store.storeCode}:${store.beCode}`} onClick={() => void chooseContext(selectedAddress?.addressId || "", store)}><span>{store.businessStatus ? "营业中" : "暂停售卖"}</span>{store.storeName}<b>{selectedStore?.storeCode === store.storeCode ? "✓" : ""}</b></button>)}</div>}
+             </section>
+           )}
 
           {menu.length > 0 && (
             <section className="panel-card menu-panel">
               <div className="panel-heading compact"><div><span className="section-kicker">MENU</span><h2>今日菜单</h2></div><span className="count-label">{menu.length} 款</span></div>
               <div className="menu-list">
-                {menu.map((item) => <article className="menu-card" key={item.productCode}><div className="food-visual">{item.category === "小食" ? "🍟" : "🍔"}</div><div className="menu-info"><div className="tag-row">{item.tags.slice(0, 2).map((tag) => <span key={tag}>{tag}</span>)}</div><h3>{item.name}</h3><p>{item.description || "经典餐品，具体以服务端返回菜单为准。"}</p>{typeof item.caloriesKcal === "number" && <small className="nutrition-label">{item.caloriesKcal} 千卡/份</small>}<div className="menu-bottom"><strong>{money(item.price)}</strong><button onClick={() => void addToCart(item)}>＋ 加入</button></div></div></article>)}
-              </div>
-            </section>
-          )}
+                {menu.map((item) => <article className="menu-card" key={item.productCode}><div className="food-visual">{item.category === "小食" ? "🍟" : "🍔"}</div><div className="menu-info"><div className="tag-row">{item.tags.slice(0, 2).map((tag) => <span key={tag}>{tag}</span>)}</div><h3>{item.name}</h3><p>{item.description || "经典餐品，具体以服务端返回菜单为准。"}</p>{typeof item.caloriesKcal === "number" && <small className="nutrition-label">{item.caloriesKcal} 千卡/份</small>}<div className="menu-bottom"><strong>{money(item.price)}</strong><div className="menu-actions"><button className="detail-button" onClick={() => viewMealDetail(item)}>详情</button><button onClick={() => void addToCart(item)}>＋ 加入</button></div></div></div></article>)}
+               </div>
+             </section>
+           )}
 
-          <section className="panel-card cart-panel">
+           {mealDetail && (
+             <section className="panel-card detail-panel">
+               <div className="panel-heading compact"><div><span className="section-kicker">MEAL DETAIL</span><h2>套餐详情</h2></div><button className="text-button" onClick={() => setMealDetail(null)}>收起</button></div>
+               <div className="detail-content">
+                 {mealDetail.image && <img className="detail-image" src={mealDetail.image} alt={`${mealDetail.name}图片`} loading="lazy" />}
+                 <div className="detail-title-row"><div><strong>{mealDetail.name}</strong><span>编码 {mealDetail.code}</span></div>{typeof mealDetail.supportModify === "boolean" && <em>{mealDetail.supportModify ? "支持调整" : "固定搭配"}</em>}</div>
+                 {mealDetail.description && <p className="detail-description">{mealDetail.description}</p>}
+                 {mealDetail.rounds?.map((round, index) => <div className="detail-round" key={`${round.name || "规格"}-${index}`}><span>{round.name || `规格 ${index + 1}`}</span><div>{round.choices.map((choice) => <b key={`${choice.code || choice.name}-${choice.quantity || 1}`}>{choice.name}{choice.quantity && choice.quantity > 1 ? ` ×${choice.quantity}` : ""}</b>)}</div></div>)}
+               </div>
+             </section>
+           )}
+
+           {coupons.length > 0 && (
+             <section className="panel-card coupons-panel">
+               <div className="panel-heading compact"><div><span className="section-kicker">OFFERS</span><h2>可用优惠</h2></div><button className="text-button" onClick={queryCoupons} disabled={loading}>重新查询</button></div>
+               <div className="coupon-list">{coupons.map((coupon) => <article className="coupon-card" key={coupon.couponId}><div className="coupon-badge">券</div><div className="coupon-copy"><strong>{coupon.title}</strong><span>{coupon.couponCode}{coupon.validPeriod ? ` · ${coupon.validPeriod}` : ""}</span>{coupon.products && <small>适用：{coupon.products.map((product) => product.productName).join("、")}</small>}</div></article>)}</div>
+             </section>
+           )}
+
+           <section className="panel-card cart-panel">
             <div className="panel-heading compact"><div><span className="section-kicker">YOUR ORDER</span><h2>购物车</h2></div><span className="cart-count">{cartCount}</span></div>
             {cart.length === 0 ? <div className="empty-state"><div className="empty-icon">🛒</div><p>还没有选择餐品</p><span>从菜单加入喜欢的食物吧</span></div> : <><div className="cart-list">{cart.map((item) => <div className="cart-row" key={item.productCode}><div><strong>{item.productName}</strong><span>数量 × {item.quantity} · {typeof item.caloriesKcal === "number" ? `${item.caloriesKcal * item.quantity} 千卡` : "热量数据暂无"}</span></div><b>{money(item.unitPrice * item.quantity)}</b></div>)}</div><div className="cart-total"><span>商品小计</span><strong>{money(cartSubtotal)}</strong></div><div className="cart-total nutrition-total"><span>预计总热量</span><strong>{typeof cartCalories === "number" ? `${cartCalories} 千卡` : "数据不全"}</strong></div><div className="cart-actions"><button className="text-button" onClick={() => void clearCart()}>清空</button><button className="primary-button" onClick={() => void sendMessage("请核价当前购物车")}>开始核价 <span>→</span></button></div></>}
           </section>

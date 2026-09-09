@@ -87,7 +87,7 @@
 | 命令 | 结果 | 证据 | 状态 |
 | --- | --- | --- | --- |
 | pnpm install --frozen-lockfile | Lockfile up to date，依赖安装完成 | 终端输出 | 已验证（本地） |
-| pnpm test | 22 tests、22 pass、0 fail | 终端输出、测试文件清单 | 已验证（本地；真实 MCP 未执行） |
+| pnpm test | 26 tests、26 pass、0 fail | 终端输出、测试文件清单 | 已验证（本地；真实 MCP 未执行） |
 | pnpm test:mock | HTTP/SSE Mock 端到端 1 test、1 pass | `apps/server/src/http.e2e.test.ts`、终端输出 | 已验证（本地） |
 | pnpm build | server tsc、web tsc 和 Vite build 通过 | 终端输出 | 已验证（本地） |
 

@@ -36,6 +36,35 @@ export interface Coupon {
   products?: Array<{ productCode: string; productName: string }>;
 }
 
+/**
+ * 仅用于发送给浏览器的套餐详情白名单。
+ * 不要把 Provider 返回的远端对象直接赋给此类型。
+ */
+export interface MealDetail {
+  code: string;
+  name: string;
+  description?: string;
+  image?: string;
+  supportModify?: boolean;
+  rounds?: Array<{
+    name?: string;
+    choices: Array<{
+      name: string;
+      code?: string;
+      quantity?: number;
+    }>;
+  }>;
+}
+
+/** 仅用于发送给浏览器的优惠券白名单。 */
+export interface CouponDisplay {
+  couponId: string;
+  couponCode: string;
+  title: string;
+  validPeriod?: string;
+  products?: Array<{ productCode: string; productName: string }>;
+}
+
 export interface CartItem {
   productCode: string;
   productName: string;
@@ -182,6 +211,8 @@ export interface AgentEvent {
     | "addresses"
     | "stores"
     | "menu"
+    | "meal_detail"
+    | "coupons"
     | "cart"
     | "quote"
     | "confirmation_required"
