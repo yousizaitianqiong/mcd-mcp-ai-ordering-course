@@ -41,7 +41,7 @@
 - P0/P1 优先级依据。
 - AC-001 至 AC-012 的通过结果、未通过结果或阻塞原因。
 
-证据：[需求与验收标准](requirements.md)、测试记录和演示记录。
+证据：[需求与验收标准](requirements.md)、[正式系统需求分析说明书](../AI麦乐送助手_课程项目组名单与简要用户需求列表.docx)、测试记录和演示记录。
 
 ## 3. GitHub 调研与融合边界
 
@@ -160,6 +160,7 @@
 - A. HTTP API 和 SSE 事件表。
 - B. FoodOrderProvider 和领域类型摘要。
 - C. MCD-USR、US 和 AC 的追踪矩阵。
+- C-1. 正式系统需求分析说明书中的 MCD-SRS 用例与活动图。
 - D. Mock/真实联调测试矩阵。
 - E. 脱敏演示截图索引。
 - F. [迭代记录](iteration-log.md)。

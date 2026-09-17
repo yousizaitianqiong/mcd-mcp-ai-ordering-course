@@ -23,6 +23,7 @@
 | I5 | 2026-09-08 | 完成 Issue #2 后端安全链路与无凭据验收 | B、D | 接入 DeepSeek 普通 Tool Calls 配置、MCP 能力/字段校验、报价 SHA-256 哈希、approval 并发占用、错误脱敏和 Node 自动化测试 | 基线 `pnpm test`（13 tests）、`pnpm build`、`git diff --check`；真实 DeepSeek/MCP 尚未联调 | 已验证（本地） | 真实服务仍待模型 Key、MCP Token、测试账号和网络；不把本地假服务结果写成真实联调 |
 | I6 | 2026-09-08 | 完成 Issue #4 Mock、异常测试和部署说明 | D、C | 补充 Mock 地址/门店/菜单/报价/模拟订单校验，增加配置回退、空地址、无门店、失效餐品、报价过期、重复确认、401/429/超时和 HTTP/SSE 端到端测试；新增部署联调说明 | `pnpm install --frozen-lockfile`、`pnpm test`（22 tests）、`pnpm test:mock`（1 test）、`pnpm build`、`git diff --check`；敏感文件扫描；真实 MCP/模型/支付未执行 | 已验证（本地） | 真实路径仍待 Token、模型 Key、测试账号、配送地址和网络；运行中错误不自动切换或重试，人工重启 Mock |
 | I7 | 2026-09-09 | 合并 Issue #3 前端交互与 Issue #4 集成验证 | C、D | 合并 PR #7 的详情/优惠页面、事件白名单和确认闸门，与 PR #8 的 Mock、异常测试和部署文档；保留真实路径阻塞边界 | `pnpm install --frozen-lockfile`、`pnpm test`（26 tests）、`pnpm test:mock`（1 test）、`pnpm build`、`git diff --check`；链接和敏感信息扫描；真实 MCP/模型/支付未执行 | 已验证（本地） | 真实路径仍待 Token、模型 Key、测试账号、配送地址和网络；不自动支付，不重试未知写操作 |
+| I8 | 2026-09-17 | 升级正式系统需求分析说明书并同步交付文档 | A、B、C、D | 参考往届 SRS 的正式结构、用例模板和图示方式；统一 12 条 MCD-USR 与 14 项 MCD-SRS；补充逐项用例、21 张本地生成图示、接口/数据/质量/追踪矩阵；同步需求、架构、测试、演示、报告、分工和 README 引用 | `scripts/build_teacher_brief.py` 生成 DOCX；Word 35 页逐页渲染检查；`pnpm test`（26/26）、`pnpm test:mock`（1/1）、`pnpm build`、`git diff --check`；编号、结构和敏感信息扫描；真实 MCP/模型/支付未执行 | 已验证（本地） | 真实路径仍待 Token、模型 Key、测试账号、配送地址和网络；不自动支付，不重试未知写操作 |
 
 ## 3. 单次迭代记录模板
 

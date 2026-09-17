@@ -6,7 +6,7 @@
 
 | 成员 | 负责模块 | 主要工作 | 主要产出 | 联调接口/依赖 | 验收责任 |
 | --- | --- | --- | --- | --- | --- |
-| 成员 A：需求与文档 | 需求、架构、调研和交付 | 用户故事、需求追踪、架构图、GitHub 矩阵、演示脚本、最终报告和迭代记录 | docs/requirements.md、architecture.md、research-matrix.md、demo-script.md、final-report.md、iteration-log.md | 维护需求编号、验收口径和变更记录 | 确认每项需求都有证据位置，报告不虚构完成结果 |
+| 成员 A：需求与文档 | 需求、架构、调研和交付 | 正式系统需求分析说明书、用户故事、需求追踪、架构图、GitHub 矩阵、演示脚本、最终报告和迭代记录 | AI麦乐送助手_课程项目组名单与简要用户需求列表.docx、docs/requirements.md、architecture.md、research-matrix.md、demo-script.md、final-report.md、iteration-log.md | 维护 MCD-USR/MCD-SRS 编号、验收口径和变更记录 | 确认每项需求都有证据位置，报告不虚构完成结果 |
 | 成员 B：MCP 与模型后端 | 远程适配和编排 | Streamable HTTP MCP 客户端、官方 Provider、模型适配、工具白名单和确认闸门 | apps/server/src/mcp、providers/mcd.ts、model.ts、orchestrator.ts | Provider、ModelAdapter、HTTP API 和真实 MCP | 核对真实字段、协议版本和 create-order 单点入口 |
 | 成员 C：前端交互 | Web 展示和用户操作 | 聊天窗口、SSE 事件、地址/门店、菜单、购物车、核价确认和订单卡片 | apps/web/src、页面录屏和脱敏截图 | 消费 SSE 与 REST API，不读取密钥 | 核对页面状态、确认按钮和 Mock/真实模式标识 |
 | 成员 D：Mock、测试与集成 | 稳定演示和证据 | Mock Provider、手工验收、构建验证、异常场景、真实联调协调和证据整理 | providers/mock.ts、测试记录、test-plan.md、部署说明 | 提供可重复 Mock 数据和联调记录 | 执行每次 Mock 回归，记录真实联调阻塞和结果 |

@@ -1,6 +1,8 @@
 # 系统架构与接口说明
 
 > 本文是实现和联调的接口基线。字段语义以当前 TypeScript 源码为准；本 Issue 复用现有 API 和 Provider，并新增详情/优惠 SSE 展示事件。
+>
+> 正式需求分析文档：[AI 麦乐送助手系统需求分析说明书](../AI麦乐送助手_课程项目组名单与简要用户需求列表.docx)；本文件不新增运行时接口，负责为 MCD-SRS 用例提供实现依据。
 
 ## 1. 分层结构
 
@@ -318,3 +320,13 @@ McDonaldsMcpProvider 负责把远程工具名称和响应字段转换成统一�
 - 真实下单前必须重新核对地址、商品、金额和报价有效期。
 - 当前课程版本没有登录鉴权和分布式数据库锁；sessionId 不是身份认证凭据，不适用于生产环境。单进程 JsonStore 提供 approval 占用，跨进程部署仍需外部幂等存储。
 - 支付、退款和履约不属于本 Issue 的代码改造范围；真实联调采用两人复核和单次点击控制。
+
+## 8. 正式 SRS 对照
+
+| 架构子系统 | 对应系统需求 | 主要实现依据 |
+| --- | --- | --- |
+| 智能会话与会话状态 | MCD-SRS-1.1.0、3.1.0、3.2.0 | /api/chat、ModelAdapter、Mock Agent、SSE 白名单 |
+| 配送上下文 | MCD-SRS-1.2.0 | listAddresses、listDeliverableStores、/api/context |
+| 菜单、优惠券与购物车 | MCD-SRS-1.3.0、1.4.0、1.5.0 | 菜单/详情/优惠 Provider、/api/cart、浏览器字段白名单 |
+| 核价与订单生命周期 | MCD-SRS-1.6.0、1.7.0、1.8.0、2.2.0 | PriceQuote、quoteHash、ApprovalRecord、/api/orders/confirm |
+| 演示、安全与协作 | MCD-SRS-1.9.0、2.1.0、4.1.0 | Mock 回退、JsonStore 脱敏、审计和 Markdown 追踪 |
