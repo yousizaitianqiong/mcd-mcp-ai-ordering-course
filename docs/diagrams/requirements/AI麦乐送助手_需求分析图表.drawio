@@ -1,0 +1,1314 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" type="device">
+  <diagram id="fig_3_1_1" name="图 3.1.1 全系统顶层用例图">
+    <mxGraphModel dx="1000" dy="780" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="0" page="1" pageScale="1" pageWidth="1000" pageHeight="780" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#111111;rounded=0;container=1;collapsible=0;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="250" y="40" width="520" height="690" />
+        </mxCell>
+        <mxCell id="user" value="" style="group;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="-5" y="256" width="200" height="180" />
+        </mxCell>
+        <mxCell id="user_head" value="" style="ellipse;fillColor=#000000;strokeColor=none;" vertex="1" parent="user">
+          <mxGeometry as="geometry" x="78" y="0" width="44" height="44" />
+        </mxCell>
+        <mxCell id="user_body" value="" style="rounded=1;arcSize=30;fillColor=#000000;strokeColor=none;" vertex="1" parent="user">
+          <mxGeometry as="geometry" x="68" y="47" width="64" height="64" />
+        </mxCell>
+        <mxCell id="user_label" value="点餐用户" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=26;spacing=0;" vertex="1" parent="user">
+          <mxGeometry as="geometry" x="0" y="116" width="200" height="50" />
+        </mxCell>
+        <mxCell id="admin" value="" style="group;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="810" y="561" width="200" height="180" />
+        </mxCell>
+        <mxCell id="admin_head" value="" style="ellipse;fillColor=#000000;strokeColor=none;" vertex="1" parent="admin">
+          <mxGeometry as="geometry" x="78" y="0" width="44" height="44" />
+        </mxCell>
+        <mxCell id="admin_body" value="" style="rounded=1;arcSize=30;fillColor=#000000;strokeColor=none;" vertex="1" parent="admin">
+          <mxGeometry as="geometry" x="68" y="47" width="64" height="64" />
+        </mxCell>
+        <mxCell id="admin_label" value="系统管理员" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=26;spacing=0;" vertex="1" parent="admin">
+          <mxGeometry as="geometry" x="0" y="116" width="200" height="50" />
+        </mxCell>
+        <mxCell id="uc0" value="智能会话与需求理解" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=28;strokeColor=#111111;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;" vertex="1" parent="boundary">
+          <mxGeometry as="geometry" x="40" y="94" width="440" height="82" />
+        </mxCell>
+        <mxCell id="uc1" value="配送上下文管理" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=28;strokeColor=#111111;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;" vertex="1" parent="boundary">
+          <mxGeometry as="geometry" x="40" y="209" width="440" height="82" />
+        </mxCell>
+        <mxCell id="uc2" value="菜单、优惠与购物车" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=28;strokeColor=#111111;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;" vertex="1" parent="boundary">
+          <mxGeometry as="geometry" x="40" y="324" width="440" height="82" />
+        </mxCell>
+        <mxCell id="uc3" value="核价与订单" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=28;strokeColor=#111111;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;" vertex="1" parent="boundary">
+          <mxGeometry as="geometry" x="40" y="439" width="440" height="82" />
+        </mxCell>
+        <mxCell id="uc4" value="安全与审计" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=28;strokeColor=#111111;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;" vertex="1" parent="boundary">
+          <mxGeometry as="geometry" x="40" y="554" width="440" height="82" />
+        </mxCell>
+        <mxCell id="edge0" style="edgeStyle=none;rounded=0;html=0;strokeColor=#111111;strokeWidth=1.8;endArrow=none;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.304688;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="user_body" target="uc0">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=none;rounded=0;html=0;strokeColor=#111111;strokeWidth=1.8;endArrow=none;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.382812;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="user_body" target="uc1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=none;rounded=0;html=0;strokeColor=#111111;strokeWidth=1.8;endArrow=none;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.460938;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="user_body" target="uc2">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=none;rounded=0;html=0;strokeColor=#111111;strokeWidth=1.8;endArrow=none;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.539062;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="user_body" target="uc3">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge4" style="edgeStyle=none;rounded=0;html=0;strokeColor=#111111;strokeWidth=1.8;endArrow=none;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.421875;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="admin_body" target="uc4">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="label0" value="AI 麦乐送助手" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=32;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="270" y="59.5" width="480" height="45" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="fig_3_3_1" name="图 3.3.1 智能会话与需求理解用例分解图">
+    <mxGraphModel dx="1000" dy="370" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="0" page="1" pageScale="1" pageWidth="1000" pageHeight="370" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#111111;rounded=0;container=1;collapsible=0;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="260" y="34.5" width="710" height="300" />
+        </mxCell>
+        <mxCell id="actor" value="" style="group;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="10" y="121" width="200" height="180" />
+        </mxCell>
+        <mxCell id="actor_head" value="" style="ellipse;fillColor=#000000;strokeColor=none;" vertex="1" parent="actor">
+          <mxGeometry as="geometry" x="78" y="0" width="44" height="44" />
+        </mxCell>
+        <mxCell id="actor_body" value="" style="rounded=1;arcSize=30;fillColor=#000000;strokeColor=none;" vertex="1" parent="actor">
+          <mxGeometry as="geometry" x="68" y="47" width="64" height="64" />
+        </mxCell>
+        <mxCell id="actor_label" value="点餐用户" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=26;spacing=0;" vertex="1" parent="actor">
+          <mxGeometry as="geometry" x="0" y="116" width="200" height="50" />
+        </mxCell>
+        <mxCell id="uc0" value="自然语言点餐会话" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=26;strokeColor=#111111;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;" vertex="1" parent="boundary">
+          <mxGeometry as="geometry" x="75" y="79.5" width="560" height="82" />
+        </mxCell>
+        <mxCell id="uc1" value="代理点餐" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=26;strokeColor=#111111;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;" vertex="1" parent="boundary">
+          <mxGeometry as="geometry" x="75" y="189.5" width="560" height="82" />
+        </mxCell>
+        <mxCell id="edge0" style="edgeStyle=none;rounded=0;html=0;strokeColor=#111111;strokeWidth=1.8;endArrow=none;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.367188;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="actor_body" target="uc0">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=none;rounded=0;html=0;strokeColor=#111111;strokeWidth=1.8;endArrow=none;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.476562;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="actor_body" target="uc1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="label0" value="AI 麦乐送助手" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="315" y="53.5" width="600" height="45" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="fig_3_3_2" name="图 3.3.2 自然语言点餐会话活动图">
+    <mxGraphModel dx="1000" dy="1220" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="0" page="1" pageScale="1" pageWidth="1000" pageHeight="1220" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="lane0" value="点餐用户" style="swimlane;horizontal=1;startSize=64;collapsible=0;rounded=0;fillColor=#ddeaf4;swimlaneFillColor=#ffffff;strokeColor=#40586a;fontFamily=Microsoft YaHei;fontSize=28;fontStyle=1;fontColor=#25445d;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="20" y="20" width="270" height="1180" />
+        </mxCell>
+        <mxCell id="lane1" value="本系统" style="swimlane;horizontal=1;startSize=64;collapsible=0;rounded=0;fillColor=#ddeaf4;swimlaneFillColor=#ffffff;strokeColor=#40586a;fontFamily=Microsoft YaHei;fontSize=28;fontStyle=1;fontColor=#25445d;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="290" y="20" width="690" height="1180" />
+        </mxCell>
+        <mxCell id="s" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#111111;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="126" y="79" width="18" height="18" />
+        </mxCell>
+        <mxCell id="input" value="输入自然语言&#10;点餐需求" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="130" width="230" height="90" />
+        </mxCell>
+        <mxCell id="intent" value="理解需求&#10;识别点餐意图" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="150" y="220" width="420" height="90" />
+        </mxCell>
+        <mxCell id="need" value="需要查询&#10;业务信息？" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rhombus;perimeter=rhombusPerimeter;fillColor=#ffffff;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="215" y="340" width="290" height="110" />
+        </mxCell>
+        <mxCell id="query" value="查询业务信息&#10;单轮最多8次" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="165" y="480" width="390" height="90" />
+        </mxCell>
+        <mxCell id="ok" value="查询成功？" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rhombus;perimeter=rhombusPerimeter;fillColor=#ffffff;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="235" y="607" width="250" height="96" />
+        </mxCell>
+        <mxCell id="error" value="查询失败或超限&#10;生成可理解的提示" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="50" y="735" width="230" height="110" />
+        </mxCell>
+        <mxCell id="reply" value="依据已有信息&#10;生成回复及相关卡片" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="305" y="735" width="360" height="110" />
+        </mxCell>
+        <mxCell id="join" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rhombus;perimeter=rhombusPerimeter;fillColor=#ffffff;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="349" y="889" width="22" height="22" />
+        </mxCell>
+        <mxCell id="display" value="展示本轮结果&#10;与业务处理过程" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="150" y="935" width="420" height="90" />
+        </mxCell>
+        <mxCell id="view" value="查看结果&#10;继续下一轮交互" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="1015" width="230" height="90" />
+        </mxCell>
+        <mxCell id="e" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="121" y="1136" width="28" height="28" />
+        </mxCell>
+        <mxCell id="e_inner" value="" style="ellipse;fillColor=#111111;strokeColor=none;" vertex="1" parent="e">
+          <mxGeometry as="geometry" x="6" y="6" width="16" height="16" />
+        </mxCell>
+        <mxCell id="edge0" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="s" target="input">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.5;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="input" target="intent">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="650" y="195" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="intent" target="need">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="need" target="query">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge4" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="need" target="reply">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="970" y="415" />
+              <mxPoint x="970" y="810" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge5" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="query" target="ok">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge6" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.5;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="ok" target="error">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="455" y="675" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge7" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="ok" target="reply">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="650" y="735" />
+              <mxPoint x="775" y="735" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge8" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="error" target="join">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="455" y="920" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge9" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="reply" target="join">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="775" y="920" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge10" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="join" target="display">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge11" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="display" target="view">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="335" y="1000" />
+              <mxPoint x="335" y="1080" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge12" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="view" target="e">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="label0" value="[是]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="580" y="452.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label1" value="[否]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="796" y="422.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label2" value="[否]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="380" y="682.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label3" value="[是]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="605" y="682.5" width="240" height="65" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="fig_3_3_3" name="图 3.3.3 配送上下文管理用例分解图">
+    <mxGraphModel dx="1000" dy="370" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="0" page="1" pageScale="1" pageWidth="1000" pageHeight="370" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#111111;rounded=0;container=1;collapsible=0;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="260" y="34.5" width="710" height="300" />
+        </mxCell>
+        <mxCell id="actor" value="" style="group;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="10" y="121" width="200" height="180" />
+        </mxCell>
+        <mxCell id="actor_head" value="" style="ellipse;fillColor=#000000;strokeColor=none;" vertex="1" parent="actor">
+          <mxGeometry as="geometry" x="78" y="0" width="44" height="44" />
+        </mxCell>
+        <mxCell id="actor_body" value="" style="rounded=1;arcSize=30;fillColor=#000000;strokeColor=none;" vertex="1" parent="actor">
+          <mxGeometry as="geometry" x="68" y="47" width="64" height="64" />
+        </mxCell>
+        <mxCell id="actor_label" value="点餐用户" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=26;spacing=0;" vertex="1" parent="actor">
+          <mxGeometry as="geometry" x="0" y="116" width="200" height="50" />
+        </mxCell>
+        <mxCell id="uc0" value="查询并选择配送地址" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=26;strokeColor=#111111;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;" vertex="1" parent="boundary">
+          <mxGeometry as="geometry" x="75" y="79.5" width="560" height="82" />
+        </mxCell>
+        <mxCell id="uc1" value="查询可配送门店并切换门店" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=26;strokeColor=#111111;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;" vertex="1" parent="boundary">
+          <mxGeometry as="geometry" x="75" y="189.5" width="560" height="82" />
+        </mxCell>
+        <mxCell id="edge0" style="edgeStyle=none;rounded=0;html=0;strokeColor=#111111;strokeWidth=1.8;endArrow=none;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.367188;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="actor_body" target="uc0">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=none;rounded=0;html=0;strokeColor=#111111;strokeWidth=1.8;endArrow=none;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.476562;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="actor_body" target="uc1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="label0" value="AI 麦乐送助手" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="315" y="53.5" width="600" height="45" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="fig_3_3_4" name="图 3.3.4 查询可配送门店并切换门店活动图">
+    <mxGraphModel dx="1000" dy="1340" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="0" page="1" pageScale="1" pageWidth="1000" pageHeight="1340" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="lane0" value="点餐用户" style="swimlane;horizontal=1;startSize=64;collapsible=0;rounded=0;fillColor=#ddeaf4;swimlaneFillColor=#ffffff;strokeColor=#40586a;fontFamily=Microsoft YaHei;fontSize=28;fontStyle=1;fontColor=#25445d;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="20" y="20" width="270" height="1300" />
+        </mxCell>
+        <mxCell id="lane1" value="本系统" style="swimlane;horizontal=1;startSize=64;collapsible=0;rounded=0;fillColor=#ddeaf4;swimlaneFillColor=#ffffff;strokeColor=#40586a;fontFamily=Microsoft YaHei;fontSize=28;fontStyle=1;fontColor=#25445d;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="290" y="20" width="420" height="1300" />
+        </mxCell>
+        <mxCell id="lane2" value="外部业务服务" style="swimlane;horizontal=1;startSize=64;collapsible=0;rounded=0;fillColor=#ddeaf4;swimlaneFillColor=#ffffff;strokeColor=#40586a;fontFamily=Microsoft YaHei;fontSize=28;fontStyle=1;fontColor=#25445d;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="710" y="20" width="270" height="1300" />
+        </mxCell>
+        <mxCell id="s" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#111111;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="126" y="76" width="18" height="18" />
+        </mxCell>
+        <mxCell id="address" value="选择配送地址" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="127.5" width="230" height="75" />
+        </mxCell>
+        <mxCell id="validate" value="校验配送地址" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="35" y="127.5" width="350" height="75" />
+        </mxCell>
+        <mxCell id="address_ok" value="地址有效？" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rhombus;perimeter=rhombusPerimeter;fillColor=#ffffff;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="80" y="242" width="260" height="96" />
+        </mxCell>
+        <mxCell id="address_error" value="提示重新&#10;选择有效地址" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="242.5" width="230" height="95" />
+        </mxCell>
+        <mxCell id="ae" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="121" y="386" width="28" height="28" />
+        </mxCell>
+        <mxCell id="ae_inner" value="" style="ellipse;fillColor=#111111;strokeColor=none;" vertex="1" parent="ae">
+          <mxGeometry as="geometry" x="6" y="6" width="16" height="16" />
+        </mxCell>
+        <mxCell id="query" value="查询可配送门店" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="35" y="380" width="350" height="80" />
+        </mxCell>
+        <mxCell id="service" value="返回门店列表&#10;与营业信息" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane2">
+          <mxGeometry as="geometry" x="20" y="372.5" width="230" height="95" />
+        </mxCell>
+        <mxCell id="stores_ok" value="有可配送&#10;门店？" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rhombus;perimeter=rhombusPerimeter;fillColor=#ffffff;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="75" y="510" width="270" height="110" />
+        </mxCell>
+        <mxCell id="empty" value="提示暂无门店&#10;允许更换地址" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="517.5" width="230" height="95" />
+        </mxCell>
+        <mxCell id="ee" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="121" y="656" width="28" height="28" />
+        </mxCell>
+        <mxCell id="ee_inner" value="" style="ellipse;fillColor=#111111;strokeColor=none;" vertex="1" parent="ee">
+          <mxGeometry as="geometry" x="6" y="6" width="16" height="16" />
+        </mxCell>
+        <mxCell id="show" value="展示可配送门店" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="35" y="662.5" width="350" height="75" />
+        </mxCell>
+        <mxCell id="choose" value="选择或切换门店" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="767.5" width="230" height="85" />
+        </mxCell>
+        <mxCell id="match" value="校验门店与地址&#10;的匹配关系" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="35" y="867.5" width="350" height="95" />
+        </mxCell>
+        <mxCell id="match_ok" value="匹配通过？" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rhombus;perimeter=rhombusPerimeter;fillColor=#ffffff;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="80" y="987" width="260" height="96" />
+        </mxCell>
+        <mxCell id="invalid" value="提示选择无效&#10;保持原选择" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="987.5" width="230" height="95" />
+        </mxCell>
+        <mxCell id="ie" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="121" y="1126" width="28" height="28" />
+        </mxCell>
+        <mxCell id="ie_inner" value="" style="ellipse;fillColor=#111111;strokeColor=none;" vertex="1" parent="ie">
+          <mxGeometry as="geometry" x="6" y="6" width="16" height="16" />
+        </mxCell>
+        <mxCell id="save" value="保存配送上下文&#10;切换时清理购物车&#10;使已有报价失效" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="35" y="1120" width="350" height="110" />
+        </mxCell>
+        <mxCell id="e" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;strokeColor=#111111;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="196" y="1256" width="28" height="28" />
+        </mxCell>
+        <mxCell id="e_inner" value="" style="ellipse;fillColor=#111111;strokeColor=none;" vertex="1" parent="e">
+          <mxGeometry as="geometry" x="6" y="6" width="16" height="16" />
+        </mxCell>
+        <mxCell id="edge0" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="s" target="address">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="address" target="validate">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="validate" target="address_ok">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="address_ok" target="address_error">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge4" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="address_error" target="ae">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge5" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="address_ok" target="query">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge6" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="query" target="service">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge7" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="service" target="stores_ok">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="845" y="515" />
+              <mxPoint x="500" y="515" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge8" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="stores_ok" target="empty">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge9" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="empty" target="ee">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge10" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="stores_ok" target="show">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge11" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="show" target="choose">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="500" y="785" />
+              <mxPoint x="155" y="785" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge12" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.5;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="choose" target="match">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="500" y="830" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge13" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="match" target="match_ok">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge14" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="match_ok" target="invalid">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge15" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="invalid" target="ie">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge16" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="match_ok" target="save">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge17" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="save" target="e">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="label0" value="[否]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="195" y="252.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label1" value="[是]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="430" y="347.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label2" value="[否]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="195" y="525.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label3" value="[是]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="430" y="624.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label4" value="[否]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="195" y="994.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label5" value="[是]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="430" y="1087.5" width="240" height="65" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="fig_3_3_5" name="图 3.3.5 菜单、优惠与购物车用例分解图">
+    <mxGraphModel dx="1000" dy="590" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="0" page="1" pageScale="1" pageWidth="1000" pageHeight="590" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#111111;rounded=0;container=1;collapsible=0;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="260" y="34.5" width="710" height="520" />
+        </mxCell>
+        <mxCell id="actor" value="" style="group;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="10" y="231" width="200" height="180" />
+        </mxCell>
+        <mxCell id="actor_head" value="" style="ellipse;fillColor=#000000;strokeColor=none;" vertex="1" parent="actor">
+          <mxGeometry as="geometry" x="78" y="0" width="44" height="44" />
+        </mxCell>
+        <mxCell id="actor_body" value="" style="rounded=1;arcSize=30;fillColor=#000000;strokeColor=none;" vertex="1" parent="actor">
+          <mxGeometry as="geometry" x="68" y="47" width="64" height="64" />
+        </mxCell>
+        <mxCell id="actor_label" value="点餐用户" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=26;spacing=0;" vertex="1" parent="actor">
+          <mxGeometry as="geometry" x="0" y="116" width="200" height="50" />
+        </mxCell>
+        <mxCell id="uc0" value="浏览菜单与查看餐品详情" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=26;strokeColor=#111111;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;" vertex="1" parent="boundary">
+          <mxGeometry as="geometry" x="75" y="79.5" width="560" height="82" />
+        </mxCell>
+        <mxCell id="uc1" value="查看门店可用优惠" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=26;strokeColor=#111111;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;" vertex="1" parent="boundary">
+          <mxGeometry as="geometry" x="75" y="189.5" width="560" height="82" />
+        </mxCell>
+        <mxCell id="uc2" value="加入购物车与数量合并" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=26;strokeColor=#111111;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;" vertex="1" parent="boundary">
+          <mxGeometry as="geometry" x="75" y="299.5" width="560" height="82" />
+        </mxCell>
+        <mxCell id="uc3" value="查看、修改与清空购物车" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=26;strokeColor=#111111;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;" vertex="1" parent="boundary">
+          <mxGeometry as="geometry" x="75" y="409.5" width="560" height="82" />
+        </mxCell>
+        <mxCell id="edge0" style="edgeStyle=none;rounded=0;html=0;strokeColor=#111111;strokeWidth=1.8;endArrow=none;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.257812;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="actor_body" target="uc0">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=none;rounded=0;html=0;strokeColor=#111111;strokeWidth=1.8;endArrow=none;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.367188;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="actor_body" target="uc1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=none;rounded=0;html=0;strokeColor=#111111;strokeWidth=1.8;endArrow=none;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.476562;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="actor_body" target="uc2">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=none;rounded=0;html=0;strokeColor=#111111;strokeWidth=1.8;endArrow=none;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.585938;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="actor_body" target="uc3">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="label0" value="AI 麦乐送助手" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="315" y="53.5" width="600" height="45" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="fig_3_3_6" name="图 3.3.6 加入购物车与数量合并活动图">
+    <mxGraphModel dx="1000" dy="1190" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="0" page="1" pageScale="1" pageWidth="1000" pageHeight="1190" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="lane0" value="点餐用户" style="swimlane;horizontal=1;startSize=64;collapsible=0;rounded=0;fillColor=#ddeaf4;swimlaneFillColor=#ffffff;strokeColor=#40586a;fontFamily=Microsoft YaHei;fontSize=28;fontStyle=1;fontColor=#25445d;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="20" y="20" width="270" height="1150" />
+        </mxCell>
+        <mxCell id="lane1" value="本系统" style="swimlane;horizontal=1;startSize=64;collapsible=0;rounded=0;fillColor=#ddeaf4;swimlaneFillColor=#ffffff;strokeColor=#40586a;fontFamily=Microsoft YaHei;fontSize=28;fontStyle=1;fontColor=#25445d;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="290" y="20" width="690" height="1150" />
+        </mxCell>
+        <mxCell id="s" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#111111;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="126" y="76" width="18" height="18" />
+        </mxCell>
+        <mxCell id="add" value="选择餐品与数量&#10;加入购物车" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="127.5" width="230" height="95" />
+        </mxCell>
+        <mxCell id="validate" value="校验配送上下文&#10;及餐品可售性" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="150" y="217.5" width="420" height="95" />
+        </mxCell>
+        <mxCell id="ok" value="校验通过？" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rhombus;perimeter=rhombusPerimeter;fillColor=#ffffff;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="225" y="342" width="270" height="96" />
+        </mxCell>
+        <mxCell id="error" value="提示补充配送信息&#10;或重新选择餐品" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="332.5" width="230" height="115" />
+        </mxCell>
+        <mxCell id="ee" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="121" y="501" width="28" height="28" />
+        </mxCell>
+        <mxCell id="ee_inner" value="" style="ellipse;fillColor=#111111;strokeColor=none;" vertex="1" parent="ee">
+          <mxGeometry as="geometry" x="6" y="6" width="16" height="16" />
+        </mxCell>
+        <mxCell id="exists" value="购物车已有&#10;该餐品？" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rhombus;perimeter=rhombusPerimeter;fillColor=#ffffff;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="210" y="480" width="300" height="110" />
+        </mxCell>
+        <mxCell id="sum" value="合并已有餐品数量&#10;数量限制为1–20" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="30" y="640" width="280" height="100" />
+        </mxCell>
+        <mxCell id="new" value="新增餐品条目&#10;数量限制为1–20" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="400" y="640" width="270" height="100" />
+        </mxCell>
+        <mxCell id="join" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rhombus;perimeter=rhombusPerimeter;fillColor=#ffffff;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="349" y="779" width="22" height="22" />
+        </mxCell>
+        <mxCell id="save" value="保存购物车&#10;使已有报价失效" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="150" y="820" width="420" height="90" />
+        </mxCell>
+        <mxCell id="result" value="返回餐品、数量&#10;与商品小计" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="150" y="935" width="420" height="90" />
+        </mxCell>
+        <mxCell id="view" value="查看更新后的&#10;购物车" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="1015" width="230" height="90" />
+        </mxCell>
+        <mxCell id="e" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="121" y="1116" width="28" height="28" />
+        </mxCell>
+        <mxCell id="e_inner" value="" style="ellipse;fillColor=#111111;strokeColor=none;" vertex="1" parent="e">
+          <mxGeometry as="geometry" x="6" y="6" width="16" height="16" />
+        </mxCell>
+        <mxCell id="edge0" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="s" target="add">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.5;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="add" target="validate">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="650" y="195" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="validate" target="ok">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="ok" target="error">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge4" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="error" target="ee">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge5" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="ok" target="exists">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge6" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.5;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="exists" target="sum">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="460" y="555" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge7" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.5;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="exists" target="new">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="825" y="555" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge8" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="sum" target="join">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="460" y="810" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge9" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="new" target="join">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="825" y="810" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge10" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="join" target="save">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge11" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="save" target="result">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge12" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="result" target="view">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="335" y="1000" />
+              <mxPoint x="335" y="1080" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge13" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="view" target="e">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="label0" value="[否]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="245" y="352.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label1" value="[是]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="580" y="445.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label2" value="[是]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="300" y="585.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label3" value="[否]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="755" y="585.5" width="240" height="65" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="fig_3_3_7" name="图 3.3.7 查看、修改与清空购物车活动图">
+    <mxGraphModel dx="1000" dy="1320" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="0" page="1" pageScale="1" pageWidth="1000" pageHeight="1320" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="lane0" value="点餐用户" style="swimlane;horizontal=1;startSize=64;collapsible=0;rounded=0;fillColor=#ddeaf4;swimlaneFillColor=#ffffff;strokeColor=#40586a;fontFamily=Microsoft YaHei;fontSize=28;fontStyle=1;fontColor=#25445d;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="20" y="20" width="270" height="1280" />
+        </mxCell>
+        <mxCell id="lane1" value="本系统" style="swimlane;horizontal=1;startSize=64;collapsible=0;rounded=0;fillColor=#ddeaf4;swimlaneFillColor=#ffffff;strokeColor=#40586a;fontFamily=Microsoft YaHei;fontSize=28;fontStyle=1;fontColor=#25445d;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="290" y="20" width="690" height="1280" />
+        </mxCell>
+        <mxCell id="s" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#111111;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="126" y="76" width="18" height="18" />
+        </mxCell>
+        <mxCell id="request" value="查看购物车&#10;或发起调整操作" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="130" width="230" height="100" />
+        </mxCell>
+        <mxCell id="type" value="请求类型？" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rhombus;perimeter=rhombusPerimeter;fillColor=#ffffff;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="220" y="262" width="300" height="96" />
+        </mxCell>
+        <mxCell id="read" value="读取购物车&#10;及商品小计" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="40" y="410" width="240" height="90" />
+        </mxCell>
+        <mxCell id="adjust" value="调整类型？" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rhombus;perimeter=rhombusPerimeter;fillColor=#ffffff;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="315" y="407" width="250" height="96" />
+        </mxCell>
+        <mxCell id="quantity" value="限制数量&#10;为1–20&#10;更新条目" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="60" y="560" width="200" height="120" />
+        </mxCell>
+        <mxCell id="delete" value="删除所选&#10;餐品条目" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="275" y="570" width="190" height="100" />
+        </mxCell>
+        <mxCell id="clear" value="清空全部&#10;购物车条目" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="490" y="570" width="190" height="100" />
+        </mxCell>
+        <mxCell id="changed" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rhombus;perimeter=rhombusPerimeter;fillColor=#ffffff;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="359" y="724" width="22" height="22" />
+        </mxCell>
+        <mxCell id="invalidate" value="使已有报价失效" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="175" y="772.5" width="390" height="75" />
+        </mxCell>
+        <mxCell id="amount" value="重新计算商品小计&#10;空车时停用核价入口" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="175" y="867.5" width="390" height="95" />
+        </mxCell>
+        <mxCell id="join" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rhombus;perimeter=rhombusPerimeter;fillColor=#ffffff;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="359" y="1004" width="22" height="22" />
+        </mxCell>
+        <mxCell id="return" value="返回购物车内容&#10;或空购物车提示" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="175" y="1045" width="390" height="90" />
+        </mxCell>
+        <mxCell id="view" value="查看购物车结果" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="1137.5" width="230" height="85" />
+        </mxCell>
+        <mxCell id="e" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="121" y="1246" width="28" height="28" />
+        </mxCell>
+        <mxCell id="e_inner" value="" style="ellipse;fillColor=#111111;strokeColor=none;" vertex="1" parent="e">
+          <mxGeometry as="geometry" x="6" y="6" width="16" height="16" />
+        </mxCell>
+        <mxCell id="edge0" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="s" target="request">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.5;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="request" target="type">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="660" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.5;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="type" target="read">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="450" y="330" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="type" target="adjust">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="660" y="407" />
+              <mxPoint x="730" y="407" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge4" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="read" target="join">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="310" y="475" />
+              <mxPoint x="310" y="1035" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge5" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.5;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="adjust" target="quantity">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="590" y="475" />
+              <mxPoint x="590" y="550" />
+              <mxPoint x="450" y="550" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge6" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="adjust" target="delete">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="730" y="548" />
+              <mxPoint x="660" y="548" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge7" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.5;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="adjust" target="clear">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="875" y="475" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge8" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="quantity" target="changed">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="450" y="755" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge9" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="delete" target="changed">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge10" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="clear" target="changed">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="875" y="755" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge11" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="changed" target="invalidate">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge12" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="invalidate" target="amount">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge13" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="amount" target="join">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge14" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="join" target="return">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge15" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="return" target="view">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="335" y="1110" />
+              <mxPoint x="335" y="1200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge16" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="view" target="e">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="label0" value="[查看]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="285" y="364.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label1" value="[调整]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="665" y="369.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label2" value="[修改]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="270" y="517.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label3" value="[删除]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="590" y="537.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label4" value="[清空]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="815" y="517.5" width="240" height="65" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="fig_3_3_8" name="图 3.3.8 核价与订单用例分解图">
+    <mxGraphModel dx="1000" dy="480" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="0" page="1" pageScale="1" pageWidth="1000" pageHeight="480" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#111111;rounded=0;container=1;collapsible=0;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="260" y="34.5" width="710" height="410" />
+        </mxCell>
+        <mxCell id="actor" value="" style="group;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="10" y="176" width="200" height="180" />
+        </mxCell>
+        <mxCell id="actor_head" value="" style="ellipse;fillColor=#000000;strokeColor=none;" vertex="1" parent="actor">
+          <mxGeometry as="geometry" x="78" y="0" width="44" height="44" />
+        </mxCell>
+        <mxCell id="actor_body" value="" style="rounded=1;arcSize=30;fillColor=#000000;strokeColor=none;" vertex="1" parent="actor">
+          <mxGeometry as="geometry" x="68" y="47" width="64" height="64" />
+        </mxCell>
+        <mxCell id="actor_label" value="点餐用户" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=26;spacing=0;" vertex="1" parent="actor">
+          <mxGeometry as="geometry" x="0" y="116" width="200" height="50" />
+        </mxCell>
+        <mxCell id="uc0" value="发起核价并生成报价" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=26;strokeColor=#111111;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;" vertex="1" parent="boundary">
+          <mxGeometry as="geometry" x="75" y="79.5" width="560" height="82" />
+        </mxCell>
+        <mxCell id="uc1" value="人工确认并创建待支付订单" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=26;strokeColor=#111111;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;" vertex="1" parent="boundary">
+          <mxGeometry as="geometry" x="75" y="189.5" width="560" height="82" />
+        </mxCell>
+        <mxCell id="uc2" value="查询订单状态" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=26;strokeColor=#111111;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;" vertex="1" parent="boundary">
+          <mxGeometry as="geometry" x="75" y="299.5" width="560" height="82" />
+        </mxCell>
+        <mxCell id="edge0" style="edgeStyle=none;rounded=0;html=0;strokeColor=#111111;strokeWidth=1.8;endArrow=none;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.3125;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="actor_body" target="uc0">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=none;rounded=0;html=0;strokeColor=#111111;strokeWidth=1.8;endArrow=none;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.421875;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="actor_body" target="uc1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=none;rounded=0;html=0;strokeColor=#111111;strokeWidth=1.8;endArrow=none;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.53125;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="actor_body" target="uc2">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="label0" value="AI 麦乐送助手" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="315" y="53.5" width="600" height="45" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="fig_3_3_9" name="图 3.3.9 发起核价并生成报价活动图">
+    <mxGraphModel dx="1000" dy="1330" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="0" page="1" pageScale="1" pageWidth="1000" pageHeight="1330" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="lane0" value="点餐用户" style="swimlane;horizontal=1;startSize=64;collapsible=0;rounded=0;fillColor=#ddeaf4;swimlaneFillColor=#ffffff;strokeColor=#40586a;fontFamily=Microsoft YaHei;fontSize=28;fontStyle=1;fontColor=#25445d;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="20" y="20" width="270" height="1290" />
+        </mxCell>
+        <mxCell id="lane1" value="本系统" style="swimlane;horizontal=1;startSize=64;collapsible=0;rounded=0;fillColor=#ddeaf4;swimlaneFillColor=#ffffff;strokeColor=#40586a;fontFamily=Microsoft YaHei;fontSize=28;fontStyle=1;fontColor=#25445d;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="290" y="20" width="420" height="1290" />
+        </mxCell>
+        <mxCell id="lane2" value="外部业务服务" style="swimlane;horizontal=1;startSize=64;collapsible=0;rounded=0;fillColor=#ddeaf4;swimlaneFillColor=#ffffff;strokeColor=#40586a;fontFamily=Microsoft YaHei;fontSize=28;fontStyle=1;fontColor=#25445d;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="710" y="20" width="270" height="1290" />
+        </mxCell>
+        <mxCell id="s" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#111111;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="126" y="76" width="18" height="18" />
+        </mxCell>
+        <mxCell id="request" value="发起核价" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="130" width="230" height="80" />
+        </mxCell>
+        <mxCell id="read" value="读取服务端购物车&#10;与配送上下文" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="35" y="120" width="350" height="100" />
+        </mxCell>
+        <mxCell id="valid" value="前置条件&#10;满足？" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rhombus;perimeter=rhombusPerimeter;fillColor=#ffffff;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="70" y="270" width="280" height="110" />
+        </mxCell>
+        <mxCell id="missing" value="提示补充地址、&#10;门店或有效餐品" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="267.5" width="230" height="115" />
+        </mxCell>
+        <mxCell id="me" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="121" y="436" width="28" height="28" />
+        </mxCell>
+        <mxCell id="me_inner" value="" style="ellipse;fillColor=#111111;strokeColor=none;" vertex="1" parent="me">
+          <mxGeometry as="geometry" x="6" y="6" width="16" height="16" />
+        </mxCell>
+        <mxCell id="send" value="提交门店、餐品&#10;数量及所选优惠" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="35" y="440" width="350" height="100" />
+        </mxCell>
+        <mxCell id="calculate" value="核算商品金额、&#10;配送费和优惠" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane2">
+          <mxGeometry as="geometry" x="20" y="432.5" width="230" height="115" />
+        </mxCell>
+        <mxCell id="service" value="返回金额明细&#10;与应付总额" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane2">
+          <mxGeometry as="geometry" x="20" y="592.5" width="230" height="95" />
+        </mxCell>
+        <mxCell id="ok" value="核价成功？" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rhombus;perimeter=rhombusPerimeter;fillColor=#ffffff;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="80" y="727" width="260" height="96" />
+        </mxCell>
+        <mxCell id="error" value="提示核价失败&#10;保留购物车" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="727.5" width="230" height="95" />
+        </mxCell>
+        <mxCell id="ee" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="121" y="871" width="28" height="28" />
+        </mxCell>
+        <mxCell id="ee_inner" value="" style="ellipse;fillColor=#111111;strokeColor=none;" vertex="1" parent="ee">
+          <mxGeometry as="geometry" x="6" y="6" width="16" height="16" />
+        </mxCell>
+        <mxCell id="save" value="保存报价明细、&#10;有效期与确认标识" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="35" y="872.5" width="350" height="105" />
+        </mxCell>
+        <mxCell id="show" value="展示报价明细&#10;及确认入口" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="35" y="1017.5" width="350" height="95" />
+        </mxCell>
+        <mxCell id="view" value="核对地址、门店、&#10;餐品与应付总价" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="1107.5" width="230" height="115" />
+        </mxCell>
+        <mxCell id="e" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="121" y="1251" width="28" height="28" />
+        </mxCell>
+        <mxCell id="e_inner" value="" style="ellipse;fillColor=#111111;strokeColor=none;" vertex="1" parent="e">
+          <mxGeometry as="geometry" x="6" y="6" width="16" height="16" />
+        </mxCell>
+        <mxCell id="edge0" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="s" target="request">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="request" target="read">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="read" target="valid">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="valid" target="missing">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge4" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="missing" target="me">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge5" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="valid" target="send">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge6" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="send" target="calculate">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge7" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="calculate" target="service">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge8" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="service" target="ok">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="845" y="730" />
+              <mxPoint x="500" y="730" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge9" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="ok" target="error">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge10" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="error" target="ee">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge11" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="ok" target="save">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge12" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="save" target="show">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge13" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.5;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="show" target="view">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="155" y="1085" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge14" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="view" target="e">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="label0" value="[否]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="200" y="284.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label1" value="[是]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="430" y="398.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label2" value="[否]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="200" y="737.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label3" value="[是]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="430" y="834.5" width="240" height="65" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="fig_3_3_10" name="图 3.3.10 人工确认并创建待支付订单活动图（确认校验）">
+    <mxGraphModel dx="1000" dy="1310" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="0" page="1" pageScale="1" pageWidth="1000" pageHeight="1310" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="lane0" value="点餐用户" style="swimlane;horizontal=1;startSize=64;collapsible=0;rounded=0;fillColor=#ddeaf4;swimlaneFillColor=#ffffff;strokeColor=#40586a;fontFamily=Microsoft YaHei;fontSize=28;fontStyle=1;fontColor=#25445d;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="20" y="20" width="270" height="1270" />
+        </mxCell>
+        <mxCell id="lane1" value="本系统" style="swimlane;horizontal=1;startSize=64;collapsible=0;rounded=0;fillColor=#ddeaf4;swimlaneFillColor=#ffffff;strokeColor=#40586a;fontFamily=Microsoft YaHei;fontSize=28;fontStyle=1;fontColor=#25445d;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="290" y="20" width="690" height="1270" />
+        </mxCell>
+        <mxCell id="s" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#111111;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="126" y="76" width="18" height="18" />
+        </mxCell>
+        <mxCell id="confirm" value="核对订单预览&#10;并点击确认" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="127.5" width="230" height="95" />
+        </mxCell>
+        <mxCell id="validate" value="校验确认标识的&#10;归属、状态与有效性" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="150" y="235" width="420" height="100" />
+        </mxCell>
+        <mxCell id="valid" value="确认标识&#10;有效？" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rhombus;perimeter=rhombusPerimeter;fillColor=#ffffff;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="215" y="375" width="290" height="110" />
+        </mxCell>
+        <mxCell id="invalid" value="提示确认无效&#10;要求重新核价" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="382.5" width="230" height="95" />
+        </mxCell>
+        <mxCell id="ie" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="121" y="526" width="28" height="28" />
+        </mxCell>
+        <mxCell id="ie_inner" value="" style="ellipse;fillColor=#111111;strokeColor=none;" vertex="1" parent="ie">
+          <mxGeometry as="geometry" x="6" y="6" width="16" height="16" />
+        </mxCell>
+        <mxCell id="read" value="读取有效报价&#10;重新核算并比对" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="150" y="547.5" width="420" height="95" />
+        </mxCell>
+        <mxCell id="match" value="报价一致且&#10;未过期？" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rhombus;perimeter=rhombusPerimeter;fillColor=#ffffff;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="205" y="690" width="310" height="110" />
+        </mxCell>
+        <mxCell id="expired" value="提示报价变化&#10;或已过期&#10;要求重新核价" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="682.5" width="230" height="125" />
+        </mxCell>
+        <mxCell id="xe" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="121" y="861" width="28" height="28" />
+        </mxCell>
+        <mxCell id="xe_inner" value="" style="ellipse;fillColor=#111111;strokeColor=none;" vertex="1" parent="xe">
+          <mxGeometry as="geometry" x="6" y="6" width="16" height="16" />
+        </mxCell>
+        <mxCell id="claim" value="一次性占用确认标识" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="150" y="862.5" width="420" height="85" />
+        </mxCell>
+        <mxCell id="claimed" value="占用成功？" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rhombus;perimeter=rhombusPerimeter;fillColor=#ffffff;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="225" y="1002" width="270" height="96" />
+        </mxCell>
+        <mxCell id="duplicate" value="提示重复提交&#10;拒绝创建订单" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="1002.5" width="230" height="95" />
+        </mxCell>
+        <mxCell id="de" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="121" y="1146" width="28" height="28" />
+        </mxCell>
+        <mxCell id="de_inner" value="" style="ellipse;fillColor=#111111;strokeColor=none;" vertex="1" parent="de">
+          <mxGeometry as="geometry" x="6" y="6" width="16" height="16" />
+        </mxCell>
+        <mxCell id="A" value="A" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=26;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="336" y="1176" width="48" height="48" />
+        </mxCell>
+        <mxCell id="edge0" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="s" target="confirm">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.5;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="confirm" target="validate">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="650" y="195" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="validate" target="valid">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="valid" target="invalid">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge4" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="invalid" target="ie">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge5" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="valid" target="read">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge6" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="read" target="match">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge7" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="match" target="expired">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge8" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="expired" target="xe">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge9" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="match" target="claim">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge10" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="claim" target="claimed">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge11" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="claimed" target="duplicate">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge12" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="duplicate" target="de">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge13" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="claimed" target="A">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="label0" value="进入订单创建&#10;见图3.3.11" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="685" y="1185" width="270" height="70" />
+        </mxCell>
+        <mxCell id="label1" value="[否]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="250" y="392.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label2" value="[是]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="580" y="505.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label3" value="[否]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="250" y="705.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label4" value="[是]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="580" y="817.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label5" value="[否]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="250" y="1009.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label6" value="[是]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="580" y="1117.5" width="240" height="65" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="fig_3_3_11" name="图 3.3.11 人工确认并创建待支付订单活动图（订单创建与结果处理）">
+    <mxGraphModel dx="1000" dy="1350" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="0" page="1" pageScale="1" pageWidth="1000" pageHeight="1350" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="lane0" value="点餐用户" style="swimlane;horizontal=1;startSize=64;collapsible=0;rounded=0;fillColor=#ddeaf4;swimlaneFillColor=#ffffff;strokeColor=#40586a;fontFamily=Microsoft YaHei;fontSize=28;fontStyle=1;fontColor=#25445d;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="20" y="20" width="270" height="1310" />
+        </mxCell>
+        <mxCell id="lane1" value="本系统" style="swimlane;horizontal=1;startSize=64;collapsible=0;rounded=0;fillColor=#ddeaf4;swimlaneFillColor=#ffffff;strokeColor=#40586a;fontFamily=Microsoft YaHei;fontSize=28;fontStyle=1;fontColor=#25445d;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="290" y="20" width="420" height="1310" />
+        </mxCell>
+        <mxCell id="lane2" value="外部业务服务" style="swimlane;horizontal=1;startSize=64;collapsible=0;rounded=0;fillColor=#ddeaf4;swimlaneFillColor=#ffffff;strokeColor=#40586a;fontFamily=Microsoft YaHei;fontSize=28;fontStyle=1;fontColor=#25445d;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="710" y="20" width="270" height="1310" />
+        </mxCell>
+        <mxCell id="A" value="A" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=26;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="186" y="81" width="48" height="48" />
+        </mxCell>
+        <mxCell id="submit" value="提交创建订单请求&#10;本次调用不自动重试" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="35" y="182.5" width="350" height="105" />
+        </mxCell>
+        <mxCell id="service" value="处理请求&#10;返回创建结果" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane2">
+          <mxGeometry as="geometry" x="20" y="187.5" width="230" height="95" />
+        </mxCell>
+        <mxCell id="receive" value="接收结果&#10;或等待超时" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="35" y="340" width="350" height="90" />
+        </mxCell>
+        <mxCell id="result" value="创建结果？" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rhombus;perimeter=rhombusPerimeter;fillColor=#ffffff;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="80" y="477" width="260" height="96" />
+        </mxCell>
+        <mxCell id="success" value="保存待支付订单&#10;清空购物车&#10;确认标识标记已用" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="35" y="632.5" width="350" height="125" />
+        </mxCell>
+        <mxCell id="success_view" value="查看订单号及链接&#10;在官方渠道支付" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="640" width="230" height="110" />
+        </mxCell>
+        <mxCell id="se" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="121" y="816" width="28" height="28" />
+        </mxCell>
+        <mxCell id="se_inner" value="" style="ellipse;fillColor=#111111;strokeColor=none;" vertex="1" parent="se">
+          <mxGeometry as="geometry" x="6" y="6" width="16" height="16" />
+        </mxCell>
+        <mxCell id="failure" value="记录明确失败&#10;保留购物车&#10;返回失败提示" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="35" y="907.5" width="350" height="115" />
+        </mxCell>
+        <mxCell id="failure_view" value="查看失败提示&#10;核对后重新发起" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="907.5" width="230" height="115" />
+        </mxCell>
+        <mxCell id="fe" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="121" y="1071" width="28" height="28" />
+        </mxCell>
+        <mxCell id="fe_inner" value="" style="ellipse;fillColor=#111111;strokeColor=none;" vertex="1" parent="fe">
+          <mxGeometry as="geometry" x="6" y="6" width="16" height="16" />
+        </mxCell>
+        <mxCell id="unknown" value="标记结果待核对&#10;保留可核对的状态&#10;不自动重试" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane1">
+          <mxGeometry as="geometry" x="35" y="1137.5" width="350" height="115" />
+        </mxCell>
+        <mxCell id="unknown_view" value="查看待核对提示&#10;人工核对订单结果" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;rounded=1;arcSize=14;fillColor=#eef5fa;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="20" y="1137.5" width="230" height="115" />
+        </mxCell>
+        <mxCell id="ue" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#40586a;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;strokeColor=#111111;" vertex="1" parent="lane0">
+          <mxGeometry as="geometry" x="121" y="1276" width="28" height="28" />
+        </mxCell>
+        <mxCell id="ue_inner" value="" style="ellipse;fillColor=#111111;strokeColor=none;" vertex="1" parent="ue">
+          <mxGeometry as="geometry" x="6" y="6" width="16" height="16" />
+        </mxCell>
+        <mxCell id="edge0" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="A" target="submit">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="500" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="submit" target="service">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="service" target="receive">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="845" y="340" />
+              <mxPoint x="500" y="340" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="receive" target="result">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge4" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="result" target="success">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge5" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.5;entryX=0;entryY=0.326087;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="result" target="failure">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="305" y="545" />
+              <mxPoint x="305" y="965" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge6" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=1;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="result" target="unknown">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="695" y="545" />
+              <mxPoint x="695" y="1215" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge7" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="success" target="success_view">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge8" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="success_view" target="se">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge9" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.673913;entryX=1;entryY=0.673913;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="failure" target="failure_view">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge10" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="failure_view" target="fe">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge11" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="unknown" target="unknown_view">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge12" style="edgeStyle=none;rounded=0;html=0;strokeColor=#40586a;strokeWidth=1.8;endArrow=block;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="unknown_view" target="ue">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="label0" value="承接图3.3.10" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="510" y="107.5" width="220" height="35" />
+        </mxCell>
+        <mxCell id="label1" value="[成功]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="450" y="587.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label2" value="[明确失败]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="255" y="862.5" width="240" height="65" />
+        </mxCell>
+        <mxCell id="label3" value="[结果未知]" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=24;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="500" y="1077.5" width="240" height="65" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="fig_3_3_12" name="图 3.3.12 安全与审计用例分解图">
+    <mxGraphModel dx="1000" dy="370" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="0" page="1" pageScale="1" pageWidth="1000" pageHeight="370" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary" value="" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=25;strokeColor=#111111;rounded=0;container=1;collapsible=0;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="25" y="34.5" width="710" height="300" />
+        </mxCell>
+        <mxCell id="actor" value="" style="group;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="800" y="121" width="200" height="180" />
+        </mxCell>
+        <mxCell id="actor_head" value="" style="ellipse;fillColor=#000000;strokeColor=none;" vertex="1" parent="actor">
+          <mxGeometry as="geometry" x="78" y="0" width="44" height="44" />
+        </mxCell>
+        <mxCell id="actor_body" value="" style="rounded=1;arcSize=30;fillColor=#000000;strokeColor=none;" vertex="1" parent="actor">
+          <mxGeometry as="geometry" x="68" y="47" width="64" height="64" />
+        </mxCell>
+        <mxCell id="actor_label" value="系统管理员" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=26;spacing=0;" vertex="1" parent="actor">
+          <mxGeometry as="geometry" x="0" y="116" width="200" height="50" />
+        </mxCell>
+        <mxCell id="uc0" value="服务凭据与个人信息保护" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=26;strokeColor=#111111;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;" vertex="1" parent="boundary">
+          <mxGeometry as="geometry" x="75" y="79.5" width="560" height="82" />
+        </mxCell>
+        <mxCell id="uc1" value="操作审计" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;fontSize=26;strokeColor=#111111;ellipse;perimeter=ellipsePerimeter;fillColor=#ffffff;" vertex="1" parent="boundary">
+          <mxGeometry as="geometry" x="75" y="189.5" width="560" height="82" />
+        </mxCell>
+        <mxCell id="edge0" style="edgeStyle=none;rounded=0;html=0;strokeColor=#111111;strokeWidth=1.8;endArrow=none;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.367188;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="actor_body" target="uc0">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=none;rounded=0;html=0;strokeColor=#111111;strokeWidth=1.8;endArrow=none;endFill=1;jumpStyle=gap;jumpSize=8;exitX=0;exitY=0.476562;entryX=1;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="actor_body" target="uc1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="label0" value="AI 麦乐送助手" style="fontFamily=Microsoft YaHei;fontColor=#111111;fontSize=25;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1.8;text;strokeColor=none;fillColor=none;fontSize=30;fontStyle=0;spacing=0;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="80" y="53.5" width="600" height="45" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

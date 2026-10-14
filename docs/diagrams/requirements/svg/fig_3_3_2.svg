@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="15.5cm" height="18.91cm" viewBox="0 0 1000 1220">
+<title>图 3.3.2 自然语言点餐会话活动图</title>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="20" y="20" width="270" height="1180" fill="white" stroke="#40586a" stroke-width="1.6"/>
+<rect x="20" y="20" width="270" height="64" fill="#ddeaf4" stroke="#40586a" stroke-width="1.6"/>
+<text x="155" y="52" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="28" font-weight="bold" fill="#25445d">点餐用户</text>
+<rect x="290" y="20" width="690" height="1180" fill="white" stroke="#40586a" stroke-width="1.6"/>
+<rect x="290" y="20" width="690" height="64" fill="#ddeaf4" stroke="#40586a" stroke-width="1.6"/>
+<text x="635" y="52" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="28" font-weight="bold" fill="#25445d">本系统</text>
+<polyline points="155,117 155,150" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="155,117 155,150" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="155,150 159.5,139 150.5,139" fill="#40586a"/>
+<polyline points="270,195 650,195 650,240" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="270,195 650,195 650,240" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="650,240 654.5,229 645.5,229" fill="#40586a"/>
+<polyline points="650,330 650,360" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="650,330 650,360" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="650,360 654.5,349 645.5,349" fill="#40586a"/>
+<polyline points="650,470 650,500" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="650,470 650,500" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="650,500 654.5,489 645.5,489" fill="#40586a"/>
+<polyline points="795,415 970,415 970,810 955,810" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="795,415 970,415 970,810 955,810" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="955,810 966,814.5 966,805.5" fill="#40586a"/>
+<polyline points="650,590 650,627" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="650,590 650,627" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="650,627 654.5,616 645.5,616" fill="#40586a"/>
+<polyline points="525,675 455,675 455,755" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="525,675 455,675 455,755" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="455,755 459.5,744 450.5,744" fill="#40586a"/>
+<polyline points="650,723 650,735 775,735 775,755" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="650,723 650,735 775,735 775,755" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="775,755 779.5,744 770.5,744" fill="#40586a"/>
+<polyline points="455,865 455,920 639,920" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="455,865 455,920 639,920" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="639,920 628,915.5 628,924.5" fill="#40586a"/>
+<polyline points="775,865 775,920 661,920" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="775,865 775,920 661,920" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="661,920 672,924.5 672,915.5" fill="#40586a"/>
+<polyline points="650,931 650,955" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="650,931 650,955" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="650,955 654.5,944 645.5,944" fill="#40586a"/>
+<polyline points="440,1000 335,1000 335,1080 270,1080" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="440,1000 335,1000 335,1080 270,1080" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="270,1080 281,1084.5 281,1075.5" fill="#40586a"/>
+<polyline points="155,1125 155,1156" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="155,1125 155,1156" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="155,1156 159.5,1145 150.5,1145" fill="#40586a"/>
+<circle cx="155" cy="108" r="9" fill="#111"/>
+
+<rect x="40" y="150" width="230" height="90" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="155" y="179.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">输入自然语言</text><text x="155" y="210.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">点餐需求</text>
+<rect x="440" y="240" width="420" height="90" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="650" y="269.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">理解需求</text><text x="650" y="300.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">识别点餐意图</text>
+<polygon points="650,360 795,415 650,470 505,415" fill="white" stroke="#40586a" stroke-width="1.8"/>
+<text x="650" y="399.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">需要查询</text><text x="650" y="430.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">业务信息？</text>
+<rect x="455" y="500" width="390" height="90" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="650" y="529.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">查询业务信息</text><text x="650" y="560.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">单轮最多8次</text>
+<polygon points="650,627 775,675 650,723 525,675" fill="white" stroke="#40586a" stroke-width="1.8"/>
+<text x="650" y="675" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">查询成功？</text>
+<rect x="340" y="755" width="230" height="110" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="455" y="794.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">查询失败或超限</text><text x="455" y="825.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">生成可理解的提示</text>
+<rect x="595" y="755" width="360" height="110" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="775" y="794.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">依据已有信息</text><text x="775" y="825.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">生成回复及相关卡片</text>
+<polygon points="650,909 661,920 650,931 639,920" fill="white" stroke="#40586a" stroke-width="1.8"/>
+
+<rect x="440" y="955" width="420" height="90" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="650" y="984.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">展示本轮结果</text><text x="650" y="1015.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">与业务处理过程</text>
+<rect x="40" y="1035" width="230" height="90" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="155" y="1064.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">查看结果</text><text x="155" y="1095.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">继续下一轮交互</text>
+<circle cx="155" cy="1170" r="14" fill="white" stroke="#111" stroke-width="1.8"/><circle cx="155" cy="1170" r="8" fill="#111"/>
+
+<text x="700" y="485" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="normal" fill="#111111">[是]</text>
+<text x="916" y="455" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="normal" fill="#111111">[否]</text>
+<text x="500" y="715" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="normal" fill="#111111">[否]</text>
+<text x="725" y="715" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="normal" fill="#111111">[是]</text>
+</svg>

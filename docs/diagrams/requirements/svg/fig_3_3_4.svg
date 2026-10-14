@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="15.5cm" height="20.77cm" viewBox="0 0 1000 1340">
+<title>图 3.3.4 查询可配送门店并切换门店活动图</title>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="20" y="20" width="270" height="1300" fill="white" stroke="#40586a" stroke-width="1.6"/>
+<rect x="20" y="20" width="270" height="64" fill="#ddeaf4" stroke="#40586a" stroke-width="1.6"/>
+<text x="155" y="52" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="28" font-weight="bold" fill="#25445d">点餐用户</text>
+<rect x="290" y="20" width="420" height="1300" fill="white" stroke="#40586a" stroke-width="1.6"/>
+<rect x="290" y="20" width="420" height="64" fill="#ddeaf4" stroke="#40586a" stroke-width="1.6"/>
+<text x="500" y="52" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="28" font-weight="bold" fill="#25445d">本系统</text>
+<rect x="710" y="20" width="270" height="1300" fill="white" stroke="#40586a" stroke-width="1.6"/>
+<rect x="710" y="20" width="270" height="64" fill="#ddeaf4" stroke="#40586a" stroke-width="1.6"/>
+<text x="845" y="52" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="28" font-weight="bold" fill="#25445d">外部业务服务</text>
+<polyline points="155,114 155,147.5" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="155,114 155,147.5" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="155,147.5 159.5,136.5 150.5,136.5" fill="#40586a"/>
+<polyline points="270,185 325,185" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="270,185 325,185" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="325,185 314,180.5 314,189.5" fill="#40586a"/>
+<polyline points="500,222.5 500,262" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="500,222.5 500,262" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="500,262 504.5,251 495.5,251" fill="#40586a"/>
+<polyline points="370,310 270,310" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="370,310 270,310" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="270,310 281,314.5 281,305.5" fill="#40586a"/>
+<polyline points="155,357.5 155,406" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="155,357.5 155,406" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="155,406 159.5,395 150.5,395" fill="#40586a"/>
+<polyline points="500,358 500,400" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="500,358 500,400" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="500,400 504.5,389 495.5,389" fill="#40586a"/>
+<polyline points="675,440 730,440" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="675,440 730,440" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="730,440 719,435.5 719,444.5" fill="#40586a"/>
+<polyline points="845,487.5 845,515 500,515 500,530" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="845,487.5 845,515 500,515 500,530" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="500,530 504.5,519 495.5,519" fill="#40586a"/>
+<polyline points="365,585 270,585" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="365,585 270,585" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="270,585 281,589.5 281,580.5" fill="#40586a"/>
+<polyline points="155,632.5 155,676" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="155,632.5 155,676" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="155,676 159.5,665 150.5,665" fill="#40586a"/>
+<polyline points="500,640 500,682.5" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="500,640 500,682.5" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="500,682.5 504.5,671.5 495.5,671.5" fill="#40586a"/>
+<polyline points="500,757.5 500,785 155,785 155,787.5" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="500,757.5 500,785 155,785 155,787.5" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="155,787.5 159.5,776.5 150.5,776.5" fill="#40586a"/>
+<polyline points="270,830 500,830 500,887.5" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="270,830 500,830 500,887.5" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="500,887.5 504.5,876.5 495.5,876.5" fill="#40586a"/>
+<polyline points="500,982.5 500,1007" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="500,982.5 500,1007" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="500,1007 504.5,996 495.5,996" fill="#40586a"/>
+<polyline points="370,1055 270,1055" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="370,1055 270,1055" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="270,1055 281,1059.5 281,1050.5" fill="#40586a"/>
+<polyline points="155,1102.5 155,1146" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="155,1102.5 155,1146" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="155,1146 159.5,1135 150.5,1135" fill="#40586a"/>
+<polyline points="500,1103 500,1140" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="500,1103 500,1140" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="500,1140 504.5,1129 495.5,1129" fill="#40586a"/>
+<polyline points="500,1250 500,1276" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="500,1250 500,1276" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="500,1276 504.5,1265 495.5,1265" fill="#40586a"/>
+<circle cx="155" cy="105" r="9" fill="#111"/>
+
+<rect x="40" y="147.5" width="230" height="75" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="155" y="185" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">选择配送地址</text>
+<rect x="325" y="147.5" width="350" height="75" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="500" y="185" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">校验配送地址</text>
+<polygon points="500,262 630,310 500,358 370,310" fill="white" stroke="#40586a" stroke-width="1.8"/>
+<text x="500" y="310" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">地址有效？</text>
+<rect x="40" y="262.5" width="230" height="95" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="155" y="294.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">提示重新</text><text x="155" y="325.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">选择有效地址</text>
+<circle cx="155" cy="420" r="14" fill="white" stroke="#111" stroke-width="1.8"/><circle cx="155" cy="420" r="8" fill="#111"/>
+
+<rect x="325" y="400" width="350" height="80" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="500" y="440" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">查询可配送门店</text>
+<rect x="730" y="392.5" width="230" height="95" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="845" y="424.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">返回门店列表</text><text x="845" y="455.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">与营业信息</text>
+<polygon points="500,530 635,585 500,640 365,585" fill="white" stroke="#40586a" stroke-width="1.8"/>
+<text x="500" y="569.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">有可配送</text><text x="500" y="600.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">门店？</text>
+<rect x="40" y="537.5" width="230" height="95" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="155" y="569.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">提示暂无门店</text><text x="155" y="600.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">允许更换地址</text>
+<circle cx="155" cy="690" r="14" fill="white" stroke="#111" stroke-width="1.8"/><circle cx="155" cy="690" r="8" fill="#111"/>
+
+<rect x="325" y="682.5" width="350" height="75" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="500" y="720" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">展示可配送门店</text>
+<rect x="40" y="787.5" width="230" height="85" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="155" y="830" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">选择或切换门店</text>
+<rect x="325" y="887.5" width="350" height="95" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="500" y="919.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">校验门店与地址</text><text x="500" y="950.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">的匹配关系</text>
+<polygon points="500,1007 630,1055 500,1103 370,1055" fill="white" stroke="#40586a" stroke-width="1.8"/>
+<text x="500" y="1055" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">匹配通过？</text>
+<rect x="40" y="1007.5" width="230" height="95" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="155" y="1039.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">提示选择无效</text><text x="155" y="1070.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">保持原选择</text>
+<circle cx="155" cy="1160" r="14" fill="white" stroke="#111" stroke-width="1.8"/><circle cx="155" cy="1160" r="8" fill="#111"/>
+
+<rect x="325" y="1140" width="350" height="110" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="500" y="1164" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">保存配送上下文</text><text x="500" y="1195" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">切换时清理购物车</text><text x="500" y="1226" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">使已有报价失效</text>
+<circle cx="500" cy="1290" r="14" fill="white" stroke="#111" stroke-width="1.8"/><circle cx="500" cy="1290" r="8" fill="#111"/>
+
+<text x="315" y="285" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="normal" fill="#111111">[否]</text>
+<text x="550" y="380" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="normal" fill="#111111">[是]</text>
+<text x="315" y="558" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="normal" fill="#111111">[否]</text>
+<text x="550" y="657" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="normal" fill="#111111">[是]</text>
+<text x="315" y="1027" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="normal" fill="#111111">[否]</text>
+<text x="550" y="1120" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="normal" fill="#111111">[是]</text>
+</svg>

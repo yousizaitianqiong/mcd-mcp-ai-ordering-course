@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="15.5cm" height="12.09cm" viewBox="0 0 1000 780">
+<title>图 3.1.1 全系统顶层用例图</title>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="250" y="40" width="520" height="690" fill="white" stroke="#111" stroke-width="1.8"/>
+<polyline points="127,322.5 290,175" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="127,322.5 290,175" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+<polyline points="127,327.5 290,290" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="127,327.5 290,290" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+<polyline points="127,332.5 290,405" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="127,332.5 290,405" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+<polyline points="127,337.5 290,520" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="127,337.5 290,520" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+<polyline points="878,635 730,635" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="878,635 730,635" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="250" y="40" width="520" height="690" fill="none" stroke="#111" stroke-width="1.8"/>
+<circle cx="95" cy="278" r="22" fill="black"/><rect x="63" y="303" width="64" height="64" rx="15" fill="black"/>
+<text x="95" y="397" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="normal" fill="#111111">点餐用户</text>
+<circle cx="910" cy="583" r="22" fill="black"/><rect x="878" y="608" width="64" height="64" rx="15" fill="black"/>
+<text x="910" y="702" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="normal" fill="#111111">系统管理员</text>
+<ellipse cx="510" cy="175" rx="220" ry="41" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="510" y="175" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="28" font-weight="normal" fill="#111111">智能会话与需求理解</text>
+<ellipse cx="510" cy="290" rx="220" ry="41" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="510" y="290" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="28" font-weight="normal" fill="#111111">配送上下文管理</text>
+<ellipse cx="510" cy="405" rx="220" ry="41" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="510" y="405" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="28" font-weight="normal" fill="#111111">菜单、优惠与购物车</text>
+<ellipse cx="510" cy="520" rx="220" ry="41" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="510" y="520" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="28" font-weight="normal" fill="#111111">核价与订单</text>
+<ellipse cx="510" cy="635" rx="220" ry="41" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="510" y="635" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="28" font-weight="normal" fill="#111111">安全与审计</text>
+<text x="510" y="82" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="normal" fill="#111111">AI 麦乐送助手</text>
+</svg>

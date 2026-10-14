@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="15.5cm" height="20.925cm" viewBox="0 0 1000 1350">
+<title>图 3.3.11 人工确认并创建待支付订单活动图（订单创建与结果处理）</title>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="20" y="20" width="270" height="1310" fill="white" stroke="#40586a" stroke-width="1.6"/>
+<rect x="20" y="20" width="270" height="64" fill="#ddeaf4" stroke="#40586a" stroke-width="1.6"/>
+<text x="155" y="52" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="28" font-weight="bold" fill="#25445d">点餐用户</text>
+<rect x="290" y="20" width="420" height="1310" fill="white" stroke="#40586a" stroke-width="1.6"/>
+<rect x="290" y="20" width="420" height="64" fill="#ddeaf4" stroke="#40586a" stroke-width="1.6"/>
+<text x="500" y="52" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="28" font-weight="bold" fill="#25445d">本系统</text>
+<rect x="710" y="20" width="270" height="1310" fill="white" stroke="#40586a" stroke-width="1.6"/>
+<rect x="710" y="20" width="270" height="64" fill="#ddeaf4" stroke="#40586a" stroke-width="1.6"/>
+<text x="845" y="52" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="28" font-weight="bold" fill="#25445d">外部业务服务</text>
+<polyline points="500,149 500,180 500,202.5" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="500,149 500,180 500,202.5" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="500,202.5 504.5,191.5 495.5,191.5" fill="#40586a"/>
+<polyline points="675,255 730,255" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="675,255 730,255" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="730,255 719,250.5 719,259.5" fill="#40586a"/>
+<polyline points="845,302.5 845,340 500,340 500,360" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="845,302.5 845,340 500,340 500,360" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="500,360 504.5,349 495.5,349" fill="#40586a"/>
+<polyline points="500,450 500,497" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="500,450 500,497" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="500,497 504.5,486 495.5,486" fill="#40586a"/>
+<polyline points="500,593 500,652.5" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="500,593 500,652.5" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="500,652.5 504.5,641.5 495.5,641.5" fill="#40586a"/>
+<polyline points="370,545 305,545 305,965 325,965" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="370,545 305,545 305,965 325,965" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="325,965 314,960.5 314,969.5" fill="#40586a"/>
+<polyline points="630,545 695,545 695,1215 675,1215" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="630,545 695,545 695,1215 675,1215" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="675,1215 686,1219.5 686,1210.5" fill="#40586a"/>
+<polyline points="325,715 270,715" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="325,715 270,715" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="270,715 281,719.5 281,710.5" fill="#40586a"/>
+<polyline points="155,770 155,836" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="155,770 155,836" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="155,836 159.5,825 150.5,825" fill="#40586a"/>
+<polyline points="325,1005 270,1005" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="325,1005 270,1005" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="270,1005 281,1009.5 281,1000.5" fill="#40586a"/>
+<polyline points="155,1042.5 155,1091" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="155,1042.5 155,1091" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="155,1091 159.5,1080 150.5,1080" fill="#40586a"/>
+<polyline points="325,1215 270,1215" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="325,1215 270,1215" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="270,1215 281,1219.5 281,1210.5" fill="#40586a"/>
+<polyline points="155,1272.5 155,1296" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="155,1272.5 155,1296" fill="none" stroke="#40586a" stroke-width="1.8" stroke-linejoin="round"/>
+<polygon points="155,1296 159.5,1285 150.5,1285" fill="#40586a"/>
+<ellipse cx="500" cy="125" rx="24" ry="24" fill="white" stroke="#40586a" stroke-width="1.8"/>
+<text x="500" y="125" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="normal" fill="#111111">A</text>
+<rect x="325" y="202.5" width="350" height="105" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="500" y="239.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">提交创建订单请求</text><text x="500" y="270.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">本次调用不自动重试</text>
+<rect x="730" y="207.5" width="230" height="95" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="845" y="239.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">处理请求</text><text x="845" y="270.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">返回创建结果</text>
+<rect x="325" y="360" width="350" height="90" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="500" y="389.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">接收结果</text><text x="500" y="420.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">或等待超时</text>
+<polygon points="500,497 630,545 500,593 370,545" fill="white" stroke="#40586a" stroke-width="1.8"/>
+<text x="500" y="545" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">创建结果？</text>
+<rect x="325" y="652.5" width="350" height="125" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="500" y="684" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">保存待支付订单</text><text x="500" y="715" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">清空购物车</text><text x="500" y="746" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">确认标识标记已用</text>
+<rect x="40" y="660" width="230" height="110" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="155" y="699.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">查看订单号及链接</text><text x="155" y="730.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">在官方渠道支付</text>
+<circle cx="155" cy="850" r="14" fill="white" stroke="#111" stroke-width="1.8"/><circle cx="155" cy="850" r="8" fill="#111"/>
+
+<rect x="325" y="927.5" width="350" height="115" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="500" y="954" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">记录明确失败</text><text x="500" y="985" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">保留购物车</text><text x="500" y="1016" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">返回失败提示</text>
+<rect x="40" y="927.5" width="230" height="115" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="155" y="969.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">查看失败提示</text><text x="155" y="1000.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">核对后重新发起</text>
+<circle cx="155" cy="1105" r="14" fill="white" stroke="#111" stroke-width="1.8"/><circle cx="155" cy="1105" r="8" fill="#111"/>
+
+<rect x="325" y="1157.5" width="350" height="115" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="500" y="1184" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">标记结果待核对</text><text x="500" y="1215" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">保留可核对的状态</text><text x="500" y="1246" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">不自动重试</text>
+<rect x="40" y="1157.5" width="230" height="115" rx="12" fill="#eef5fa" stroke="#40586a" stroke-width="1.8"/>
+<text x="155" y="1199.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">查看待核对提示</text><text x="155" y="1230.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="normal" fill="#111111">人工核对订单结果</text>
+<circle cx="155" cy="1310" r="14" fill="white" stroke="#111" stroke-width="1.8"/><circle cx="155" cy="1310" r="8" fill="#111"/>
+
+<text x="620" y="125" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="normal" fill="#111111">承接图3.3.10</text>
+<text x="570" y="620" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="normal" fill="#111111">[成功]</text>
+<text x="375" y="895" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="normal" fill="#111111">[明确失败]</text>
+<text x="620" y="1110" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="normal" fill="#111111">[结果未知]</text>
+</svg>

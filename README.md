@@ -100,6 +100,7 @@ Issue #1 的真实联调验收依次验证地址、门店、菜单、优惠券�
 - [GitHub 调研矩阵](docs/research-matrix.md)
 - [编号化用户需求](docs/requirements.md)
 - [正式系统需求分析说明书](AI麦乐送助手_课程项目组名单与简要用户需求列表.docx)
+- [需求分析图表与可编辑图源](docs/diagrams/requirements/README.md)：6 张用例图、7 张泳道活动图，附 SVG 和 300 dpi PNG。
 - [系统架构与接口说明](docs/architecture.md)
 - [四人分工](docs/team-roles.md)
 - [课堂演示脚本](docs/demo-script.md)

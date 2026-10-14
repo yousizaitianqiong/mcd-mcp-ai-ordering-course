@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="15.5cm" height="5.735cm" viewBox="0 0 1000 370">
+<title>图 3.3.12 安全与审计用例分解图</title>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="25" y="34.5" width="710" height="300" fill="white" stroke="#111" stroke-width="1.8"/>
+<polyline points="868,191.5 660,155" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="868,191.5 660,155" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+<polyline points="868,198.5 660,265" fill="none" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="868,198.5 660,265" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="25" y="34.5" width="710" height="300" fill="none" stroke="#111" stroke-width="1.8"/>
+<circle cx="900" cy="143" r="22" fill="black"/><rect x="868" y="168" width="64" height="64" rx="15" fill="black"/>
+<text x="900" y="262" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="normal" fill="#111111">系统管理员</text>
+<ellipse cx="380" cy="155" rx="280" ry="41" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="380" y="155" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="normal" fill="#111111">服务凭据与个人信息保护</text>
+<ellipse cx="380" cy="265" rx="280" ry="41" fill="white" stroke="#111" stroke-width="1.8"/>
+<text x="380" y="265" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="normal" fill="#111111">操作审计</text>
+<text x="380" y="76" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="30" font-weight="normal" fill="#111111">AI 麦乐送助手</text>
+</svg>
