@@ -61,6 +61,12 @@ type CartItem = {
   caloriesKcal?: number;
 };
 
+type CartResponse = {
+  cart?: CartItem[];
+  notice?: string;
+  error?: { code?: string; message?: string };
+};
+
 type Quote = {
   approvalId: string;
   quoteId: string;
@@ -217,6 +223,9 @@ export default function App() {
   const [mealDetail, setMealDetail] = useState<MealDetail | null>(null);
   const [coupons, setCoupons] = useState<Coupon[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [quantityDrafts, setQuantityDrafts] = useState<Record<string, string>>({});
+  const [cartBusy, setCartBusy] = useState(false);
+  const [cartNotice, setCartNotice] = useState("");
   const [quote, setQuote] = useState<Quote | null>(null);
   const [order, setOrder] = useState<Order | null>(null);
   const [draft, setDraft] = useState("");
@@ -236,6 +245,10 @@ export default function App() {
   }, [cart]);
   const selectedAddress = addresses.find((item) => item.addressId === selectedAddressId) || addresses[0];
   const selectedStore = stores.find((item) => `${item.storeCode}:${item.beCode}` === selectedStoreKey) || stores[0];
+
+  useEffect(() => {
+    setQuantityDrafts(Object.fromEntries(cart.map((item) => [item.productCode, String(item.quantity)])));
+  }, [cart]);
 
   useEffect(() => {
     void fetch("/api/health")
@@ -298,7 +311,14 @@ export default function App() {
       return;
     }
     if (eventName === "cart") {
-      setCart(Array.isArray(data) ? (data as CartItem[]) : []);
+      const next = Array.isArray(data) ? (data as CartItem[]) : [];
+      setCart(next);
+      setQuote((current) => {
+        if (!current) return null;
+        const same = current.items.length === next.length && current.items.every((item, index) =>
+          item.productCode === next[index]?.productCode && item.quantity === next[index]?.quantity && item.unitPrice === next[index]?.unitPrice);
+        return same ? current : null;
+      });
       return;
     }
     if (eventName === "meal_detail") {
@@ -347,7 +367,7 @@ export default function App() {
 
   async function sendMessage(rawText = draft): Promise<void> {
     const text = rawText.trim();
-    if (!text || loading) return;
+    if (!text || loading || cartBusy || confirming) return;
     setDraft("");
     setError("");
     setLoading(true);
@@ -386,26 +406,33 @@ export default function App() {
   }
 
   async function chooseContext(addressId: string, store: Store): Promise<void> {
+    if (loading || cartBusy || confirming) return;
     if (!sessionId) {
       setError("请先发送一句话，让服务端创建会话");
       return;
     }
     setError("");
+    setQuote(null);
+    setCartBusy(true);
     try {
       const response = await fetch("/api/context", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sessionId, addressId, storeCode: store.storeCode, beCode: store.beCode }),
       });
-      const body = (await response.json()) as { context?: unknown; error?: { message?: string } };
+      const body = (await response.json()) as { context?: unknown; cart?: CartItem[]; error?: { message?: string } };
       if (!response.ok) throw new Error(body.error?.message || "切换配送门店失败");
       setSelectedAddressId(addressId);
       setSelectedStoreKey(`${store.storeCode}:${store.beCode}`);
+      if (Array.isArray(body.cart)) setCart(body.cart);
       clearStoreScopedResults();
       setQuote(null);
       addAssistant(`已切换到 ${store.storeName}，接下来会按这个门店核价。`);
     } catch (reason: unknown) {
       setError(reason instanceof Error ? reason.message : "切换配送门店失败");
+      await refreshCart();
+    } finally {
+      setCartBusy(false);
     }
   }
 
@@ -418,7 +445,11 @@ export default function App() {
   }
 
   async function addToCart(item: MenuItem): Promise<void> {
+    if (cartBusy || loading || confirming) return;
     setError("");
+    setCartNotice("");
+    setQuote(null);
+    setCartBusy(true);
     try {
       const response = await fetch("/api/cart", {
         method: "POST",
@@ -434,26 +465,63 @@ export default function App() {
       setQuote(null);
     } catch (reason: unknown) {
       setError(reason instanceof Error ? reason.message : "加入购物车失败");
+      await refreshCart();
+    } finally {
+      setCartBusy(false);
     }
   }
 
-  async function clearCart(): Promise<void> {
+  async function refreshCart(): Promise<void> {
+    if (!sessionId) return;
     try {
       const response = await fetch("/api/cart", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId, action: "clear" }),
+        body: JSON.stringify({ sessionId, action: "view" }),
       });
-      const body = (await response.json()) as { cart?: CartItem[] };
+      const body = (await response.json()) as CartResponse;
+      if (response.ok && Array.isArray(body.cart)) setCart(body.cart);
+    } catch { /* 保留当前页面状态，并让用户看到原始操作错误。 */ }
+  }
+
+  async function changeCart(action: "update" | "remove" | "clear", productCode?: string, quantity?: number): Promise<void> {
+    if (cartBusy || loading || confirming) return;
+    setError("");
+    setCartNotice("");
+    setQuote(null);
+    setCartBusy(true);
+    try {
+      const response = await fetch("/api/cart", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId, action, ...(productCode ? { productCode } : {}), ...(quantity !== undefined ? { quantity } : {}) }),
+      });
+      const body = (await response.json()) as CartResponse;
+      if (!response.ok) throw new Error(body.error?.message || "调整购物车失败");
       setCart(body.cart || []);
-      setQuote(null);
+      setCartNotice(body.notice || "");
     } catch (reason: unknown) {
-      setError(reason instanceof Error ? reason.message : "清空购物车失败");
+      setError(reason instanceof Error ? reason.message : "调整购物车失败");
+      await refreshCart();
+    } finally {
+      setCartBusy(false);
     }
   }
 
+  function commitQuantity(item: CartItem): void {
+    const raw = (quantityDrafts[item.productCode] ?? "").trim();
+    const number = Number(raw);
+    if (!/^-?\d+$/.test(raw) || !Number.isInteger(number)) {
+      setError("餐品数量必须是整数");
+      setQuantityDrafts((current) => ({ ...current, [item.productCode]: String(item.quantity) }));
+      return;
+    }
+    if (number === item.quantity) return;
+    void changeCart("update", item.productCode, number);
+  }
+
   async function confirmOrder(): Promise<void> {
-    if (!quote || confirming) return;
+    if (!quote || confirming || cartBusy || loading) return;
     setConfirming(true);
     setError("");
     try {
@@ -464,7 +532,7 @@ export default function App() {
       });
       const body = (await response.json()) as { order?: Order; error?: { code?: string; message?: string } };
       if (!response.ok) {
-        if (["APPROVAL_ALREADY_USED", "APPROVAL_NOT_RETRYABLE", "QUOTE_EXPIRED", "QUOTE_HASH_MISMATCH", "QUOTE_INTEGRITY_ERROR"].includes(body.error?.code || "")) {
+        if (["APPROVAL_ALREADY_USED", "APPROVAL_NOT_RETRYABLE", "QUOTE_EXPIRED", "QUOTE_STALE", "QUOTE_HASH_MISMATCH", "QUOTE_INTEGRITY_ERROR"].includes(body.error?.code || "")) {
           setQuote(null);
         }
         throw new Error(body.error?.message || "创建待支付订单失败");
@@ -474,6 +542,7 @@ export default function App() {
       setQuote(null);
       addAssistant("订单已创建为待支付状态。请在订单卡片中自行打开支付链接；本课程项目不会代替你支付。 ");
     } catch (reason: unknown) {
+      setQuote(null);
       setError(reason instanceof Error ? reason.message : "创建待支付订单失败");
     } finally {
       setConfirming(false);
@@ -618,7 +687,22 @@ export default function App() {
 
            <section className="panel-card cart-panel">
             <div className="panel-heading compact"><div><span className="section-kicker">YOUR ORDER</span><h2>购物车</h2></div><span className="cart-count">{cartCount}</span></div>
-            {cart.length === 0 ? <div className="empty-state"><div className="empty-icon">🛒</div><p>还没有选择餐品</p><span>从菜单加入喜欢的食物吧</span></div> : <><div className="cart-list">{cart.map((item) => <div className="cart-row" key={item.productCode}><div><strong>{item.productName}</strong><span>数量 × {item.quantity} · {typeof item.caloriesKcal === "number" ? `${item.caloriesKcal * item.quantity} 千卡` : "热量数据暂无"}</span></div><b>{money(item.unitPrice * item.quantity)}</b></div>)}</div><div className="cart-total"><span>商品小计</span><strong>{money(cartSubtotal)}</strong></div><div className="cart-total nutrition-total"><span>预计总热量</span><strong>{typeof cartCalories === "number" ? `${cartCalories} 千卡` : "数据不全"}</strong></div><div className="cart-actions"><button className="text-button" onClick={() => void clearCart()}>清空</button><button className="primary-button" onClick={() => void sendMessage("请核价当前购物车")}>开始核价 <span>→</span></button></div></>}
+            {cartNotice && <p className="cart-notice" role="status">{cartNotice}</p>}
+            {cart.length === 0 ? <div className="empty-state"><div className="empty-icon">🛒</div><p>还没有选择餐品</p><span>从菜单加入喜欢的食物吧</span></div> : <>
+              <div className="cart-list">{cart.map((item) => <div className="cart-row" key={item.productCode}>
+                <div className="cart-item-info"><strong>{item.productName}</strong><span>{typeof item.caloriesKcal === "number" ? `${item.caloriesKcal * item.quantity} 千卡` : "热量数据暂无"}</span>
+                  <div className="cart-item-actions">
+                    <button aria-label={`减少${item.productName}数量`} disabled={cartBusy || loading || confirming || item.quantity <= 1} onClick={() => void changeCart("update", item.productCode, item.quantity - 1)}>−</button>
+                    <input aria-label={`${item.productName}数量`} inputMode="numeric" value={quantityDrafts[item.productCode] ?? String(item.quantity)} disabled={cartBusy || loading || confirming} onChange={(event) => setQuantityDrafts((current) => ({ ...current, [item.productCode]: event.target.value }))} onBlur={() => commitQuantity(item)} onKeyDown={(event) => { if (event.key === "Enter") event.currentTarget.blur(); }} />
+                    <button aria-label={`增加${item.productName}数量`} disabled={cartBusy || loading || confirming || item.quantity >= 20} onClick={() => void changeCart("update", item.productCode, item.quantity + 1)}>＋</button>
+                    <button className="remove-item" disabled={cartBusy || loading || confirming} onClick={() => void changeCart("remove", item.productCode)}>删除</button>
+                  </div>
+                </div><b>{money(item.unitPrice * item.quantity)}</b>
+              </div>)}</div>
+              <div className="cart-total"><span>商品小计</span><strong>{money(cartSubtotal)}</strong></div>
+              <div className="cart-total nutrition-total"><span>预计总热量</span><strong>{typeof cartCalories === "number" ? `${cartCalories} 千卡` : "数据不全"}</strong></div>
+              <div className="cart-actions"><button className="text-button" disabled={cartBusy || loading || confirming} onClick={() => void changeCart("clear")}>清空</button><button className="primary-button" disabled={cartBusy || loading || confirming} onClick={() => void sendMessage("请核价当前购物车")}>开始核价 <span>→</span></button></div>
+            </>}
           </section>
 
           {quote && (
@@ -628,7 +712,7 @@ export default function App() {
               <div className="quote-context"><p>配送至：{quote.context.address.fullAddress}</p><p>门店：{quote.context.storeName}</p></div>
               <div className="quote-lines">{quote.items.map((item) => <div key={item.productCode}><span>{item.productName} × {item.quantity}</span><b>{money(item.unitPrice * item.quantity)}</b></div>)}<div><span>配送费</span><b>{money(quote.deliveryPrice)}</b></div>{quote.discount > 0 && <div className="discount-line"><span>优惠</span><b>-{money(quote.discount)}</b></div>}</div>
               <div className="grand-total"><span>应付总额</span><strong>{money(quote.totalPrice)}</strong></div>
-              <button className="confirm-button" onClick={() => void confirmOrder()} disabled={confirming}>{confirming ? "正在创建…" : "确认并创建待支付订单"}<span>→</span></button>
+              <button className="confirm-button" onClick={() => void confirmOrder()} disabled={confirming || cartBusy || loading}>{confirming ? "正在创建…" : "确认并创建待支付订单"}<span>→</span></button>
               <p className="safety-note">点击后只创建待支付订单，不会自动完成支付。</p>
             </section>
           )}

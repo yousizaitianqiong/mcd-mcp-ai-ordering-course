@@ -177,3 +177,49 @@ test("Mock HTTP 端到端覆盖菜单、购物车、核价、确认、状态和�
     assert.equal(persisted.includes("course-demo-pay"), false);
   });
 });
+
+test("购物车支持数量边界、删除单项、状态读取和报价失效", async () => {
+  await startMockServer(async ({ baseUrl, provider }) => {
+    async function chat(message: string, sessionId?: string): Promise<AgentEvent[]> {
+      const response = await fetch(`${baseUrl}/api/chat`, {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sessionId, message }),
+      });
+      return parseSse(await response.text());
+    }
+    const first = await chat("查询菜单");
+    const sessionId = eventData<{ sessionId: string }>(first, "session").sessionId;
+    const menu = eventData<MenuItem[]>(first, "menu");
+    for (const item of menu.slice(0, 2)) {
+      const result = await postJson(baseUrl, "/api/cart", { sessionId, item: {
+        productCode: item.productCode, productName: item.name, unitPrice: item.price, quantity: 1,
+      } });
+      assert.equal(result.response.status, 200);
+    }
+    const oldQuote = eventData<{ approvalId: string; quoteHash: string }>(await chat("请核价当前购物车", sessionId), "confirmation_required");
+    const high = await postJson(baseUrl, "/api/cart", { sessionId, action: "update", productCode: menu[0].productCode, quantity: 21 });
+    assert.equal(high.response.status, 200);
+    assert.equal((high.body.cart as CartItem[])[0].quantity, 20);
+    assert.match(String(high.body.notice), /1 至 20/);
+    const stale = await postJson(baseUrl, "/api/orders/confirm", { sessionId, ...oldQuote });
+    assert.equal(stale.response.status, 409);
+    assert.equal((stale.body.error as { code: string }).code, "QUOTE_STALE");
+    assert.equal(provider.createOrderCalls, 0);
+    const low = await postJson(baseUrl, "/api/cart", { sessionId, action: "update", productCode: menu[0].productCode, quantity: 0 });
+    assert.equal((low.body.cart as CartItem[])[0].quantity, 1);
+    assert.ok(low.body.notice);
+    const huge = await postJson(baseUrl, "/api/cart", { sessionId, action: "update", productCode: menu[0].productCode, quantity: 1e20 });
+    assert.equal((huge.body.cart as CartItem[])[0].quantity, 20);
+    assert.ok(huge.body.notice);
+    const invalid = await postJson(baseUrl, "/api/cart", { sessionId, action: "update", productCode: menu[0].productCode, quantity: 1.5 });
+    assert.equal(invalid.response.status, 400);
+    assert.equal((invalid.body.error as { code: string }).code, "INVALID_QUANTITY");
+    const missing = await postJson(baseUrl, "/api/cart", { sessionId, action: "remove", productCode: "missing" });
+    assert.equal(missing.response.status, 400);
+    const removed = await postJson(baseUrl, "/api/cart", { sessionId, action: "remove", productCode: menu[0].productCode });
+    assert.deepEqual((removed.body.cart as CartItem[]).map((item) => item.productCode), [menu[1].productCode]);
+    const last = await postJson(baseUrl, "/api/cart", { sessionId, action: "remove", productCode: menu[1].productCode });
+    assert.deepEqual(last.body.cart, []);
+    const view = await postJson(baseUrl, "/api/cart", { sessionId, action: "view" });
+    assert.deepEqual(view.body.cart, []);
+  });
+});
