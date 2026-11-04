@@ -235,15 +235,13 @@ export class OrderingOrchestrator {
       );
       throw error;
     }
-    await this.store.markApproval(approvalId, "confirmed");
-    await this.store.saveOrder(sessionId, order);
+    await this.store.completeOrder(approvalId, order);
     await this.store.addAudit(
       sessionId,
       "create_order_success",
       { orderId: order.orderId, totalAmount: order.totalAmount, durationMs: Date.now() - createStartedAt },
       "create-order",
     );
-    await this.store.setCart(sessionId, []);
     return order;
   }
 
@@ -254,6 +252,7 @@ export class OrderingOrchestrator {
     if (!sessionId || !input.addressId || !input.storeCode || !input.beCode) {
       throw new AppError("CONTEXT_REQUIRED", "会话、配送地址和门店信息不能为空");
     }
+    const previous = await this.store.getSession(sessionId);
     const [addresses, stores] = await Promise.all([
       this.provider.listAddresses(),
       this.provider.listDeliverableStores({ addressId: input.addressId, beType: 2 }),
@@ -269,7 +268,7 @@ export class OrderingOrchestrator {
       beCode: store.beCode,
       storeName: store.storeName,
     };
-    await this.store.setContext(sessionId, context);
+    await this.store.setContext(sessionId, context, previous.revision ?? 0);
     return context;
   }
 
@@ -342,13 +341,14 @@ export class OrderingOrchestrator {
         const addresses = await this.provider.listAddresses();
         const address = addresses.find((item) => item.addressId === addressId);
         if (!address) throw new AppError("ADDRESS_NOT_FOUND", "没有找到所选配送地址", 404);
-        await this.store.setContext(sessionId, {
+        const updated = await this.store.setContext(sessionId, {
           addressId,
           address,
           storeCode: stores[0].storeCode,
           beCode: stores[0].beCode,
           storeName: stores[0].storeName,
-        });
+        }, session.revision ?? 0);
+        emit({ type: "cart", data: updated.cart });
       }
       return { stores };
     }
@@ -361,7 +361,8 @@ export class OrderingOrchestrator {
         const stores = await this.provider.listDeliverableStores({ addressId: context.addressId, beType: 2 });
         const store = stores.find((item) => item.storeCode === storeCode && item.beCode === beCode);
         if (!store) throw new AppError("STORE_NOT_FOUND", "没有找到所选可配送门店", 404);
-        await this.store.setContext(sessionId, { ...context, storeCode, beCode, storeName: store.storeName });
+        const updated = await this.store.setContext(sessionId, { ...context, storeCode, beCode, storeName: store.storeName }, session.revision ?? 0);
+        emit({ type: "cart", data: updated.cart });
       }
       const menu = await this.provider.listMeals({ storeCode, beCode, orderType: 2, beType: 2 });
       emit({ type: "menu", data: menu });
@@ -437,7 +438,7 @@ export class OrderingOrchestrator {
             });
           })()
         : [...session.cart, item];
-      await this.store.setCart(sessionId, cart);
+      await this.store.setCart(sessionId, cart, session.revision ?? 0);
       emit({ type: "cart", data: cart });
       return { cart };
     }
@@ -448,6 +449,7 @@ export class OrderingOrchestrator {
     if (name === "calculate_price") {
       if (!session.context) throw new AppError("CONTEXT_REQUIRED", "请先选择配送地址和门店");
       const requestedItems = Array.isArray(args.items) ? args.items : [];
+      let quoteSession = session;
       let cart = session.cart;
       if (requestedItems.length) {
         cart = requestedItems.map((value) => {
@@ -460,11 +462,11 @@ export class OrderingOrchestrator {
           }
           return { ...previous, quantity };
         });
-        await this.store.setCart(sessionId, cart);
+        quoteSession = await this.store.setCart(sessionId, cart, session.revision ?? 0);
       }
       if (!cart.length) throw new AppError("EMPTY_CART", "购物车还是空的");
       const quote = finalizeQuote(this.provider.name, await this.provider.calculatePrice({ context: session.context, items: cart }));
-      const approval = await this.store.createApproval(sessionId, quote);
+      const approval = await this.store.createApproval(sessionId, quote, quoteSession.revision ?? 0);
       const data = { ...toPriceQuoteView(quote), approvalId: approval.approvalId };
       emit({ type: "quote", data });
       emit({ type: "confirmation_required", data });
@@ -502,6 +504,10 @@ export class OrderingOrchestrator {
     }
 
     const context = await this.ensureMockContext(sessionId, emit);
+    const contextSession = await this.store.getSession(sessionId);
+    if (JSON.stringify(contextSession.context) !== JSON.stringify(context)) {
+      throw new AppError("CART_CHANGED", "购物车或配送信息已变化，请重新操作", 409);
+    }
     const menu = await this.provider.listMeals({ storeCode: context.storeCode, beCode: context.beCode, orderType: 2, beType: 2 });
     const requestedMeal = this.findRequestedMeal(normalized, menu);
     const wantsDetail = normalized.includes("详情") || normalized.includes("规格") || normalized.includes("组成") || normalized.includes("配料");
@@ -531,6 +537,9 @@ export class OrderingOrchestrator {
     }
 
     let current = await this.store.getSession(sessionId);
+    if ((current.revision ?? 0) !== (contextSession.revision ?? 0)) {
+      throw new AppError("CART_CHANGED", "购物车或配送信息已变化，请重新操作", 409);
+    }
     if (requestedMeal && !current.cart.some((item) => item.productCode === requestedMeal.productCode)) {
       const cartItem: CartItem = {
         productCode: requestedMeal.productCode,
@@ -541,7 +550,7 @@ export class OrderingOrchestrator {
         storeCode: context.storeCode,
         beCode: context.beCode,
       };
-      current = await this.store.setCart(sessionId, [...current.cart, cartItem]);
+      current = await this.store.setCart(sessionId, [...current.cart, cartItem], current.revision ?? 0);
       emit({ type: "cart", data: current.cart });
     }
 
@@ -588,7 +597,7 @@ export class OrderingOrchestrator {
       beCode: store.beCode,
       storeName: store.storeName,
     };
-    await this.store.setContext(sessionId, context);
+    await this.store.setContext(sessionId, context, session.revision ?? 0);
     return context;
   }
 

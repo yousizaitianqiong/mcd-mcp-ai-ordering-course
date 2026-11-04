@@ -154,3 +154,230 @@ test("模型最大回合数来自配置并限制工具循环", async () => {
     await fs.rm(fixture.directory, { recursive: true, force: true });
   }
 });
+
+function deferred(): { promise: Promise<void>; resolve: () => void } {
+  let resolve!: () => void;
+  const promise = new Promise<void>((done) => { resolve = done; });
+  return { promise, resolve };
+}
+
+test("核价所用购物车持久化期间再次修改时拒绝旧报价", { timeout: 10_000 }, async () => {
+  const fixture = await createFixture();
+  const started = deferred();
+  const release = deferred();
+  try {
+    const first = await getApproval(fixture.orchestrator);
+    const session = await fixture.store.getSession(first.sessionId);
+    const productCode = session.cart[0].productCode;
+    const internals = fixture.store as unknown as { persist: () => Promise<void> };
+    const persist = internals.persist.bind(fixture.store);
+    let blocked = false;
+    internals.persist = async () => {
+      if (!blocked) {
+        blocked = true;
+        const writing = persist();
+        started.resolve();
+        await release.promise;
+        await writing;
+        return;
+      }
+      await persist();
+    };
+
+    const executeTool = (fixture.orchestrator as unknown as {
+      executeTool: (id: string, name: string, args: Record<string, unknown>, emit: (event: { type: string; data: unknown }) => void) => Promise<unknown>;
+    }).executeTool.bind(fixture.orchestrator);
+    const events: Array<{ type: string; data: unknown }> = [];
+    const pricing = executeTool(first.sessionId, "calculate_price", {
+      items: [{ productCode, quantity: 2 }],
+    }, (event) => events.push(event));
+    await started.promise;
+    const changed = await fixture.store.getSession(first.sessionId);
+    await fixture.store.setCart(first.sessionId, changed.cart.map((item) => ({ ...item, quantity: 3 })));
+    release.resolve();
+
+    await assert.rejects(pricing, (error: unknown) => error instanceof AppError && error.code === "QUOTE_STALE");
+    assert.equal(events.some((event) => event.type === "confirmation_required"), false);
+    assert.equal((await fixture.store.getSession(first.sessionId)).cart[0].quantity, 3);
+    await assert.rejects(() => fixture.orchestrator.confirmOrder(first.sessionId, first.approvalId, first.quoteHash),
+      (error: unknown) => error instanceof AppError && error.code === "QUOTE_STALE");
+    assert.equal(fixture.provider.createOrderCalls, 0);
+  } finally {
+    release.resolve();
+    await fs.rm(fixture.directory, { recursive: true, force: true });
+  }
+});
+
+test("保存待确认报价期间购物车变化时不返回过期报价", { timeout: 10_000 }, async () => {
+  const fixture = await createFixture();
+  const started = deferred();
+  const release = deferred();
+  try {
+    const first = await getApproval(fixture.orchestrator);
+    const internals = fixture.store as unknown as { persist: () => Promise<void> };
+    const persist = internals.persist.bind(fixture.store);
+    let blocked = false;
+    internals.persist = async () => {
+      if (!blocked) {
+        blocked = true;
+        const writing = persist();
+        started.resolve();
+        await release.promise;
+        await writing;
+        return;
+      }
+      await persist();
+    };
+    const executeTool = (fixture.orchestrator as unknown as {
+      executeTool: (id: string, name: string, args: Record<string, unknown>, emit: (event: { type: string; data: unknown }) => void) => Promise<unknown>;
+    }).executeTool.bind(fixture.orchestrator);
+    const events: Array<{ type: string; data: unknown }> = [];
+    const pricing = executeTool(first.sessionId, "calculate_price", {}, (event) => events.push(event));
+    await started.promise;
+    const changed = await fixture.store.getSession(first.sessionId);
+    await fixture.store.setCart(first.sessionId, changed.cart.map((item) => ({ ...item, quantity: 2 })));
+    release.resolve();
+    await assert.rejects(pricing, (error: unknown) => error instanceof AppError && error.code === "QUOTE_STALE");
+    assert.equal(events.some((event) => event.type === "confirmation_required"), false);
+    assert.equal(fixture.provider.createOrderCalls, 0);
+  } finally {
+    release.resolve();
+    await fs.rm(fixture.directory, { recursive: true, force: true });
+  }
+});
+
+test("核价过程中修改购物车时不生成可确认的旧报价", async () => {
+  const started = deferred();
+  const release = deferred();
+  class SlowPriceProvider extends CountingProvider {
+    slow = false;
+    override async calculatePrice(input: { context: OrderContext; items: CartItem[] }): Promise<PriceQuote> {
+      if (this.slow) { started.resolve(); await release.promise; }
+      return super.calculatePrice(input);
+    }
+  }
+  const provider = new SlowPriceProvider();
+  const fixture = await createFixture(provider);
+  try {
+    const first = await getApproval(fixture.orchestrator);
+    provider.slow = true;
+    const events: Array<{ type: string; data: unknown }> = [];
+    const pricing = fixture.orchestrator.chat(first.sessionId, "请核价当前购物车", (event) => events.push(event));
+    await started.promise;
+    const session = await fixture.store.getSession(first.sessionId);
+    await fixture.store.setCart(first.sessionId, session.cart.map((item) => ({ ...item, quantity: 2 })));
+    release.resolve();
+    await pricing;
+    assert.equal(events.some((event) => event.type === "confirmation_required"), false);
+    assert.equal((events.find((event) => event.type === "error")?.data as { code: string }).code, "QUOTE_STALE");
+    await assert.rejects(() => fixture.orchestrator.confirmOrder(first.sessionId, first.approvalId, first.quoteHash),
+      (error: unknown) => error instanceof AppError && error.code === "QUOTE_STALE");
+    assert.equal(provider.createOrderCalls, 0);
+  } finally {
+    release.resolve();
+    await fs.rm(fixture.directory, { recursive: true, force: true });
+  }
+});
+
+test("查询菜单期间切换门店时不把旧门店餐品加入新购物车", async () => {
+  const started = deferred();
+  const release = deferred();
+  class SlowMenuProvider extends CountingProvider {
+    slow = false;
+    override async listMeals(input: Parameters<MockFoodOrderProvider["listMeals"]>[0]) {
+      if (this.slow) { started.resolve(); await release.promise; }
+      return super.listMeals(input);
+    }
+  }
+  const provider = new SlowMenuProvider();
+  const fixture = await createFixture(provider);
+  try {
+    const quote = await getApproval(fixture.orchestrator);
+    provider.slow = true;
+    const events: Array<{ type: string; data: unknown }> = [];
+    const chat = fixture.orchestrator.chat(quote.sessionId, "我想吃香辣鸡翅", (event) => events.push(event));
+    await started.promise;
+    const session = await fixture.store.getSession(quote.sessionId);
+    assert.ok(session.context);
+    await fixture.store.setContext(quote.sessionId, { ...session.context, storeCode: "another-store" });
+    release.resolve();
+    await chat;
+    assert.equal((events.find((event) => event.type === "error")?.data as { code: string }).code, "CART_CHANGED");
+    assert.deepEqual((await fixture.store.getSession(quote.sessionId)).cart, []);
+  } finally {
+    release.resolve();
+    await fs.rm(fixture.directory, { recursive: true, force: true });
+  }
+});
+
+test("切换配送上下文清空购物车并拒绝旧报价", async () => {
+  const fixture = await createFixture();
+  try {
+    const quote = await getApproval(fixture.orchestrator);
+    const session = await fixture.store.getSession(quote.sessionId);
+    assert.ok(session.context);
+    const updated = await fixture.store.setContext(quote.sessionId, { ...session.context, storeCode: "another-store" });
+    assert.deepEqual(updated.cart, []);
+    await assert.rejects(() => fixture.orchestrator.confirmOrder(quote.sessionId, quote.approvalId, quote.quoteHash),
+      (error: unknown) => error instanceof AppError && error.code === "QUOTE_STALE");
+    assert.equal(fixture.provider.createOrderCalls, 0);
+  } finally {
+    await fs.rm(fixture.directory, { recursive: true, force: true });
+  }
+});
+
+test("订单提交期间禁止修改购物车和配送上下文", async () => {
+  const started = deferred();
+  const release = deferred();
+  class SlowOrderProvider extends CountingProvider {
+    override async createOrder(input: { context: OrderContext; items: CartItem[] }): Promise<PendingOrder> {
+      started.resolve();
+      await release.promise;
+      return super.createOrder(input);
+    }
+  }
+  const provider = new SlowOrderProvider();
+  const fixture = await createFixture(provider);
+  try {
+    const quote = await getApproval(fixture.orchestrator);
+    const session = await fixture.store.getSession(quote.sessionId);
+    assert.ok(session.context);
+    const confirming = fixture.orchestrator.confirmOrder(quote.sessionId, quote.approvalId, quote.quoteHash);
+    await started.promise;
+    await assert.rejects(() => fixture.store.setCart(quote.sessionId, []),
+      (error: unknown) => error instanceof AppError && error.code === "ORDER_SUBMITTING");
+    await assert.rejects(() => fixture.store.setContext(quote.sessionId, session.context!),
+      (error: unknown) => error instanceof AppError && error.code === "ORDER_SUBMITTING");
+    release.resolve();
+    await confirming;
+    assert.deepEqual((await fixture.store.getSession(quote.sessionId)).cart, []);
+    assert.equal(provider.createOrderCalls, 1);
+  } finally {
+    release.resolve();
+    await fs.rm(fixture.directory, { recursive: true, force: true });
+  }
+});
+
+test("加载旧数据时旧待确认报价失效且中断提交标记为未知", async () => {
+  const fixture = await createFixture();
+  try {
+    const quote = await getApproval(fixture.orchestrator);
+    const file = path.join(fixture.directory, "state.json");
+    const state = JSON.parse(await fs.readFile(file, "utf8"));
+    delete state.sessions[quote.sessionId].revision;
+    delete state.approvals[quote.approvalId].revision;
+    state.approvals.interrupted = { ...state.approvals[quote.approvalId], approvalId: "interrupted", status: "submitting" };
+    state.approvals.partial = { ...state.approvals[quote.approvalId], approvalId: "partial", revision: 0 };
+    await fs.writeFile(file, JSON.stringify(state), "utf8");
+    const restored = new JsonStore(file);
+    await restored.load();
+    assert.equal((await restored.getApproval(quote.approvalId))?.status, "invalidated");
+    assert.equal((await restored.getApproval("interrupted"))?.status, "unknown");
+    assert.equal((await restored.getApproval("partial"))?.status, "invalidated");
+    assert.equal((await restored.getSession(quote.sessionId)).revision, 0);
+    await assert.rejects(() => restored.claimApproval(quote.sessionId, quote.approvalId, quote.quoteHash),
+      (error: unknown) => error instanceof AppError && error.code === "QUOTE_STALE");
+  } finally {
+    await fs.rm(fixture.directory, { recursive: true, force: true });
+  }
+});

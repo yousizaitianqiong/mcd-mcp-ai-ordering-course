@@ -63,13 +63,37 @@ export class JsonStore {
   constructor(private readonly file: string) {}
 
   async load(): Promise<void> {
+    let text: string;
     try {
-      const text = await fs.readFile(this.file, "utf8");
-      this.state = { ...emptyState(), ...(JSON.parse(text) as AppState) };
+      text = await fs.readFile(this.file, "utf8");
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
       this.state = emptyState();
+      return;
     }
+    this.state = { ...emptyState(), ...(JSON.parse(text) as AppState) };
+    let changed = false;
+    const legacySessions = new Set<string>();
+    for (const session of Object.values(this.state.sessions)) {
+      if (!Number.isSafeInteger(session.revision) || (session.revision ?? -1) < 0) {
+        legacySessions.add(session.id);
+        session.revision = 0;
+        changed = true;
+      }
+    }
+    for (const approval of Object.values(this.state.approvals)) {
+      if (approval.status === "submitting") {
+        approval.status = "unknown";
+        changed = true;
+      } else if (approval.status === "pending" && (
+        !Number.isSafeInteger(approval.revision) || (approval.revision ?? -1) < 0 ||
+        legacySessions.has(approval.sessionId) || !this.state.sessions[approval.sessionId]
+      )) {
+        approval.status = "invalidated";
+        changed = true;
+      }
+    }
+    if (changed) await this.persist();
   }
 
   private async persist(): Promise<void> {
@@ -89,11 +113,13 @@ export class JsonStore {
       id: sessionId,
       messages: [],
       cart: [],
+      revision: 0,
       updatedAt: new Date().toISOString(),
     };
     this.state.sessions[sessionId] = session;
+    const snapshot = structuredClone(session);
     await this.persist();
-    return structuredClone(session);
+    return snapshot;
   }
 
   async getSession(id: string): Promise<SessionState> {
@@ -119,37 +145,95 @@ export class JsonStore {
     await this.persist();
   }
 
-  async setCart(sessionId: string, cart: CartItem[]): Promise<SessionState> {
-    await this.ensureSession(sessionId);
-    this.state.sessions[sessionId].cart = cart;
-    this.state.sessions[sessionId].updatedAt = new Date().toISOString();
-    await this.persist();
-    return structuredClone(this.state.sessions[sessionId]);
+  private assertNotSubmitting(sessionId: string): void {
+    if (Object.values(this.state.approvals).some((item) => item.sessionId === sessionId && item.status === "submitting")) {
+      throw new AppError("ORDER_SUBMITTING", "订单正在提交，请稍后再调整购物车或配送信息", 409);
+    }
   }
 
-  async setContext(sessionId: string, context: OrderContext): Promise<SessionState> {
+  private invalidatePending(sessionId: string): void {
+    for (const approval of Object.values(this.state.approvals)) {
+      if (approval.sessionId === sessionId && approval.status === "pending") approval.status = "invalidated";
+    }
+  }
+
+  async updateCart(
+    sessionId: string,
+    update: (cart: CartItem[], session: SessionState) => CartItem[],
+    expectedRevision?: number,
+  ): Promise<SessionState> {
     await this.ensureSession(sessionId);
-    this.state.sessions[sessionId].context = context;
-    this.state.sessions[sessionId].updatedAt = new Date().toISOString();
+    const session = this.state.sessions[sessionId];
+    this.assertNotSubmitting(sessionId);
+    if (expectedRevision !== undefined && (session.revision ?? 0) !== expectedRevision) {
+      throw new AppError("CART_CHANGED", "购物车或配送信息已变化，请重新操作", 409);
+    }
+    const next = update(structuredClone(session.cart), structuredClone(session));
+    if (JSON.stringify(next) !== JSON.stringify(session.cart)) {
+      session.cart = structuredClone(next);
+      session.revision = (session.revision ?? 0) + 1;
+      session.updatedAt = new Date().toISOString();
+      this.invalidatePending(sessionId);
+      const snapshot = structuredClone(session);
+      await this.persist();
+      return snapshot;
+    }
+    return structuredClone(session);
+  }
+
+  async setCart(sessionId: string, cart: CartItem[], expectedRevision?: number): Promise<SessionState> {
+    return this.updateCart(sessionId, () => cart, expectedRevision);
+  }
+
+  async setContext(sessionId: string, context: OrderContext, expectedRevision?: number): Promise<SessionState> {
+    await this.ensureSession(sessionId);
+    const session = this.state.sessions[sessionId];
+    this.assertNotSubmitting(sessionId);
+    if (expectedRevision !== undefined && (session.revision ?? 0) !== expectedRevision) {
+      throw new AppError("CART_CHANGED", "购物车或配送信息已变化，请重新操作", 409);
+    }
+    const current = session.context;
+    const changed = !current || current.addressId !== context.addressId ||
+      current.storeCode !== context.storeCode || current.beCode !== context.beCode ||
+      current.storeName !== context.storeName || current.address.fullAddress !== context.address.fullAddress ||
+      current.address.contactName !== context.address.contactName || current.address.phone !== context.address.phone;
+    session.context = structuredClone(context);
+    if (changed) {
+      session.cart = [];
+      session.revision = (session.revision ?? 0) + 1;
+      this.invalidatePending(sessionId);
+    }
+    session.updatedAt = new Date().toISOString();
+    const snapshot = structuredClone(session);
     await this.persist();
-    return structuredClone(this.state.sessions[sessionId]);
+    return snapshot;
   }
 
   async createApproval(
     sessionId: string,
     quote: PriceQuote,
+    revision: number,
   ): Promise<ApprovalRecord> {
     await this.ensureSession(sessionId);
+    this.assertNotSubmitting(sessionId);
+    if ((this.state.sessions[sessionId].revision ?? 0) !== revision) {
+      throw new AppError("QUOTE_STALE", "购物车或配送信息已变化，请重新核价", 409);
+    }
+    this.invalidatePending(sessionId);
     const approval: ApprovalRecord = {
       approvalId: randomUUID(),
       sessionId,
       quote,
       status: "pending",
+      revision,
       expiresAt: quote.expiresAt,
       createdAt: new Date().toISOString(),
     };
     this.state.approvals[approval.approvalId] = approval;
     await this.persist();
+    if (approval.status !== "pending" || this.state.sessions[sessionId]?.revision !== revision) {
+      throw new AppError("QUOTE_STALE", "购物车或配送信息已变化，请重新核价", 409);
+    }
     return structuredClone(approval);
   }
 
@@ -161,8 +245,17 @@ export class JsonStore {
     if (approval.status === "confirmed") {
       throw new AppError("APPROVAL_ALREADY_USED", "这份订单确认已经使用过", 409);
     }
+    if (approval.status === "invalidated") {
+      throw new AppError("QUOTE_STALE", "报价已失效，请重新核价", 409);
+    }
     if (approval.status !== "pending") {
       throw new AppError("APPROVAL_NOT_RETRYABLE", "这份订单确认已经进入终态，不能再次提交", 409);
+    }
+    this.assertNotSubmitting(sessionId);
+    if (!this.state.sessions[sessionId] || !Number.isSafeInteger(approval.revision) || approval.revision !== this.state.sessions[sessionId].revision) {
+      approval.status = "invalidated";
+      await this.persist();
+      throw new AppError("QUOTE_STALE", "购物车或配送信息已变化，请重新核价", 409);
     }
     if (Date.parse(approval.expiresAt) < Date.now()) {
       approval.status = "expired";
@@ -187,6 +280,23 @@ export class JsonStore {
     const approval = this.state.approvals[id];
     if (!approval) return;
     approval.status = status;
+    await this.persist();
+  }
+
+  async completeOrder(id: string, order: PendingOrder): Promise<void> {
+    const approval = this.state.approvals[id];
+    if (!approval || approval.status !== "submitting") {
+      throw new AppError("APPROVAL_NOT_RETRYABLE", "订单确认状态异常，不能再次提交", 409);
+    }
+    const session = this.state.sessions[approval.sessionId];
+    approval.status = "confirmed";
+    this.state.orders[order.orderId] = { sessionId: approval.sessionId, order, createdAt: new Date().toISOString() };
+    if (session && session.cart.length) {
+      session.cart = [];
+      session.revision = (session.revision ?? 0) + 1;
+      session.updatedAt = new Date().toISOString();
+    }
+    this.invalidatePending(approval.sessionId);
     await this.persist();
   }
 

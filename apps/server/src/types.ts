@@ -169,6 +169,7 @@ export interface SessionState {
   messages: StoredMessage[];
   cart: CartItem[];
   context?: OrderContext;
+  revision?: number;
   updatedAt: string;
 }
 
@@ -176,7 +177,8 @@ export interface ApprovalRecord {
   approvalId: string;
   sessionId: string;
   quote: PriceQuote;
-  status: "pending" | "submitting" | "confirmed" | "failed" | "unknown" | "expired";
+  status: "pending" | "submitting" | "confirmed" | "failed" | "unknown" | "expired" | "invalidated";
+  revision?: number;
   expiresAt: string;
   createdAt: string;
 }

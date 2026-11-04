@@ -166,7 +166,8 @@ export function createHttpServer(deps: Dependencies) {
           storeCode: String(body.storeCode || ""),
           beCode: String(body.beCode || ""),
         });
-        sendJson(response, 200, { context });
+        const session = await deps.store.getSession(sessionId);
+        sendJson(response, 200, { context, cart: session.cart });
         return;
       }
 
@@ -175,10 +176,41 @@ export function createHttpServer(deps: Dependencies) {
         const sessionId = String(body.sessionId || "");
         if (!sessionId) throw new AppError("SESSION_REQUIRED", "缺少会话 ID");
         const session = await deps.store.ensureSession(sessionId);
+        if (body.action === "view") {
+          sendJson(response, 200, { sessionId: session.id, cart: session.cart });
+          return;
+        }
         if (body.action === "clear") {
           const updated = await deps.store.setCart(session.id, []);
           sendJson(response, 200, { sessionId: updated.id, cart: updated.cart });
           return;
+        }
+        if (body.action === "update" || body.action === "remove") {
+          const productCode = typeof body.productCode === "string" ? body.productCode.trim() : "";
+          if (!productCode) throw new AppError("INVALID_CART_ITEM", "缺少餐品编码");
+          let quantity: number | undefined;
+          let notice: string | undefined;
+          if (body.action === "update") {
+            if (typeof body.quantity !== "number" || !Number.isInteger(body.quantity)) {
+              throw new AppError("INVALID_QUANTITY", "餐品数量必须是整数");
+            }
+            quantity = Math.min(20, Math.max(1, body.quantity));
+            if (quantity !== body.quantity) notice = `餐品数量已调整为 ${quantity}，允许范围为 1 至 20`;
+          }
+          const updated = await deps.store.updateCart(session.id, (cart) => {
+            if (!cart.some((item) => item.productCode === productCode)) {
+              throw new AppError("ITEM_NOT_IN_CART", "该餐品不在购物车中");
+            }
+            return body.action === "remove"
+              ? cart.filter((item) => item.productCode !== productCode)
+              : cart.map((item) => item.productCode === productCode ? { ...item, quantity: quantity! } : item);
+          });
+          await deps.store.addAudit(session.id, "cart_update", { item: productCode, action: body.action });
+          sendJson(response, 200, { sessionId: updated.id, cart: updated.cart, ...(notice ? { notice } : {}) });
+          return;
+        }
+        if (body.action !== undefined && body.action !== "add") {
+          throw new AppError("INVALID_CART_ACTION", "不支持的购物车操作");
         }
         const item = (body.item || {}) as Record<string, unknown>;
         if (!item.productCode || !item.productName || !Number.isFinite(Number(item.unitPrice))) {
@@ -223,7 +255,7 @@ export function createHttpServer(deps: Dependencies) {
               storeCode: session.context.storeCode,
               beCode: session.context.beCode,
             }];
-        const updated = await deps.store.setCart(session.id, cart);
+        const updated = await deps.store.setCart(session.id, cart, session.revision ?? 0);
         await deps.store.addAudit(session.id, "cart_update", { item: item.productCode });
         sendJson(response, 200, { sessionId: updated.id, cart: updated.cart });
         return;

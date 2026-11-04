@@ -1,8 +1,8 @@
 # 系统架构与接口说明
 
-> 本文是实现和联调的接口基线。字段语义以当前 TypeScript 源码为准；本 Issue 复用现有 API 和 Provider，并新增详情/优惠 SSE 展示事件。
+> 本文是实现和联调的接口基线，字段语义以当前 TypeScript 源码为准。
 >
-> 正式需求分析文档：[AI 麦乐送助手系统需求分析说明书](../AI麦乐送助手_课程项目组名单与简要用户需求列表.docx)；本文件不新增运行时接口，负责为 MCD-SRS 用例提供实现依据。
+> 正式需求分析文档：[AI 麦乐送助手系统需求分析说明书](../AI麦乐送助手_课程项目组名单与简要用户需求列表.docx)；本文为 MCD-SRS 用例提供接口与实现依据。
 
 ## 1. 分层结构
 
@@ -10,7 +10,7 @@
 React/Vite Web
   ├─ POST /api/chat       ← SSE：助手文本、工具进度、菜单、详情、优惠、购物车、报价、订单
   ├─ POST /api/context    ← 选择地址和门店
-  ├─ POST /api/cart       ← 加入或清空购物车
+  ├─ POST /api/cart       ← 加入、查看、修改、删除或清空购物车
   └─ POST/GET /api/orders ← 人工确认、订单查询
           ↓
 Node HTTP API + OrderingOrchestrator
@@ -199,7 +199,8 @@ POST /api/context
     "storeCode": "门店编码",
     "beCode": "业务编码",
     "storeName": "门店名称"
-  }
+  },
+  "cart": []
 }
 ~~~
 
@@ -230,6 +231,16 @@ POST /api/context
 }
 ~~~
 
+查看、修改数量或删除单项：
+
+~~~json
+{ "sessionId": "会话 ID", "action": "view" }
+{ "sessionId": "会话 ID", "action": "update", "productCode": "商品编码", "quantity": 2 }
+{ "sessionId": "会话 ID", "action": "remove", "productCode": "商品编码" }
+~~~
+
+`update` 接受整数数量，越界整数被调整至 1 或 20 并返回 `notice`；非整数返回 `INVALID_QUANTITY`。`remove` 不存在的条目返回 `ITEM_NOT_IN_CART`。原有不带 `action` 的加购请求保持兼容。
+
 成功响应示例：
 
 ~~~json
@@ -248,7 +259,7 @@ POST /api/context
 }
 ~~~
 
-服务端要求已有配送上下文；同一商品再次加入时数量合并，数量限制为 1–20。
+服务端要求已有配送上下文；同一商品再次加入时数量合并，数量限制为 1–20。购物车或配送上下文实际变化时递增会话版本，使待确认报价失效；更换地址或门店清空购物车。`POST /api/context` 同时返回更新后的 `cart`。
 
 ### 4.5 人工确认与订单
 
@@ -265,11 +276,13 @@ POST /api/orders/confirm
 成功响应为包含 PendingOrder 对象的 JSON。服务端按以下顺序处理：
 
 1. 检查 approvalId 存在且属于 sessionId。
-2. 重新计算报价快照并比对 quoteHash，检查 expiresAt 未到期。
+2. 重新计算报价快照并比对 quoteHash，检查 expiresAt 和会话版本。
 3. 将 approval 原子标记为 submitting；并发请求只能有一个继续。
 4. 调用 Provider 的 createOrder；该调用不自动重试。
 5. 成功标记 confirmed；明确失败标记 failed；超时或网络未知标记 unknown。
-6. 成功后保存脱敏订单摘要、记录审计事件并清空购物车。
+6. 成功后保存脱敏订单摘要、记录审计事件并清空购物车。提交期间拒绝同一会话的购物车和配送上下文修改。
+
+核价调用返回后也检查会话版本，防止核价期间的购物车变化产生可确认旧报价。旧数据中缺少版本的待确认报价会失效；重启时仍为 submitting 的记录标为 unknown，不能自动重试。
 
 GET /api/orders/{orderId} 返回包含 PendingOrder 对象的 JSON。如果 JsonStore 已保存订单，优先返回保存内容；否则调用 Provider 查询状态。
 
@@ -306,10 +319,11 @@ McDonaldsMcpProvider 负责把远程工具名称和响应字段转换成统一�
 
 | 类别 | 当前错误码示例 | 处理原则 |
 | --- | --- | --- |
-| 请求输入 | INVALID_JSON、MESSAGE_REQUIRED、INVALID_CART_ITEM | 返回 400 和中文提示 |
+| 请求输入 | INVALID_JSON、MESSAGE_REQUIRED、INVALID_CART_ITEM、INVALID_QUANTITY | 返回 400 和中文提示 |
 | 业务前置条件 | CONTEXT_REQUIRED、EMPTY_CART、ITEM_NOT_IN_CART、ORDER_ID_REQUIRED | 不调用下游写操作 |
-| 确认状态 | APPROVAL_NOT_FOUND、APPROVAL_ALREADY_USED、APPROVAL_NOT_RETRYABLE、QUOTE_EXPIRED、QUOTE_HASH_MISMATCH | 不创建订单 |
+| 确认状态 | APPROVAL_NOT_FOUND、APPROVAL_ALREADY_USED、APPROVAL_NOT_RETRYABLE、QUOTE_EXPIRED、QUOTE_STALE、QUOTE_HASH_MISMATCH | 不创建订单 |
 | 报价完整性 | QUOTE_INTEGRITY_ERROR | 停止写操作并重新核价 |
+| 并发状态 | CART_CHANGED、ORDER_SUBMITTING | 保留或重新读取购物车，稍后重试用户操作 |
 | MCP | MCP_UNAUTHORIZED、MCP_RATE_LIMIT、MCP_TIMEOUT、MCP_NETWORK_ERROR、MCP_RPC_ERROR、MCP_SCHEMA_ERROR | 展示可识别错误，不自动重试写操作 |
 | 模型 | MODEL_UNAUTHORIZED、MODEL_RATE_LIMIT、MODEL_TIMEOUT、MODEL_NETWORK_ERROR、MODEL_HTTP_ERROR、MODEL_INVALID_RESPONSE | 保留会话，不暴露下游详情 |
 

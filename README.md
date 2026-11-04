@@ -87,7 +87,7 @@ docs/
 - `GET /api/health`：返回当前 `mock` / `mcd` 模式、Provider 名称和协议版本，不返回密钥。
 - `POST /api/chat`：请求 `{ sessionId?, message }`，响应为 Server-Sent Events，传递助手文本、工具进度、菜单、购物车、报价和确认请求。
 - `POST /api/context`：在用户选择地址/门店后更新当前会话上下文。
-- `POST /api/cart`：加入或清空购物车。
+- `POST /api/cart`：加入、查看、修改数量、删除单项或清空购物车；变化后旧报价失效。
 - `POST /api/orders/confirm`：校验未过期报价、会话归属和 `quoteHash` 后，唯一允许调用 `create-order`。
 - `GET /api/orders/{orderId}`：优先读取已保存订单，否则调用 Provider 查询状态。
 
@@ -102,6 +102,8 @@ Issue #1 的真实联调验收依次验证地址、门店、菜单、优惠券�
 - [正式系统需求分析说明书](AI麦乐送助手_课程项目组名单与简要用户需求列表.docx)
 - [需求分析图表与可编辑图源](docs/diagrams/requirements/README.md)：6 张用例图、7 张泳道活动图，附 SVG 和 300 dpi PNG。
 - [系统架构与接口说明](docs/architecture.md)
+- [系统概要设计说明书（公开版）](docs/概要设计/AI麦乐送助手_系统概要设计说明书.docx)
+- [系统概要设计汇报 PPT（公开版）](docs/概要设计/AI麦乐送助手_系统概要设计汇报.pptx)
 - [四人分工](docs/team-roles.md)
 - [课堂演示脚本](docs/demo-script.md)
 - [测试计划与验收记录](docs/test-plan.md)

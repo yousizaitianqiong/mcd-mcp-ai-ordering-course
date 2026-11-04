@@ -29,14 +29,16 @@ pnpm build
 | 命令 | 结果 | 测试数量/构建摘要 | 证据 | 状态 |
 | --- | --- | --- | --- | --- |
 | pnpm install --frozen-lockfile | 通过 | Lockfile up to date；依赖安装完成 | 终端输出 | 已验证（本地） |
-| pnpm test | 通过 | 26 tests、26 pass、0 fail | 终端输出、测试文件清单 | 已验证（本地） |
-| pnpm test:mock | 通过 | HTTP/SSE Mock 端到端 1 test、1 pass | `apps/server/src/http.e2e.test.ts`、终端输出 | 已验证（本地） |
+| pnpm test | 通过 | 34 tests、34 pass、0 fail | 2026-11-04 本地终端输出 | 已验证（本地） |
+| pnpm test:mock | 通过 | HTTP/SSE Mock 端到端 2 tests、2 pass | `apps/server/src/http.e2e.test.ts`、2026-11-04 本地终端输出 | 已验证（本地） |
 | pnpm build | 通过 | server tsc、web tsc 和 Vite build | 终端输出 | 已验证（本地） |
 | git diff --check | 通过 | 无空白错误 | 终端输出 | 已验证（本地） |
 | Markdown 相对链接检查 | 通过 | 仓库内相对链接均可解析 | 扫描输出 | 已验证（本地） |
 | 敏感信息扫描 | 通过 | 未发现凭据、个人数据或不应公开的绝对路径 | 扫描输出 | 已验证（本地） |
 
-合并 PR #7 后，本次 `pnpm test` 发现的测试文件为 `config.test.ts`、`http.e2e.test.ts`、`issue-3.test.ts`、`mcp/client.test.ts`、`model.test.ts`、`orchestrator.test.ts`、`providers/mcd.test.ts`、`providers/mock.test.ts` 和 `quote.test.ts`，共 26 个测试且全部通过。其中没有真实 MCP、在线模型或支付请求。
+2026-11-04 的 `pnpm test` 发现测试文件为 `config.test.ts`、`http.e2e.test.ts`、`issue-3.test.ts`、`mcp/client.test.ts`、`model.test.ts`、`orchestrator.test.ts`、`providers/mcd.test.ts`、`providers/mock.test.ts` 和 `quote.test.ts`，共 34 个测试且全部通过。其中没有真实 MCP、在线模型或支付请求。
+
+此次新增覆盖购物车数量上下限、越界调整提示、非整数拒绝、单项与最后一项删除、购物车读取、旧报价失效、核价期间修改、切换门店、提交期间修改限制及旧数据恢复；进一步验证购物车和待确认报价持久化期间发生并发修改时拒绝旧报价。桌面和 390 像素宽的移动视口已在 Mock 模式检查数量调整、删除和报价隐藏。
 
 ## 3. Mock 自动/手工场景
 
