@@ -117,8 +117,9 @@ export class JsonStore {
       updatedAt: new Date().toISOString(),
     };
     this.state.sessions[sessionId] = session;
+    const snapshot = structuredClone(session);
     await this.persist();
-    return structuredClone(session);
+    return snapshot;
   }
 
   async getSession(id: string): Promise<SessionState> {
@@ -173,7 +174,9 @@ export class JsonStore {
       session.revision = (session.revision ?? 0) + 1;
       session.updatedAt = new Date().toISOString();
       this.invalidatePending(sessionId);
+      const snapshot = structuredClone(session);
       await this.persist();
+      return snapshot;
     }
     return structuredClone(session);
   }
@@ -201,8 +204,9 @@ export class JsonStore {
       this.invalidatePending(sessionId);
     }
     session.updatedAt = new Date().toISOString();
+    const snapshot = structuredClone(session);
     await this.persist();
-    return structuredClone(session);
+    return snapshot;
   }
 
   async createApproval(
@@ -227,6 +231,9 @@ export class JsonStore {
     };
     this.state.approvals[approval.approvalId] = approval;
     await this.persist();
+    if (approval.status !== "pending" || this.state.sessions[sessionId]?.revision !== revision) {
+      throw new AppError("QUOTE_STALE", "购物车或配送信息已变化，请重新核价", 409);
+    }
     return structuredClone(approval);
   }
 

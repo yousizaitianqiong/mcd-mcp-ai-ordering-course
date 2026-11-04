@@ -161,6 +161,91 @@ function deferred(): { promise: Promise<void>; resolve: () => void } {
   return { promise, resolve };
 }
 
+test("核价所用购物车持久化期间再次修改时拒绝旧报价", { timeout: 10_000 }, async () => {
+  const fixture = await createFixture();
+  const started = deferred();
+  const release = deferred();
+  try {
+    const first = await getApproval(fixture.orchestrator);
+    const session = await fixture.store.getSession(first.sessionId);
+    const productCode = session.cart[0].productCode;
+    const internals = fixture.store as unknown as { persist: () => Promise<void> };
+    const persist = internals.persist.bind(fixture.store);
+    let blocked = false;
+    internals.persist = async () => {
+      if (!blocked) {
+        blocked = true;
+        const writing = persist();
+        started.resolve();
+        await release.promise;
+        await writing;
+        return;
+      }
+      await persist();
+    };
+
+    const executeTool = (fixture.orchestrator as unknown as {
+      executeTool: (id: string, name: string, args: Record<string, unknown>, emit: (event: { type: string; data: unknown }) => void) => Promise<unknown>;
+    }).executeTool.bind(fixture.orchestrator);
+    const events: Array<{ type: string; data: unknown }> = [];
+    const pricing = executeTool(first.sessionId, "calculate_price", {
+      items: [{ productCode, quantity: 2 }],
+    }, (event) => events.push(event));
+    await started.promise;
+    const changed = await fixture.store.getSession(first.sessionId);
+    await fixture.store.setCart(first.sessionId, changed.cart.map((item) => ({ ...item, quantity: 3 })));
+    release.resolve();
+
+    await assert.rejects(pricing, (error: unknown) => error instanceof AppError && error.code === "QUOTE_STALE");
+    assert.equal(events.some((event) => event.type === "confirmation_required"), false);
+    assert.equal((await fixture.store.getSession(first.sessionId)).cart[0].quantity, 3);
+    await assert.rejects(() => fixture.orchestrator.confirmOrder(first.sessionId, first.approvalId, first.quoteHash),
+      (error: unknown) => error instanceof AppError && error.code === "QUOTE_STALE");
+    assert.equal(fixture.provider.createOrderCalls, 0);
+  } finally {
+    release.resolve();
+    await fs.rm(fixture.directory, { recursive: true, force: true });
+  }
+});
+
+test("保存待确认报价期间购物车变化时不返回过期报价", { timeout: 10_000 }, async () => {
+  const fixture = await createFixture();
+  const started = deferred();
+  const release = deferred();
+  try {
+    const first = await getApproval(fixture.orchestrator);
+    const internals = fixture.store as unknown as { persist: () => Promise<void> };
+    const persist = internals.persist.bind(fixture.store);
+    let blocked = false;
+    internals.persist = async () => {
+      if (!blocked) {
+        blocked = true;
+        const writing = persist();
+        started.resolve();
+        await release.promise;
+        await writing;
+        return;
+      }
+      await persist();
+    };
+    const executeTool = (fixture.orchestrator as unknown as {
+      executeTool: (id: string, name: string, args: Record<string, unknown>, emit: (event: { type: string; data: unknown }) => void) => Promise<unknown>;
+    }).executeTool.bind(fixture.orchestrator);
+    const events: Array<{ type: string; data: unknown }> = [];
+    const pricing = executeTool(first.sessionId, "calculate_price", {}, (event) => events.push(event));
+    await started.promise;
+    const changed = await fixture.store.getSession(first.sessionId);
+    await fixture.store.setCart(first.sessionId, changed.cart.map((item) => ({ ...item, quantity: 2 })));
+    release.resolve();
+    await assert.rejects(pricing, (error: unknown) => error instanceof AppError && error.code === "QUOTE_STALE");
+    assert.equal(events.some((event) => event.type === "confirmation_required"), false);
+    assert.equal(fixture.provider.createOrderCalls, 0);
+  } finally {
+    release.resolve();
+    await fs.rm(fixture.directory, { recursive: true, force: true });
+  }
+});
+
 test("核价过程中修改购物车时不生成可确认的旧报价", async () => {
   const started = deferred();
   const release = deferred();
